@@ -1,236 +1,328 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Level 3 - Add to Cart</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Level 3 - Add to Cart</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
-    * { box-sizing: border-box; }
+      * {
+        box-sizing: border-box;
+      }
 
-    body {
-      margin: 0;
-      font-family: "Poppins", system-ui, sans-serif;
-      background: #f8f6fd;
-      color: #1f1535;
-    }
+      body {
+        margin: 0;
+        font-family: "Poppins", system-ui, sans-serif;
+        background: #f8f6fd;
+        color: #1f1535;
+      }
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 20px;
-      background: #2e1a52;
-      color: #ffffff;
-    }
-    .topbar h1 { margin: 0; font-size: 20px; }
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 20px;
+        background: #2e1a52;
+        color: #ffffff;
+      }
+      .topbar h1 {
+        margin: 0;
+        font-size: 20px;
+      }
 
-    .cart-badge { font-weight: 600; }
-    .badge {
-      display: inline-block;
-      min-width: 26px;
-      padding: 2px 8px;
-      margin-left: 4px;
-      border-radius: 999px;
-      background: #ff7a1a;
-      color: #1b0d00;
-      text-align: center;
-    }
+      .cart-badge {
+        font-weight: 600;
+      }
+      .badge {
+        display: inline-block;
+        min-width: 26px;
+        padding: 2px 8px;
+        margin-left: 4px;
+        border-radius: 999px;
+        background: #ff7a1a;
+        color: #1b0d00;
+        text-align: center;
+      }
 
-    .layout {
-      display: grid;
-      grid-template-columns: 1fr 300px;
-      gap: 20px;
-      padding: 20px;
-    }
-    @media (max-width: 640px) {
-      .layout { grid-template-columns: 1fr; padding: 14px; }
-    }
+      .layout {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 20px;
+        padding: 20px;
+      }
+      @media (max-width: 640px) {
+        .layout {
+          grid-template-columns: 1fr;
+          padding: 14px;
+        }
+      }
 
-    h2 { margin: 0 0 12px; font-size: 18px; }
+      h2 {
+        margin: 0 0 12px;
+        font-size: 18px;
+      }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 12px;
-    }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 12px;
+      }
 
-    .product {
-      padding: 12px;
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(46, 16, 101, 0.08);
-    }
-    .thumb {
-      display: block;
-      width: 100%;
-      aspect-ratio: 16 / 11;
-      object-fit: cover;
-      border-radius: 8px;
-      background: #f3f0fb;
-    }
-    .mini { width: 40px; height: 28px; object-fit: cover; border-radius: 5px; }
-    .cart-items .name { display: flex; align-items: center; gap: 8px; }
-    .product h3 { margin: 10px 0 2px; font-size: 15px; }
-    .price { margin: 0 0 10px; color: #6d28d9; font-weight: 700; }
+      .product {
+        padding: 12px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(46, 16, 101, 0.08);
+      }
+      .thumb {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 11;
+        object-fit: cover;
+        border-radius: 8px;
+        background: #f3f0fb;
+      }
+      .mini {
+        width: 40px;
+        height: 28px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+      .cart-items .name {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .product h3 {
+        margin: 10px 0 2px;
+        font-size: 15px;
+      }
+      .price {
+        margin: 0 0 10px;
+        color: #6d28d9;
+        font-weight: 700;
+      }
 
-    button {
-      font: inherit;
-      font-weight: 600;
-      cursor: pointer;
-      border: 0;
-      border-radius: 8px;
-    }
-    .add-btn { width: 100%; padding: 9px; background: #6d28d9; color: #ffffff; }
-    .add-btn:hover { background: #5b21b6; }
-    .add-btn.added { background: #1d8a4e; }
+      button {
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        border: 0;
+        border-radius: 8px;
+      }
+      .add-btn {
+        width: 100%;
+        padding: 9px;
+        background: #6d28d9;
+        color: #ffffff;
+      }
+      .add-btn:hover {
+        background: #5b21b6;
+      }
+      .add-btn.added {
+        background: #1d8a4e;
+      }
 
-    .cart {
-      align-self: start;
-      padding: 16px;
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(46, 16, 101, 0.08);
-    }
-    .empty { color: #6f6787; }
+      .cart {
+        align-self: start;
+        padding: 16px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(46, 16, 101, 0.08);
+      }
+      .empty {
+        color: #6f6787;
+      }
 
-    .cart-items { list-style: none; margin: 0; padding: 0; }
-    .cart-items li {
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 0;
-      border-bottom: 1px solid #ece8f6;
-      font-size: 14px;
-    }
-    .cart-items .name { grid-column: 1 / -1; font-weight: 600; }
-    .qty { display: flex; align-items: center; gap: 6px; }
-    .qty button { width: 30px; height: 30px; background: #ede9fe; color: #1f1535; }
-    .line-total { font-weight: 700; }
-    .remove { padding: 4px 8px; background: transparent; color: #d13b2a; }
+      .cart-items {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .cart-items li {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 0;
+        border-bottom: 1px solid #ece8f6;
+        font-size: 14px;
+      }
+      .cart-items .name {
+        grid-column: 1 / -1;
+        font-weight: 600;
+      }
+      .qty {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .qty button {
+        width: 30px;
+        height: 30px;
+        background: #ede9fe;
+        color: #1f1535;
+      }
+      .line-total {
+        font-weight: 700;
+      }
+      .remove {
+        padding: 4px 8px;
+        background: transparent;
+        color: #d13b2a;
+      }
 
-    .total {
-      display: flex;
-      justify-content: space-between;
-      margin: 14px 0;
-      font-size: 18px;
-    }
-    .secondary { width: 100%; padding: 9px; background: #ede9fe; color: #1f1535; }
-    .secondary:disabled { opacity: 0.5; cursor: not-allowed; }
-  </style>
-</head>
-<body>
-  <header class="topbar">
-    <h1>Campus Shop</h1>
-    <div class="cart-badge">Cart <span id="cartCount" class="badge">0</span></div>
-  </header>
-
-  <main class="layout">
-    <section>
-      <h2>Products</h2>
-      <div id="productList" class="grid"></div>
-    </section>
-
-    <aside class="cart">
-      <h2>Your cart</h2>
-      <p id="emptyMsg" class="empty">Your cart is empty.</p>
-      <ul id="cartItems" class="cart-items"></ul>
-      <div class="total">
-        <span>Total</span>
-        <strong id="cartTotal">₱0.00</strong>
+      .total {
+        display: flex;
+        justify-content: space-between;
+        margin: 14px 0;
+        font-size: 18px;
+      }
+      .secondary {
+        width: 100%;
+        padding: 9px;
+        background: #ede9fe;
+        color: #1f1535;
+      }
+      .secondary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Campus Shop</h1>
+      <div class="cart-badge">
+        Cart <span id="cartCount" class="badge">0</span>
       </div>
-      <button id="clearCart" class="secondary">Clear cart</button>
-    </aside>
-  </main>
+    </header>
 
-  <script>
-    // LEVEL 3: Adding to cart
+    <main class="layout">
+      <section>
+        <h2>Products</h2>
+        <div id="productList" class="grid"></div>
+      </section>
 
-    // 0. PRODUCT PHOTOS
-    // Free photos from Unsplash (unsplash.com), used under the Unsplash License.
-    // ?w=400&h=275&fit=crop asks Unsplash for a small, cropped copy.
-    // Have your own photos? Save them in an "images" folder and write
-    // image: 'images/notebook.jpg' in the products list instead.
-    const photo = (id) => `https://images.unsplash.com/${id}?w=400&h=275&fit=crop&auto=format&q=70`;
+      <aside class="cart">
+        <h2>Your cart</h2>
+        <p id="emptyMsg" class="empty">Your cart is empty.</p>
+        <ul id="cartItems" class="cart-items"></ul>
+        <div class="total">
+          <span>Total</span>
+          <strong id="cartTotal">₱0.00</strong>
+        </div>
+        <button id="clearCart" class="secondary">Clear cart</button>
+      </aside>
+    </main>
 
-    const pictures = {
-      notebook:  photo('photo-1562217199-6e6d4cd031f5'),
-      pens:      photo('photo-1567855354833-ac2c4f967b0c'),
-      tumbler:   photo('photo-1544003484-3cd181d17917'),
-      usb:       photo('photo-1581068466660-e6585b8afa97'),
-      notes:     photo('photo-1683739147682-607fb8e24e3f'),
-      earphones: photo('photo-1555679792-6783ef0bbf61'),
-    };
+    <script>
+      // LEVEL 3: Adding to cart
 
-    // 1. DATA: products live in an array of objects
-    const products = [
-      { id: 1, name: 'Spiral Notebook',      price: 45,  image: pictures.notebook },
-      { id: 2, name: 'Ballpen Set (5)',      price: 60,  image: pictures.pens },
-      { id: 3, name: 'Tumbler 500ml',        price: 299, image: pictures.tumbler },
-      { id: 4, name: 'USB Flash Drive 32GB', price: 250, image: pictures.usb },
-      { id: 5, name: 'Sticky Notes Pack',    price: 85,  image: pictures.notes },
-      { id: 6, name: 'Wired Earphones',      price: 199, image: pictures.earphones },
-    ];
+      // PRODUCT PHOTOS
+      // For this demo, we just used unsplash but ofcourse you can use your own images.
+      // The "photo" function below builds a URL for each photo, and the "pictures" object stores them in a way that makes it easy to assign to each product. You can replace the Unsplash URLs with your own image paths if you like.
+      // You can save yours in an "images" folder and write
+      // image: 'images/notebook.jpg' in the products list instead.
+      const photo = (id) =>
+        `https://images.unsplash.com/${id}?w=400&h=275&fit=crop&auto=format&q=70`;
 
-    // The cart only stores the product id and quantity
-    let cart = []; // e.g. [{ id: 3, qty: 2 }]
+      const pictures = {
+        notebook: photo("photo-1562217199-6e6d4cd031f5"),
+        pens: photo("photo-1567855354833-ac2c4f967b0c"),
+        tumbler: photo("photo-1544003484-3cd181d17917"),
+        usb: photo("photo-1581068466660-e6585b8afa97"),
+        notes: photo("photo-1683739147682-607fb8e24e3f"),
+        earphones: photo("photo-1555679792-6783ef0bbf61"),
+      };
 
-    // 2. ELEMENTS
-    const productList = document.querySelector('#productList');
-    const cartItems   = document.querySelector('#cartItems');
-    const cartCount   = document.querySelector('#cartCount');
-    const cartTotal   = document.querySelector('#cartTotal');
-    const emptyMsg    = document.querySelector('#emptyMsg');
-    const clearBtn    = document.querySelector('#clearCart');
+      // 1. DATA: products live in an array of objects
+      const products = [
+        { id: 1, name: "Spiral Notebook", price: 45, image: pictures.notebook },
+        { id: 2, name: "Ballpen Set (5)", price: 60, image: pictures.pens },
+        { id: 3, name: "Tumbler 500ml", price: 299, image: pictures.tumbler },
+        {
+          id: 4,
+          name: "USB Flash Drive 32GB",
+          price: 250,
+          image: pictures.usb,
+        },
+        { id: 5, name: "Sticky Notes Pack", price: 85, image: pictures.notes },
+        {
+          id: 6,
+          name: "Wired Earphones",
+          price: 199,
+          image: pictures.earphones,
+        },
+      ];
 
-    // 3. HELPERS
-    const peso = (amount) =>
-      '₱' + amount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      // The cart only stores the product id and quantity
+      let cart = []; // e.g. [{ id: 3, qty: 2 }]
 
-    const findProduct = (id) => products.find((p) => p.id === id);
+      // 2. ELEMENTS
+      const productList = document.querySelector("#productList");
+      const cartItems = document.querySelector("#cartItems");
+      const cartCount = document.querySelector("#cartCount");
+      const cartTotal = document.querySelector("#cartTotal");
+      const emptyMsg = document.querySelector("#emptyMsg");
+      const clearBtn = document.querySelector("#clearCart");
 
-    // 4. SHOW THE PRODUCTS (map turns each object into HTML)
-    function renderProducts() {
-      productList.innerHTML = products.map((p) => `
+      // 3. HELPERS
+      const peso = (amount) =>
+        "₱" +
+        amount.toLocaleString("en-PH", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+
+      const findProduct = (id) => products.find((p) => p.id === id);
+
+      // 4. SHOW THE PRODUCTS (map turns each object into HTML)
+      function renderProducts() {
+        productList.innerHTML = products
+          .map(
+            (p) => `
         <div class="product">
           <img class="thumb" src="${p.image}" alt="${p.name}">
           <h3>${p.name}</h3>
           <p class="price">${peso(p.price)}</p>
           <button class="add-btn" data-id="${p.id}">Add to cart</button>
         </div>
-      `).join('');
-    }
-
-    // 5. CART ACTIONS
-    function addToCart(id) {
-      const item = cart.find((i) => i.id === id);
-      if (item) {
-        item.qty++;                 // already in cart: add one more
-      } else {
-        cart.push({ id, qty: 1 });  // new item
+      `,
+          )
+          .join("");
       }
-      renderCart();
-    }
 
-    function changeQty(id, amount) {
-      const item = cart.find((i) => i.id === id);
-      item.qty += amount;
-      if (item.qty <= 0) removeItem(id);
-      else renderCart();
-    }
+      // 5. CART ACTIONS
+      function addToCart(id) {
+        const item = cart.find((i) => i.id === id);
+        if (item) {
+          item.qty++; // already in cart: add one more
+        } else {
+          cart.push({ id, qty: 1 }); // new item
+        }
+        renderCart();
+      }
 
-    function removeItem(id) {
-      cart = cart.filter((i) => i.id !== id);
-      renderCart();
-    }
+      function changeQty(id, amount) {
+        const item = cart.find((i) => i.id === id);
+        item.qty += amount;
+        if (item.qty <= 0) removeItem(id);
+        else renderCart();
+      }
 
-    // 6. DRAW THE CART (called after EVERY change)
-    function renderCart() {
-      cartItems.innerHTML = cart.map((item) => {
-        const p = findProduct(item.id);
-        return `
+      function removeItem(id) {
+        cart = cart.filter((i) => i.id !== id);
+        renderCart();
+      }
+
+      // 6. DRAW THE CART (called after EVERY change)
+      function renderCart() {
+        cartItems.innerHTML = cart
+          .map((item) => {
+            const p = findProduct(item.id);
+            return `
           <li>
             <span class="name"><img class="mini" src="${p.image}" alt="">${p.name}</span>
             <div class="qty">
@@ -241,52 +333,56 @@
             <span class="line-total">${peso(p.price * item.qty)}</span>
             <button class="remove" data-action="remove" data-id="${p.id}" aria-label="Remove ${p.name}">✕</button>
           </li>`;
-      }).join('');
+          })
+          .join("");
 
-      // reduce() adds everything up
-      const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
-      const total    = cart.reduce((sum, i) => sum + findProduct(i.id).price * i.qty, 0);
+        // reduce() adds everything up
+        const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+        const total = cart.reduce(
+          (sum, i) => sum + findProduct(i.id).price * i.qty,
+          0,
+        );
 
-      cartCount.textContent = totalQty;
-      cartTotal.textContent = peso(total);
-      emptyMsg.hidden  = cart.length > 0;
-      clearBtn.disabled = cart.length === 0;
-    }
+        cartCount.textContent = totalQty;
+        cartTotal.textContent = peso(total);
+        emptyMsg.hidden = cart.length > 0;
+        clearBtn.disabled = cart.length === 0;
+      }
 
-    // 7. EVENTS
-    productList.addEventListener('click', (event) => {
-      const btn = event.target.closest('.add-btn');
-      if (!btn) return;
+      // 7. EVENTS
+      productList.addEventListener("click", (event) => {
+        const btn = event.target.closest(".add-btn");
+        if (!btn) return;
 
-      addToCart(Number(btn.dataset.id));
+        addToCart(Number(btn.dataset.id));
 
-      // quick feedback on the button
-      btn.textContent = 'Added ✓';
-      btn.classList.add('added');
-      setTimeout(() => {
-        btn.textContent = 'Add to cart';
-        btn.classList.remove('added');
-      }, 800);
-    });
+        // quick feedback on the button
+        btn.textContent = "Added ✓";
+        btn.classList.add("added");
+        setTimeout(() => {
+          btn.textContent = "Add to cart";
+          btn.classList.remove("added");
+        }, 800);
+      });
 
-    cartItems.addEventListener('click', (event) => {
-      const btn = event.target.closest('button');
-      if (!btn) return;
+      cartItems.addEventListener("click", (event) => {
+        const btn = event.target.closest("button");
+        if (!btn) return;
 
-      const id = Number(btn.dataset.id);
-      if (btn.dataset.action === 'plus')   changeQty(id, 1);
-      if (btn.dataset.action === 'minus')  changeQty(id, -1);
-      if (btn.dataset.action === 'remove') removeItem(id);
-    });
+        const id = Number(btn.dataset.id);
+        if (btn.dataset.action === "plus") changeQty(id, 1);
+        if (btn.dataset.action === "minus") changeQty(id, -1);
+        if (btn.dataset.action === "remove") removeItem(id);
+      });
 
-    clearBtn.addEventListener('click', () => {
-      cart = [];
+      clearBtn.addEventListener("click", () => {
+        cart = [];
+        renderCart();
+      });
+
+      // 8. START
+      renderProducts();
       renderCart();
-    });
-
-    // 8. START
-    renderProducts();
-    renderCart();
-  </script>
-</body>
+    </script>
+  </body>
 </html>

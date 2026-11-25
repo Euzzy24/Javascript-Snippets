@@ -1,78 +1,153 @@
 // LEVEL 5: Mini shop (search, filter, sort, stock, saved cart, checkout)
-
-// ========== 0. PRODUCT PHOTOS ==========
-// Free photos from Unsplash (unsplash.com), used under the Unsplash License.
-// ?w=400&h=275&fit=crop asks Unsplash for a small, cropped copy.
-// Have your own photos? Save them in an "images" folder and write
+// PRODUCT PHOTOS
+// For this demo, we just used unsplash but ofcourse you can use your own images.
+// The "photo" function below builds a URL for each photo, and the "pictures" object stores them in a way that makes it easy to assign to each product. You can replace the Unsplash URLs with your own image paths if you like.
+// You can save yours in an "images" folder and write
 // image: 'images/notebook.jpg' in the products list instead.
-const photo = (id) => `https://images.unsplash.com/${id}?w=400&h=275&fit=crop&auto=format&q=70`;
+const photo = (id) =>
+  `https://images.unsplash.com/${id}?w=400&h=275&fit=crop&auto=format&q=70`;
 
 const pictures = {
-  notebook:   photo('photo-1562217199-6e6d4cd031f5'),
-  pens:       photo('photo-1567855354833-ac2c4f967b0c'),
-  calculator: photo('photo-1511377107391-116a9d5d20b5'),
-  usb:        photo('photo-1581068466660-e6585b8afa97'),
-  earphones:  photo('photo-1555679792-6783ef0bbf61'),
-  powerbank:  photo('photo-1587133454235-762b65c9f5c0'),
-  notes:      photo('photo-1683739147682-607fb8e24e3f'),
-  tumbler:    photo('photo-1544003484-3cd181d17917'),
-  hoodie:     photo('photo-1547954569-06aabe3b39b1'),
+  notebook: photo("photo-1562217199-6e6d4cd031f5"),
+  pens: photo("photo-1567855354833-ac2c4f967b0c"),
+  calculator: photo("photo-1511377107391-116a9d5d20b5"),
+  usb: photo("photo-1581068466660-e6585b8afa97"),
+  earphones: photo("photo-1555679792-6783ef0bbf61"),
+  powerbank: photo("photo-1587133454235-762b65c9f5c0"),
+  notes: photo("photo-1683739147682-607fb8e24e3f"),
+  tumbler: photo("photo-1544003484-3cd181d17917"),
+  hoodie: photo("photo-1547954569-06aabe3b39b1"),
 };
 
 // ========== 1. DATA ==========
 const products = [
-  { id: 1, name: 'Spiral Notebook',       category: 'Supplies', price: 45,  stock: 20, image: pictures.notebook },
-  { id: 2, name: 'Ballpen Set (5)',       category: 'Supplies', price: 60,  stock: 15, image: pictures.pens },
-  { id: 3, name: 'Scientific Calculator', category: 'Supplies', price: 650, stock: 4,  image: pictures.calculator },
-  { id: 4, name: 'USB Flash Drive 32GB',  category: 'Gadgets',  price: 250, stock: 8,  image: pictures.usb },
-  { id: 5, name: 'Wired Earphones',       category: 'Gadgets',  price: 199, stock: 6,  image: pictures.earphones },
-  { id: 6, name: 'Power Bank 10000mAh',   category: 'Gadgets',  price: 899, stock: 3,  image: pictures.powerbank },
-  { id: 7, name: 'Sticky Notes Pack',     category: 'Supplies', price: 85,  stock: 25, image: pictures.notes },
-  { id: 8, name: 'Tumbler 500ml',         category: 'Merch',    price: 299, stock: 5,  image: pictures.tumbler },
-  { id: 9, name: 'Campus Hoodie',         category: 'Merch',    price: 750, stock: 0,  image: pictures.hoodie },
+  {
+    id: 1,
+    name: "Spiral Notebook",
+    category: "Supplies",
+    price: 45,
+    stock: 20,
+    image: pictures.notebook,
+  },
+  {
+    id: 2,
+    name: "Ballpen Set (5)",
+    category: "Supplies",
+    price: 60,
+    stock: 15,
+    image: pictures.pens,
+  },
+  {
+    id: 3,
+    name: "Scientific Calculator",
+    category: "Supplies",
+    price: 650,
+    stock: 4,
+    image: pictures.calculator,
+  },
+  {
+    id: 4,
+    name: "USB Flash Drive 32GB",
+    category: "Gadgets",
+    price: 250,
+    stock: 8,
+    image: pictures.usb,
+  },
+  {
+    id: 5,
+    name: "Wired Earphones",
+    category: "Gadgets",
+    price: 199,
+    stock: 6,
+    image: pictures.earphones,
+  },
+  {
+    id: 6,
+    name: "Power Bank 10000mAh",
+    category: "Gadgets",
+    price: 899,
+    stock: 3,
+    image: pictures.powerbank,
+  },
+  {
+    id: 7,
+    name: "Sticky Notes Pack",
+    category: "Supplies",
+    price: 85,
+    stock: 25,
+    image: pictures.notes,
+  },
+  {
+    id: 8,
+    name: "Tumbler 500ml",
+    category: "Merch",
+    price: 299,
+    stock: 5,
+    image: pictures.tumbler,
+  },
+  {
+    id: 9,
+    name: "Campus Hoodie",
+    category: "Merch",
+    price: 750,
+    stock: 0,
+    image: pictures.hoodie,
+  },
 ];
 
 // ========== 2. STATE (everything that can change) ==========
-const STORAGE_KEY = 'campusShopCart';
+const STORAGE_KEY = "campusShopCart";
 
 const state = {
-  search: '',
-  category: 'All',
-  sort: 'featured',
+  search: "",
+  category: "All",
+  sort: "featured",
   cart: loadCart(), // [{ id, qty }]
 };
 
 // ========== 3. ELEMENTS ==========
 const $ = (selector) => document.querySelector(selector);
-const grid        = $('#productGrid');
-const categories  = $('#categories');
-const resultInfo  = $('#resultInfo');
-const cartCount   = $('#cartCount');
-const cartItems   = $('#cartItems');
-const subtotalEl  = $('#subtotal');
-const drawer      = $('#cartDrawer');
-const overlay     = $('#overlay');
-const checkoutBtn = $('#checkoutBtn');
-const dialog      = $('#checkoutDialog');
-const form        = $('#checkoutForm');
-const orderDone   = $('#orderDone');
-const toast       = $('#toast');
+const grid = $("#productGrid");
+const categories = $("#categories");
+const resultInfo = $("#resultInfo");
+const cartCount = $("#cartCount");
+const cartItems = $("#cartItems");
+const subtotalEl = $("#subtotal");
+const drawer = $("#cartDrawer");
+const overlay = $("#overlay");
+const checkoutBtn = $("#checkoutBtn");
+const dialog = $("#checkoutDialog");
+const form = $("#checkoutForm");
+const orderDone = $("#orderDone");
+const toast = $("#toast");
 
 // ========== 4. HELPERS ==========
 const peso = (n) =>
-  '₱' + n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  "₱" +
+  n.toLocaleString("en-PH", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
 const findProduct = (id) => products.find((p) => p.id === id);
-const cartItem    = (id) => state.cart.find((i) => i.id === id);
-const qtyInCart   = (id) => (cartItem(id) ? cartItem(id).qty : 0);
+const cartItem = (id) => state.cart.find((i) => i.id === id);
+const qtyInCart = (id) => (cartItem(id) ? cartItem(id).qty : 0);
 
 function escapeHTML(text) {
-  return text.replace(/[&<>"']/g, (ch) =>
-    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+  return text.replace(
+    /[&<>"']/g,
+    (ch) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        ch
+      ],
+  );
 }
 
 function getSubtotal() {
-  return state.cart.reduce((sum, i) => sum + findProduct(i.id).price * i.qty, 0);
+  return state.cart.reduce(
+    (sum, i) => sum + findProduct(i.id).price * i.qty,
+    0,
+  );
 }
 
 // localStorage only stores text, so we use JSON
@@ -105,32 +180,38 @@ function debounce(fn, delay) {
 let toastTimer;
 function showToast(message) {
   toast.textContent = message;
-  toast.classList.add('show');
+  toast.classList.add("show");
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2000);
 }
 
 // ========== 5. RENDER ==========
 function getVisibleProducts() {
   const term = state.search.toLowerCase();
 
-  let list = products.filter((p) =>
-    (state.category === 'All' || p.category === state.category) &&
-    p.name.toLowerCase().includes(term)
+  let list = products.filter(
+    (p) =>
+      (state.category === "All" || p.category === state.category) &&
+      p.name.toLowerCase().includes(term),
   );
 
   // [...list] makes a copy so we never re-order the original array
-  if (state.sort === 'low')  list = [...list].sort((a, b) => a.price - b.price);
-  if (state.sort === 'high') list = [...list].sort((a, b) => b.price - a.price);
-  if (state.sort === 'name') list = [...list].sort((a, b) => a.name.localeCompare(b.name));
+  if (state.sort === "low") list = [...list].sort((a, b) => a.price - b.price);
+  if (state.sort === "high") list = [...list].sort((a, b) => b.price - a.price);
+  if (state.sort === "name")
+    list = [...list].sort((a, b) => a.name.localeCompare(b.name));
   return list;
 }
 
 function renderCategories() {
-  const names = ['All', ...new Set(products.map((p) => p.category))];
-  categories.innerHTML = names.map((name) => `
-    <button class="chip ${name === state.category ? 'active' : ''}" data-category="${name}">${name}</button>
-  `).join('');
+  const names = ["All", ...new Set(products.map((p) => p.category))];
+  categories.innerHTML = names
+    .map(
+      (name) => `
+    <button class="chip ${name === state.category ? "active" : ""}" data-category="${name}">${name}</button>
+  `,
+    )
+    .join("");
 }
 
 function renderProducts() {
@@ -142,27 +223,29 @@ function renderProducts() {
     return;
   }
 
-  grid.innerHTML = list.map((p) => {
-    const inCart = qtyInCart(p.id);
-    const left = p.stock - inCart;
+  grid.innerHTML = list
+    .map((p) => {
+      const inCart = qtyInCart(p.id);
+      const left = p.stock - inCart;
 
-    let label = 'Add to cart';
-    if (p.stock === 0) label = 'Out of stock';
-    else if (left === 0) label = 'All in your cart';
+      let label = "Add to cart";
+      if (p.stock === 0) label = "Out of stock";
+      else if (left === 0) label = "All in your cart";
 
-    return `
+      return `
       <article class="product">
         <img class="thumb" src="${p.image}" alt="${p.name}">
-        ${inCart ? `<span class="in-cart">${inCart} in cart</span>` : ''}
+        ${inCart ? `<span class="in-cart">${inCart} in cart</span>` : ""}
         <span class="cat">${p.category}</span>
         <h3>${p.name}</h3>
         <p class="price">${peso(p.price)}</p>
-        <p class="stock ${p.stock <= 3 ? 'low' : ''}">
-          ${p.stock === 0 ? 'Sold out' : `${p.stock} in stock`}
+        <p class="stock ${p.stock <= 3 ? "low" : ""}">
+          ${p.stock === 0 ? "Sold out" : `${p.stock} in stock`}
         </p>
-        <button class="add-btn" data-id="${p.id}" ${left <= 0 ? 'disabled' : ''}>${label}</button>
+        <button class="add-btn" data-id="${p.id}" ${left <= 0 ? "disabled" : ""}>${label}</button>
       </article>`;
-  }).join('');
+    })
+    .join("");
 }
 
 function renderCart() {
@@ -172,9 +255,10 @@ function renderCart() {
   if (state.cart.length === 0) {
     cartItems.innerHTML = '<li class="empty-cart">Your cart is empty.</li>';
   } else {
-    cartItems.innerHTML = state.cart.map((item) => {
-      const p = findProduct(item.id);
-      return `
+    cartItems.innerHTML = state.cart
+      .map((item) => {
+        const p = findProduct(item.id);
+        return `
         <li>
           <strong class="item-name"><img class="mini" src="${p.image}" alt="">${p.name}</strong>
           <span>${peso(p.price * item.qty)}</span>
@@ -185,7 +269,8 @@ function renderCart() {
           </div>
           <button class="remove" data-action="remove" data-id="${p.id}">Remove</button>
         </li>`;
-    }).join('');
+      })
+      .join("");
   }
 
   subtotalEl.textContent = peso(getSubtotal());
@@ -215,9 +300,9 @@ function addToCart(id) {
   render();
   showToast(`${p.name} added to cart`);
 
-  cartCount.classList.remove('pop');
+  cartCount.classList.remove("pop");
   void cartCount.offsetWidth;
-  cartCount.classList.add('pop');
+  cartCount.classList.add("pop");
 }
 
 function changeQty(id, amount) {
@@ -225,7 +310,7 @@ function changeQty(id, amount) {
   const p = findProduct(id);
 
   if (amount > 0 && item.qty >= p.stock) {
-    showToast('No more stock available.');
+    showToast("No more stock available.");
     return;
   }
 
@@ -245,82 +330,88 @@ function removeItem(id) {
 }
 
 function openCart() {
-  drawer.classList.add('open');
-  drawer.setAttribute('aria-hidden', 'false');
+  drawer.classList.add("open");
+  drawer.setAttribute("aria-hidden", "false");
   overlay.hidden = false;
-  $('#closeCart').focus();
+  $("#closeCart").focus();
 }
 
 function closeCart() {
-  drawer.classList.remove('open');
-  drawer.setAttribute('aria-hidden', 'true');
+  drawer.classList.remove("open");
+  drawer.setAttribute("aria-hidden", "true");
   overlay.hidden = true;
 }
 
 // ========== 7. EVENTS ==========
-$('#search').addEventListener('input', debounce((e) => {
-  state.search = e.target.value.trim();
-  renderProducts();
-}, 250));
+$("#search").addEventListener(
+  "input",
+  debounce((e) => {
+    state.search = e.target.value.trim();
+    renderProducts();
+  }, 250),
+);
 
-$('#sort').addEventListener('change', (e) => {
+$("#sort").addEventListener("change", (e) => {
   state.sort = e.target.value;
   renderProducts();
 });
 
-categories.addEventListener('click', (e) => {
-  const chip = e.target.closest('.chip');
+categories.addEventListener("click", (e) => {
+  const chip = e.target.closest(".chip");
   if (!chip) return;
   state.category = chip.dataset.category;
   renderCategories();
   renderProducts();
 });
 
-grid.addEventListener('click', (e) => {
-  const btn = e.target.closest('.add-btn');
+grid.addEventListener("click", (e) => {
+  const btn = e.target.closest(".add-btn");
   if (btn) addToCart(Number(btn.dataset.id));
 });
 
-cartItems.addEventListener('click', (e) => {
-  const btn = e.target.closest('button');
+cartItems.addEventListener("click", (e) => {
+  const btn = e.target.closest("button");
   if (!btn) return;
   const id = Number(btn.dataset.id);
-  if (btn.dataset.action === 'plus')   changeQty(id, 1);
-  if (btn.dataset.action === 'minus')  changeQty(id, -1);
-  if (btn.dataset.action === 'remove') removeItem(id);
+  if (btn.dataset.action === "plus") changeQty(id, 1);
+  if (btn.dataset.action === "minus") changeQty(id, -1);
+  if (btn.dataset.action === "remove") removeItem(id);
 });
 
-$('#openCart').addEventListener('click', openCart);
-$('#closeCart').addEventListener('click', closeCart);
-overlay.addEventListener('click', closeCart);
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && drawer.classList.contains('open')) closeCart();
+$("#openCart").addEventListener("click", openCart);
+$("#closeCart").addEventListener("click", closeCart);
+overlay.addEventListener("click", closeCart);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && drawer.classList.contains("open")) closeCart();
 });
 
 // ---- Checkout ----
-checkoutBtn.addEventListener('click', () => {
+checkoutBtn.addEventListener("click", () => {
   closeCart();
-  $('#dialogTotal').textContent = peso(getSubtotal());
-  $('#formError').textContent = '';
+  $("#dialogTotal").textContent = peso(getSubtotal());
+  $("#formError").textContent = "";
   form.hidden = false;
   orderDone.hidden = true;
   dialog.showModal();
 });
 
-$('#cancelCheckout').addEventListener('click', () => dialog.close());
+$("#cancelCheckout").addEventListener("click", () => dialog.close());
 
-form.addEventListener('submit', (e) => {
+form.addEventListener("submit", (e) => {
   e.preventDefault();
-  const name  = $('#custName').value.trim();
-  const phone = $('#custPhone').value.trim();
-  const pay   = $('#custPay').value;
+  const name = $("#custName").value.trim();
+  const phone = $("#custPhone").value.trim();
+  const pay = $("#custPay").value;
 
-  if (name.length < 2)          return ($('#formError').textContent = 'Please enter your name.');
-  if (!/^09\d{9}$/.test(phone)) return ($('#formError').textContent = 'Mobile number must be 11 digits starting with 09.');
+  if (name.length < 2)
+    return ($("#formError").textContent = "Please enter your name.");
+  if (!/^09\d{9}$/.test(phone))
+    return ($("#formError").textContent =
+      "Mobile number must be 11 digits starting with 09.");
 
-  const orderNo = 'ORD-' + Date.now().toString().slice(-6);
+  const orderNo = "ORD-" + Date.now().toString().slice(-6);
   // textContent is safe for user input: no escaping needed
-  $('#orderText').textContent =
+  $("#orderText").textContent =
     `Thank you, ${name}! Order ${orderNo} (${peso(getSubtotal())}) will be paid via ${pay}.`;
 
   state.cart = [];
@@ -332,9 +423,9 @@ form.addEventListener('submit', (e) => {
   orderDone.hidden = false;
 });
 
-$('#doneBtn').addEventListener('click', () => {
+$("#doneBtn").addEventListener("click", () => {
   dialog.close();
-  showToast('Order placed successfully');
+  showToast("Order placed successfully");
 });
 
 // ========== 8. START ==========
