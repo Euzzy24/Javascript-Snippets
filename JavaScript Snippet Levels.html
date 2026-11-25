@@ -2292,10 +2292,9 @@
     <script type="text/plain" id="l5-js">
       // LEVEL 5: Mini shop (search, filter, sort, stock, saved cart, checkout)
 
-      // ========== 0. PRODUCT PHOTOS ==========
-      // Free photos from Unsplash (unsplash.com), used under the Unsplash License.
-      // ?w=400&h=275&fit=crop asks Unsplash for a small, cropped copy.
-      // Have your own photos? Save them in an "images" folder and write
+      //For this demo, we just used unsplash but ofcourse you can use your own images.
+      // The "photo" function below builds a URL for each photo, and the "pictures" object stores them in a way that makes it easy to assign to each product. You can replace the Unsplash URLs with your own image paths if you like.
+      // You can save yours in an "images" folder and write
       // image: 'images/notebook.jpg' in the products list instead.
       const photo = (id) => `https://images.unsplash.com/${id}?w=400&h=275&fit=crop&auto=format&q=70`;
 
