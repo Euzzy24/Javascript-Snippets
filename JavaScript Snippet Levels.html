@@ -1,2111 +1,2956 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JavaScript Snippet Levels</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-/* VOICE: companion page to the IT55 Lessons site: calm, friendly, hands-on
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JavaScript Snippet Levels</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* VOICE: companion page to the IT55 Lessons site: calm, friendly, hands-on
    IDEA: same lesson notebook as "JavaScript Basics": numbered sections, live preview beside its code
    PICTURE: each level's working demo in a browser frame, with page.html / style.css / script.js tabs beside it
    COLOUR and TYPE: mint-white ground, deep teal #0f7b6c, near-black green ink; Figtree 800 + Figtree, JetBrains Mono labels
    LAYOUT: top nav, wave-lined hero, sticky numbered section row, then one numbered section per level */
-:root{color-scheme:light dark;
-  --bg:light-dark(#f5f8f7,#0d1715);--surface:light-dark(#ffffff,#13201d);--ink:light-dark(#0f1f1b,#e4efec);
-  --muted:light-dark(#4b5f5a,#9db3ad);--line:light-dark(#dde7e4,#24352f);--teal:light-dark(#0f7b6c,#3cc4ae);
-  --tealSoft:light-dark(#e3efec,#1a2e2a);--code:light-dark(#f3f6f5,#0f1a18);--btn:#0f7b6c;--btnHover:#0b5f54;
-  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace}
-:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
-*{box-sizing:border-box;min-width:0}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Figtree,system-ui,sans-serif;overflow-x:clip}
-.wrap{max-width:1160px;margin:0 auto;padding:0 max(4vw,16px)}
-h1,h2,h3{margin:0;text-wrap:balance}
-a{color:inherit}
-.scroll{overflow-x:auto;scrollbar-width:thin}
-code{overflow-wrap:anywhere}
-html{scroll-padding-top:76px;scroll-behavior:smooth}
-
-/* top nav */
-.top{background:var(--surface);border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;gap:28px;min-height:58px;white-space:nowrap}
-.brand{font:600 14px var(--mono);letter-spacing:.14em;color:var(--muted);text-decoration:none}
-.top nav{display:flex;gap:22px;flex:none}
-.top nav a,.brand,.secnav a{flex:none}
-.top nav a{padding:16px 0 14px;text-decoration:none;color:var(--muted);font-weight:500;border-bottom:2px solid transparent}
-.top nav a:hover{color:var(--ink)}
-.top nav a[aria-current]{color:var(--ink);border-color:var(--ink)}
-
-/* hero */
-.hero{position:relative;overflow:hidden;padding:clamp(40px,6vw,72px) 0 clamp(32px,4vw,52px);border-bottom:1px solid var(--line)}
-.waves{position:absolute;top:10px;right:0;width:min(46vw,660px);height:240px;color:var(--teal);opacity:.35;pointer-events:none}
-.eyebrow{font:600 14px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
-h1{font-size:clamp(42px,8vw,84px);line-height:1.02;font-weight:800;letter-spacing:-.02em}
-h1 span{color:var(--teal)}
-.lede{max-width:46ch;font-size:clamp(17px,2vw,21px);margin:20px 0 26px}
-.steps{display:flex;flex-wrap:wrap;gap:12px 34px;margin:0;padding:0;list-style:none;font-size:17px;color:var(--muted)}
-.steps li{display:flex;align-items:center;gap:12px}
-.steps b{color:var(--ink);font-weight:700}
-.steps .n{display:grid;place-items:center;width:30px;height:30px;flex:none;border-radius:50%;background:var(--btn);color:#fff;font-size:14px;font-weight:700}
-
-/* playground strip + section row */
-.strip{padding:22px 0 6px}
-.strip .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;color:var(--muted)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:9px 18px;border:0;border-radius:6px;background:var(--btn);color:#fff;font:700 16px Figtree,sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
-.btn:hover{background:var(--btnHover)}
-.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line);font-weight:600}
-.btn.ghost:hover{border-color:var(--teal);background:var(--surface)}
-.btn:focus-visible,.tab:focus-visible,.secnav a:focus-visible,.top a:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
-.secnav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
-.secnav .row{display:flex;gap:6px;padding:8px 0}
-.secnav a{flex:none;padding:8px 14px;border-radius:8px;text-decoration:none;color:var(--muted);font-weight:500;white-space:nowrap}
-.secnav a b{font:700 15px var(--mono);color:var(--teal);margin-right:6px}
-.secnav a:hover{color:var(--ink)}
-.secnav a.on{background:var(--tealSoft);color:var(--ink)}
-
-/* level sections */
-.level{padding:clamp(40px,6vw,72px) 0 clamp(20px,3vw,32px)}
-.sec-head{display:flex;align-items:flex-start;gap:clamp(14px,2.4vw,28px)}
-.num{flex:none;display:grid;place-items:center;min-width:46px;height:38px;margin-top:6px;padding:0 8px;border:1.5px solid var(--teal);border-radius:4px;color:var(--teal);font:600 18px var(--mono)}
-.sec-head h2{color:var(--teal);font-size:clamp(30px,4.6vw,48px);line-height:1.08;font-weight:800;letter-spacing:-.01em}
-.diff{display:inline-flex;align-items:center;gap:10px;margin-top:6px;color:var(--muted);font:600 14px var(--mono);letter-spacing:.08em;text-transform:uppercase}
-.meter{display:inline-flex;gap:3px}.meter i{width:16px;height:6px;border-radius:3px;background:var(--line)}.meter i.on{background:var(--teal)}
-.sec-body{padding-left:calc(46px + clamp(14px,2.4vw,28px))}
-.intro{max-width:62ch;margin:14px 0 14px;font-size:18px}
-.intro code,.try code{font:15px var(--mono);background:var(--tealSoft);padding:1px 6px;border-radius:4px}
-.learn{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 24px;padding:0;list-style:none}
-.learn li{padding:4px 10px;border-radius:6px;background:var(--surface);border:1px solid var(--line);font:13.5px var(--mono)}
-
-/* lab card */
-.lab{padding:clamp(12px,2vw,22px);background:var(--surface);border:1px solid var(--line);border-radius:14px}
-.lab-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
-.lab-label{font:15px var(--mono);color:var(--muted)}.lab-label b{color:var(--ink);font-weight:700}
-.lab-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;align-items:start}
-.browser{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
-.bar{display:flex;align-items:center;gap:14px;padding:9px 14px;background:var(--tealSoft);font:13.5px var(--mono);color:var(--muted)}
-.dots{display:flex;gap:6px}.dots i{width:11px;height:11px;border-radius:50%;background:#b9ccc6}.dots i:first-child{background:#d9480f}
-.url{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-iframe{display:block;width:100%;height:420px;border:0;background:#f1f7f5}
-.tabs{display:flex;gap:6px;padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid var(--line);overflow-x:auto}
-.tab{flex:none;min-height:44px;padding:8px 18px;border:0;border-radius:7px;background:transparent;color:var(--muted);font:500 16px Figtree,sans-serif;cursor:pointer}
-.tab:hover{color:var(--ink)}
-.tab[aria-selected=true]{background:var(--btn);color:#fff}
-pre{margin:0;max-height:520px;overflow:auto;padding:12px 0;background:var(--code);border:1px solid var(--line);border-radius:10px;font:14px/1.75 var(--mono);color:var(--ink);counter-reset:ln;tab-size:2}
-pre .ln{display:block;padding:0 16px 0 0;white-space:pre}
-pre .ln::before{counter-increment:ln;content:counter(ln);display:inline-block;width:3.2em;padding-right:1.1em;text-align:right;color:var(--muted);opacity:.7;user-select:none}
-pre .c{color:var(--teal);font-style:italic;opacity:.9}
-.acts{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
-.acts small{color:var(--muted);font:13px var(--mono);margin-left:auto}
-.try{margin-top:22px;padding:18px 22px;border-left:3px solid var(--teal);background:var(--surface);border-radius:0 10px 10px 0}
-.try h3{font-size:20px;font-weight:700;margin-bottom:4px}
-.try ul{margin:0;padding-left:20px}.try li{margin:5px 0}
-footer{margin-top:40px;padding:26px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:15px}
-
-@media(max-width:980px){.lab-grid{grid-template-columns:minmax(0,1fr)}.waves{opacity:.2}}
-@media(max-width:700px){
-  body{font-size:16px}
-  .waves{display:none}
-  .top .wrap{gap:18px;overflow-x:auto}
-  .top nav{gap:16px}
-  .steps{flex-direction:column;gap:10px}
-  .strip .wrap{flex-direction:column;align-items:stretch}
-  .strip .btn{width:100%}
-  .sec-body{padding-left:0}
-  .num{min-width:40px;height:34px;font-size:16px;margin-top:2px}
-  .intro{font-size:16.5px}
-  .lab{border-radius:12px}
-  .lab-top .btn{flex:1}
-  .acts .btn{flex:1 1 100%}
-  .acts small{margin-left:0}
-  pre{font-size:12.5px;max-height:420px}
-  pre .ln::before{width:2.6em;padding-right:.8em}
-  .tab{padding:8px 14px;font-size:15px}
-  .try{padding:16px}
-}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-</style>
-</head>
-<body>
-
-<header class="top">
-  <div class="wrap scroll">
-    <a class="brand" href="https://it55exp.netlify.app/">IT55 LESSONS</a>
-    <nav aria-label="Lessons">
-      <a href="https://it55exp.netlify.app/">CSS Style</a>
-      <a href="https://it55exp.netlify.app/javascript">JavaScript</a>
-      <a href="#top" aria-current="page">Snippets</a>
-      <a href="https://it55exp.netlify.app/playground">Playground</a>
-    </nav>
-  </div>
-</header>
-
-<section class="hero" id="top">
-  <svg class="waves" viewBox="0 0 660 240" preserveAspectRatio="none" aria-hidden="true">
-    <defs><path id="wv" d="M0 30 C 110 0, 210 0, 330 34 S 560 70, 660 10" fill="none" stroke="currentColor" stroke-width="1.2"/></defs>
-    <use href="#wv" y="0"/><use href="#wv" y="22"/><use href="#wv" y="44"/><use href="#wv" y="66"/><use href="#wv" y="88"/>
-    <use href="#wv" y="110"/><use href="#wv" y="132"/><use href="#wv" y="154"/><use href="#wv" y="176"/>
-  </svg>
-  <div class="wrap">
-    <p class="eyebrow">IT55 · JavaScript in your system</p>
-    <h1>JavaScript <span>Snippets</span></h1>
-    <p class="lede">Five working examples, from a single button click to a mini shop with a cart that remembers. Try each demo, then copy its HTML, CSS and JavaScript into your own project.</p>
-    <ol class="steps">
-      <li><span class="n">1</span><span><b>Try</b> the live demo</span></li>
-      <li><span class="n">2</span><span><b>Copy</b> page.html, style.css, script.js</span></li>
-      <li><span class="n">3</span><span><b>Change</b> it and refresh</span></li>
-    </ol>
-  </div>
-</section>
-
-<div class="strip">
-  <div class="wrap">
-    <a class="btn" href="https://it55exp.netlify.app/playground">Open the Playground ▶</a>
-    <span>Paste any snippet into the Playground, or into three files in a folder and open page.html.</span>
-  </div>
-</div>
-
-<nav class="secnav" aria-label="Levels">
-  <div class="wrap scroll"><div class="row">
-    <a href="#level-1"><b>01</b>Button clicks</a>
-    <a href="#level-2"><b>02</b>Likes &amp; reactions</a>
-    <a href="#level-3"><b>03</b>Add to cart</a>
-    <a href="#level-4"><b>04</b>Checkout</a>
-    <a href="#level-5"><b>05</b>Mini shop</a>
-  </div></div>
-</nav>
-
-<main>
-<!-- ============ LEVEL 1 ============ -->
-<section class="level" id="level-1" data-key="l1" data-title="Level 1 - Button Clicks">
-  <div class="wrap">
-    <div class="sec-head"><span class="num">01</span><div><h2>Click a button and do something</h2><span class="diff">Easy <span class="meter"><i class="on"></i><i></i><i></i><i></i><i></i></span></span></div></div>
-    <div class="sec-body">
-      <p class="intro">The basic pattern behind every interactive page: find an element, listen for an event, then change something on the screen.</p>
-      <ul class="learn"><li>querySelector()</li><li>addEventListener('click')</li><li>textContent</li><li>classList.toggle()</li><li>input.value</li></ul>
-    </div>
-    <div class="lab">
-      <div class="lab-top"><span class="lab-label"><b>level</b> 1 of 5</span><button class="btn ghost" data-reset>↻ Reset demo</button></div>
-      <div class="lab-grid">
-        <div class="browser"><div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">button-clicks.html</span></div><iframe title="Level 1 live demo"></iframe></div>
-        <div class="codebox"></div>
-      </div>
-    </div>
-    <div class="try"><h3>Try it</h3><ul>
-      <li>Add a <code>−1</code> button. How do you stop the count from going below 0?</li>
-      <li>Make the number turn orange once the count reaches 5.</li>
-      <li>Pressing Enter also greets you. Find the line that makes that happen.</li>
-    </ul></div>
-  </div>
-</section>
-
-<!-- ============ LEVEL 2 ============ -->
-<section class="level" id="level-2" data-key="l2" data-title="Level 2 - Post Reactions">
-  <div class="wrap">
-    <div class="sec-head"><span class="num">02</span><div><h2>React to posts with likes and emoji</h2><span class="diff">Easy to medium <span class="meter"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span></div></div>
-    <div class="sec-body">
-      <p class="intro">One click listener on the whole feed handles every post. Each person gets one reaction per post: click it again to remove it, or pick another to switch.</p>
-      <ul class="learn"><li>event delegation</li><li>event.target.closest()</li><li>data-* attributes</li><li>toggle state</li><li>aria-pressed</li></ul>
-    </div>
-    <div class="lab">
-      <div class="lab-top"><span class="lab-label"><b>level</b> 2 of 5</span><button class="btn ghost" data-reset>↻ Reset demo</button></div>
-      <div class="lab-grid">
-        <div class="browser"><div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">reactions.html</span></div><iframe title="Level 2 live demo"></iframe></div>
-        <div class="codebox"></div>
-      </div>
-    </div>
-    <div class="try"><h3>Try it</h3><ul>
-      <li>Copy a fourth post into the HTML. Do you need to change the JavaScript? Why not?</li>
-      <li>Add a ❤️ reaction button to every post.</li>
-      <li>Show the total number of reactions under each post.</li>
-    </ul></div>
-  </div>
-</section>
-
-<!-- ============ LEVEL 3 ============ -->
-<section class="level" id="level-3" data-key="l3" data-title="Level 3 - Add to Cart">
-  <div class="wrap">
-    <div class="sec-head"><span class="num">03</span><div><h2>Add to cart</h2><span class="diff">Medium <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span></div></div>
-    <div class="sec-body">
-      <p class="intro">Products live in an array, not in the HTML. JavaScript draws them, and one <code>renderCart()</code> function redraws the cart every time something changes. Product photos come free from Unsplash and load in students' own browsers; this preview shows drawn stand-ins.</p>
-      <ul class="learn"><li>arrays of objects</li><li>map().join('')</li><li>find()</li><li>filter()</li><li>reduce()</li><li>render function</li></ul>
-    </div>
-    <div class="lab">
-      <div class="lab-top"><span class="lab-label"><b>level</b> 3 of 5</span><button class="btn ghost" data-reset>↻ Reset demo</button></div>
-      <div class="lab-grid">
-        <div class="browser"><div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">add-to-cart.html</span></div><iframe title="Level 3 live demo"></iframe></div>
-        <div class="codebox"></div>
-      </div>
-    </div>
-    <div class="try"><h3>Try it</h3><ul>
-      <li>Add a new product by editing only the <code>products</code> array.</li>
-      <li>Limit each item to a maximum of 5 in the cart.</li>
-      <li>Show "You get free shipping!" when the total reaches ₱500.</li>
-    </ul></div>
-  </div>
-</section>
-
-<!-- ============ LEVEL 4 ============ -->
-<section class="level" id="level-4" data-key="l4" data-title="Level 4 - Checkout">
-  <div class="wrap">
-    <div class="sec-head"><span class="num">04</span><div><h2>Checking out</h2><span class="diff">Medium to hard <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></span></div></div>
-    <div class="sec-body">
-      <p class="intro">A checkout form that checks every field, recalculates the total when the delivery option changes, accepts promo codes (try <code>STUDENT10</code> or <code>LESS50</code>), and prints a receipt.</p>
-      <ul class="learn"><li>submit + preventDefault()</li><li>regex validation</li><li>radio buttons</li><li>computed totals</li><li>escaping user input</li></ul>
-    </div>
-    <div class="lab">
-      <div class="lab-top"><span class="lab-label"><b>level</b> 4 of 5</span><button class="btn ghost" data-reset>↻ Reset demo</button></div>
-      <div class="lab-grid">
-        <div class="browser"><div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">checkout.html</span></div><iframe title="Level 4 live demo"></iframe></div>
-        <div class="codebox"></div>
-      </div>
-    </div>
-    <div class="try"><h3>Try it</h3><ul>
-      <li>Add a <code>FREESHIP</code> promo code that makes shipping free.</li>
-      <li>Disable Express delivery when the subtotal is under ₱200.</li>
-      <li>Why does the receipt use <code>escapeHTML()</code> on the name? Type <code>&lt;b&gt;Ana&lt;/b&gt;</code> and see.</li>
-    </ul></div>
-  </div>
-</section>
-
-<!-- ============ LEVEL 5 ============ -->
-<section class="level" id="level-5" data-key="l5" data-title="Level 5 - Mini Shop">
-  <div class="wrap">
-    <div class="sec-head"><span class="num">05</span><div><h2>Mini shop that remembers the cart</h2><span class="diff">Hard <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></span></div></div>
-    <div class="sec-body">
-      <p class="intro">Everything together: search, category filters, sorting, stock limits, a slide-in cart, a checkout dialog and toast messages. The cart is saved in <code>localStorage</code>, so it survives a page refresh. Photos load from Unsplash when the code runs on its own; this preview shows drawn stand-ins.</p>
-      <ul class="learn"><li>one state object</li><li>filter + sort</li><li>localStorage</li><li>JSON.stringify / parse</li><li>&lt;dialog&gt;</li><li>debounce</li></ul>
-    </div>
-    <div class="lab">
-      <div class="lab-top"><span class="lab-label"><b>level</b> 5 of 5 · refresh keeps your cart</span><button class="btn ghost" data-reset>↻ Refresh demo</button></div>
-      <div class="lab-grid">
-        <div class="browser"><div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">mini-shop.html</span></div><iframe title="Level 5 live demo" data-h="640"></iframe></div>
-        <div class="codebox"></div>
-      </div>
-    </div>
-    <div class="try"><h3>Try it</h3><ul>
-      <li>Refresh the demo: the cart is still there. Find the two functions responsible.</li>
-      <li>Save each finished order to an "Order history" list in localStorage.</li>
-      <li>Add a wishlist button that works like the cart but has no quantities.</li>
-    </ul></div>
-  </div>
-</section>
-</main>
-
-<footer><div class="wrap">Companion snippets to the IT55 JavaScript lessons. Products, names and prices are sample data; no order is actually placed.</div></footer>
-
-<!-- =================== SNIPPET SOURCES =================== -->
-
-<script type="text/plain" id="l1-html">
-<main class="card">
-  <h1 id="greeting">Hello, student!</h1>
-  <p>You clicked <strong id="count">0</strong> times.</p>
-
-  <div class="buttons">
-    <button id="clickBtn">Click me</button>
-    <button id="resetBtn" class="secondary">Reset</button>
-    <button id="themeBtn" class="secondary">Dark mode</button>
-  </div>
-
-  <label for="nameInput">What is your name?</label>
-  <div class="row">
-    <input id="nameInput" type="text" placeholder="Type your name">
-    <button id="greetBtn">Greet me</button>
-  </div>
-  <p id="message" class="message"></p>
-</main>
-</script>
-
-<script type="text/plain" id="l1-css">
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  padding: 32px 16px;
-  font-family: system-ui, "Segoe UI", Arial, sans-serif;
-  background: #f1f7f5;
-  color: #10223a;
-  transition: background 0.3s, color 0.3s;
-}
-
-/* Dark mode: JavaScript adds the "dark" class to <body> */
-body.dark { background: #0d1715; color: #e6eef7; }
-
-.card {
-  max-width: 440px;
-  margin: 0 auto;
-  padding: 28px;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(16, 34, 58, 0.12);
-}
-body.dark .card { background: #13201d; }
-
-h1 { margin: 0 0 8px; font-size: 26px; }
-
-.buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
-.row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
-
-button {
-  padding: 10px 16px;
-  font: inherit;
-  font-weight: 600;
-  border: 0;
-  border-radius: 10px;
-  background: #0f7b6c;
-  color: #ffffff;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: transform 0.1s, background 0.2s;
-}
-button:hover { background: #0b5f54; }
-button:active { transform: scale(0.95); }
-button.secondary { background: #dcece7; color: #10223a; }
-body.dark button.secondary { background: #1f3a35; color: #e6eef7; }
-
-label { font-weight: 600; font-size: 14px; }
-
-input {
-  flex: 1 1 180px;
-  min-width: 0;
-  padding: 10px 12px;
-  font: inherit;
-  border: 2px solid #cfe0db;
-  border-radius: 10px;
-}
-input:focus { outline: none; border-color: #0f7b6c; }
-
-.message { min-height: 1.5em; font-weight: 600; color: #1d8a4e; }
-.message.error { color: #d13b2a; }
-
-/* Small bounce when the number changes */
-#count { display: inline-block; }
-.bump { animation: bump 0.25s ease; }
-@keyframes bump { 50% { transform: scale(1.4); } }
-</script>
-
-<script type="text/plain" id="l1-js">
-// LEVEL 1: Click a button and do something
-
-// 1. Select the elements we will use
-const countEl   = document.querySelector('#count');
-const clickBtn  = document.querySelector('#clickBtn');
-const resetBtn  = document.querySelector('#resetBtn');
-const themeBtn  = document.querySelector('#themeBtn');
-const nameInput = document.querySelector('#nameInput');
-const greetBtn  = document.querySelector('#greetBtn');
-const greeting  = document.querySelector('#greeting');
-const message   = document.querySelector('#message');
-
-// 2. A variable that remembers how many clicks
-let count = 0;
-
-// 3. Show the number on the screen, with a small bounce
-function showCount() {
-  countEl.textContent = count;
-  countEl.classList.remove('bump');
-  void countEl.offsetWidth; // trick to restart the animation
-  countEl.classList.add('bump');
-}
-
-// 4. Listen for clicks
-clickBtn.addEventListener('click', () => {
-  count++;
-  showCount();
-  if (count === 10) {
-    showMessage('Ten clicks! You are on fire.');
-  }
-});
-
-resetBtn.addEventListener('click', () => {
-  count = 0;
-  showCount();
-  showMessage('Counter reset.');
-});
-
-themeBtn.addEventListener('click', () => {
-  // toggle() adds the class if missing, removes it if present
-  const isDark = document.body.classList.toggle('dark');
-  themeBtn.textContent = isDark ? 'Light mode' : 'Dark mode';
-});
-
-// 5. Read what the user typed
-function greet() {
-  const name = nameInput.value.trim();
-
-  if (name === '') {
-    showMessage('Please type your name first.', true);
-    nameInput.focus();
-    return; // stop here
-  }
-
-  greeting.textContent = `Hello, ${name}!`;
-  showMessage(`Nice to meet you, ${name}.`);
-  nameInput.value = '';
-}
-
-greetBtn.addEventListener('click', greet);
-
-nameInput.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') greet();
-});
-
-// 6. One helper for messages (green = OK, red = error)
-function showMessage(text, isError = false) {
-  message.textContent = text;
-  message.classList.toggle('error', isError);
-}
-</script>
-
-<script type="text/plain" id="l2-html">
-<section class="feed">
-
-  <article class="post">
-    <header class="post-head">
-      <div class="avatar" style="background:#4fb3e8">AR</div>
-      <div><strong>Ana Reyes</strong><small>2 hours ago</small></div>
-    </header>
-    <p>Finished my first JavaScript project today! It only took 47 console.log() calls.</p>
-    <div class="actions">
-      <button class="like-btn" aria-pressed="false">♡ Like</button>
-      <span><span class="like-count">12</span> likes</span>
-    </div>
-    <div class="reactions">
-      <button class="react" data-emoji="👍">👍 <span class="num">3</span></button>
-      <button class="react" data-emoji="😂">😂 <span class="num">8</span></button>
-      <button class="react" data-emoji="😮">😮 <span class="num">1</span></button>
-      <button class="react" data-emoji="😢">😢 <span class="num">0</span></button>
-    </div>
-    <p class="summary"></p>
-  </article>
-
-  <article class="post">
-    <header class="post-head">
-      <div class="avatar" style="background:#ff7a1a">JD</div>
-      <div><strong>Jose Dela Cruz</strong><small>5 hours ago</small></div>
-    </header>
-    <p>Reminder: our group presentation is on Friday. Please send your slides before Thursday night.</p>
-    <div class="actions">
-      <button class="like-btn" aria-pressed="false">♡ Like</button>
-      <span><span class="like-count">4</span> likes</span>
-    </div>
-    <div class="reactions">
-      <button class="react" data-emoji="👍">👍 <span class="num">6</span></button>
-      <button class="react" data-emoji="😂">😂 <span class="num">0</span></button>
-      <button class="react" data-emoji="😮">😮 <span class="num">2</span></button>
-      <button class="react" data-emoji="😢">😢 <span class="num">1</span></button>
-    </div>
-    <p class="summary"></p>
-  </article>
-
-  <article class="post">
-    <header class="post-head">
-      <div class="avatar" style="background:#2bb673">MS</div>
-      <div><strong>Maria Santos</strong><small>Yesterday</small></div>
-    </header>
-    <p>The canteen now sells iced coffee. Productivity levels are about to rise.</p>
-    <div class="actions">
-      <button class="like-btn" aria-pressed="false">♡ Like</button>
-      <span><span class="like-count">31</span> likes</span>
-    </div>
-    <div class="reactions">
-      <button class="react" data-emoji="👍">👍 <span class="num">10</span></button>
-      <button class="react" data-emoji="😂">😂 <span class="num">5</span></button>
-      <button class="react" data-emoji="😮">😮 <span class="num">7</span></button>
-      <button class="react" data-emoji="😢">😢 <span class="num">0</span></button>
-    </div>
-    <p class="summary"></p>
-  </article>
-
-</section>
-</script>
-
-<script type="text/plain" id="l2-css">
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  padding: 24px 16px;
-  font-family: system-ui, "Segoe UI", Arial, sans-serif;
-  background: #eef2f6;
-  color: #10223a;
-}
-
-.feed { max-width: 520px; margin: 0 auto; display: grid; gap: 16px; }
-
-.post {
-  padding: 18px;
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(16, 34, 58, 0.08);
-}
-
-.post-head { display: flex; align-items: center; gap: 10px; }
-.post-head small { display: block; color: #6b7c90; font-size: 13px; }
-
-.avatar {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 14px;
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-top: 10px;
-  border-top: 1px solid #e3e9f0;
-  color: #4a5d75;
-  font-size: 14px;
-}
-
-button {
-  font: inherit;
-  cursor: pointer;
-  border-radius: 999px;
-  transition: transform 0.1s, background 0.2s, border-color 0.2s;
-}
-button:active { transform: scale(0.92); }
-
-.like-btn {
-  padding: 8px 16px;
-  border: 2px solid #d5dee8;
-  background: #ffffff;
-  font-weight: 600;
-  color: #10223a;
-}
-.like-btn.liked { border-color: #e6264f; background: #fde8ed; color: #c4143a; }
-
-.reactions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-
-.react {
-  padding: 6px 12px;
-  border: 2px solid transparent;
-  background: #f1f4f8;
-  font-size: 15px;
-}
-.react:hover { background: #e4eaf1; }
-.react.active { border-color: #0f7b6c; background: #e3f3ef; font-weight: 700; }
-
-.summary { min-height: 1.2em; margin: 10px 0 0; font-size: 13px; color: #0f7b6c; }
-</script>
-
-<script type="text/plain" id="l2-js">
-// LEVEL 2: Reacting with likes and emoji
-
-// ONE listener on the whole feed handles every post.
-// This is called "event delegation".
-const feed = document.querySelector('.feed');
-
-feed.addEventListener('click', (event) => {
-  // closest() finds the button even if you clicked the emoji or number inside it
-  const likeBtn = event.target.closest('.like-btn');
-  if (likeBtn) {
-    toggleLike(likeBtn);
-    return;
-  }
-
-  const reactBtn = event.target.closest('.react');
-  if (reactBtn) {
-    react(reactBtn);
-  }
-});
-
-// ---- Likes: click once to like, click again to unlike ----
-function toggleLike(button) {
-  const post = button.closest('.post');
-  const countEl = post.querySelector('.like-count');
-
-  const isLiked = button.classList.toggle('liked');
-  const count = Number(countEl.textContent);
-
-  countEl.textContent = isLiked ? count + 1 : count - 1;
-  button.textContent = isLiked ? '♥ Liked' : '♡ Like';
-  button.setAttribute('aria-pressed', isLiked);
-}
-
-// ---- Reactions: only ONE reaction per post ----
-function react(button) {
-  const post = button.closest('.post');
-  const current = post.querySelector('.react.active'); // my old reaction (or null)
-
-  // 1. Remove my old reaction, if I had one
-  if (current) {
-    changeCount(current, -1);
-    current.classList.remove('active');
-  }
-
-  // 2. If I clicked a different emoji, add the new one
-  //    (if I clicked the same one, it stays removed)
-  if (current !== button) {
-    changeCount(button, +1);
-    button.classList.add('active');
-  }
-
-  updateSummary(post);
-}
-
-function changeCount(button, amount) {
-  const num = button.querySelector('.num');
-  num.textContent = Number(num.textContent) + amount;
-}
-
-function updateSummary(post) {
-  const active = post.querySelector('.react.active');
-  const summary = post.querySelector('.summary');
-  // dataset.emoji reads the data-emoji="..." attribute
-  summary.textContent = active ? `You reacted ${active.dataset.emoji}` : '';
-}
-</script>
-
-<script type="text/plain" id="l3-html">
-<header class="topbar">
-  <h1>Campus Shop</h1>
-  <div class="cart-badge">Cart <span id="cartCount" class="badge">0</span></div>
-</header>
-
-<main class="layout">
-  <section>
-    <h2>Products</h2>
-    <div id="productList" class="grid"></div>
-  </section>
-
-  <aside class="cart">
-    <h2>Your cart</h2>
-    <p id="emptyMsg" class="empty">Your cart is empty.</p>
-    <ul id="cartItems" class="cart-items"></ul>
-    <div class="total">
-      <span>Total</span>
-      <strong id="cartTotal">₱0.00</strong>
-    </div>
-    <button id="clearCart" class="secondary">Clear cart</button>
-  </aside>
-</main>
-</script>
-
-<script type="text/plain" id="l3-css">
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: "Poppins", system-ui, sans-serif;
-  background: #f8f6fd;
-  color: #1f1535;
-}
-
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 20px;
-  background: #2e1a52;
-  color: #ffffff;
-}
-.topbar h1 { margin: 0; font-size: 20px; }
-
-.cart-badge { font-weight: 600; }
-.badge {
-  display: inline-block;
-  min-width: 26px;
-  padding: 2px 8px;
-  margin-left: 4px;
-  border-radius: 999px;
-  background: #ff7a1a;
-  color: #1b0d00;
-  text-align: center;
-}
-
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 20px;
-  padding: 20px;
-}
-@media (max-width: 640px) {
-  .layout { grid-template-columns: 1fr; padding: 14px; }
-}
-
-h2 { margin: 0 0 12px; font-size: 18px; }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 12px;
-}
-
-.product {
-  padding: 12px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(46, 16, 101, 0.08);
-}
-.thumb {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 11;
-  object-fit: cover;
-  border-radius: 8px;
-  background: #f3f0fb;
-}
-.mini { width: 40px; height: 28px; object-fit: cover; border-radius: 5px; }
-.cart-items .name { display: flex; align-items: center; gap: 8px; }
-.product h3 { margin: 10px 0 2px; font-size: 15px; }
-.price { margin: 0 0 10px; color: #6d28d9; font-weight: 700; }
-
-button {
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  border: 0;
-  border-radius: 8px;
-}
-.add-btn { width: 100%; padding: 9px; background: #6d28d9; color: #ffffff; }
-.add-btn:hover { background: #5b21b6; }
-.add-btn.added { background: #1d8a4e; }
-
-.cart {
-  align-self: start;
-  padding: 16px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(46, 16, 101, 0.08);
-}
-.empty { color: #6f6787; }
-
-.cart-items { list-style: none; margin: 0; padding: 0; }
-.cart-items li {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 0;
-  border-bottom: 1px solid #ece8f6;
-  font-size: 14px;
-}
-.cart-items .name { grid-column: 1 / -1; font-weight: 600; }
-.qty { display: flex; align-items: center; gap: 6px; }
-.qty button { width: 30px; height: 30px; background: #ede9fe; color: #1f1535; }
-.line-total { font-weight: 700; }
-.remove { padding: 4px 8px; background: transparent; color: #d13b2a; }
-
-.total {
-  display: flex;
-  justify-content: space-between;
-  margin: 14px 0;
-  font-size: 18px;
-}
-.secondary { width: 100%; padding: 9px; background: #ede9fe; color: #1f1535; }
-.secondary:disabled { opacity: 0.5; cursor: not-allowed; }
-</script>
-
-<script type="text/plain" id="l3-js">
-// LEVEL 3: Adding to cart
-
-// 0. PRODUCT PHOTOS
-// Free photos from Unsplash (unsplash.com), used under the Unsplash License.
-// ?w=400&h=275&fit=crop asks Unsplash for a small, cropped copy.
-// Have your own photos? Save them in an "images" folder and write
-// image: 'images/notebook.jpg' in the products list instead.
-const photo = (id) => `https://images.unsplash.com/${id}?w=400&h=275&fit=crop&auto=format&q=70`;
-
-const pictures = {
-  notebook:  photo('photo-1562217199-6e6d4cd031f5'),
-  pens:      photo('photo-1567855354833-ac2c4f967b0c'),
-  tumbler:   photo('photo-1544003484-3cd181d17917'),
-  usb:       photo('photo-1581068466660-e6585b8afa97'),
-  notes:     photo('photo-1683739147682-607fb8e24e3f'),
-  earphones: photo('photo-1555679792-6783ef0bbf61'),
-};
-
-// 1. DATA: products live in an array of objects
-const products = [
-  { id: 1, name: 'Spiral Notebook',      price: 45,  image: pictures.notebook },
-  { id: 2, name: 'Ballpen Set (5)',      price: 60,  image: pictures.pens },
-  { id: 3, name: 'Tumbler 500ml',        price: 299, image: pictures.tumbler },
-  { id: 4, name: 'USB Flash Drive 32GB', price: 250, image: pictures.usb },
-  { id: 5, name: 'Sticky Notes Pack',    price: 85,  image: pictures.notes },
-  { id: 6, name: 'Wired Earphones',      price: 199, image: pictures.earphones },
-];
-
-// The cart only stores the product id and quantity
-let cart = []; // e.g. [{ id: 3, qty: 2 }]
-
-// 2. ELEMENTS
-const productList = document.querySelector('#productList');
-const cartItems   = document.querySelector('#cartItems');
-const cartCount   = document.querySelector('#cartCount');
-const cartTotal   = document.querySelector('#cartTotal');
-const emptyMsg    = document.querySelector('#emptyMsg');
-const clearBtn    = document.querySelector('#clearCart');
-
-// 3. HELPERS
-const peso = (amount) =>
-  '₱' + amount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-const findProduct = (id) => products.find((p) => p.id === id);
-
-// 4. SHOW THE PRODUCTS (map turns each object into HTML)
-function renderProducts() {
-  productList.innerHTML = products.map((p) => `
-    <div class="product">
-      <img class="thumb" src="${p.image}" alt="${p.name}">
-      <h3>${p.name}</h3>
-      <p class="price">${peso(p.price)}</p>
-      <button class="add-btn" data-id="${p.id}">Add to cart</button>
-    </div>
-  `).join('');
-}
-
-// 5. CART ACTIONS
-function addToCart(id) {
-  const item = cart.find((i) => i.id === id);
-  if (item) {
-    item.qty++;                 // already in cart: add one more
-  } else {
-    cart.push({ id, qty: 1 });  // new item
-  }
-  renderCart();
-}
-
-function changeQty(id, amount) {
-  const item = cart.find((i) => i.id === id);
-  item.qty += amount;
-  if (item.qty <= 0) removeItem(id);
-  else renderCart();
-}
-
-function removeItem(id) {
-  cart = cart.filter((i) => i.id !== id);
-  renderCart();
-}
-
-// 6. DRAW THE CART (called after EVERY change)
-function renderCart() {
-  cartItems.innerHTML = cart.map((item) => {
-    const p = findProduct(item.id);
-    return `
-      <li>
-        <span class="name"><img class="mini" src="${p.image}" alt="">${p.name}</span>
-        <div class="qty">
-          <button data-action="minus" data-id="${p.id}" aria-label="Remove one">−</button>
-          <span>${item.qty}</span>
-          <button data-action="plus" data-id="${p.id}" aria-label="Add one">+</button>
-        </div>
-        <span class="line-total">${peso(p.price * item.qty)}</span>
-        <button class="remove" data-action="remove" data-id="${p.id}" aria-label="Remove ${p.name}">✕</button>
-      </li>`;
-  }).join('');
-
-  // reduce() adds everything up
-  const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
-  const total    = cart.reduce((sum, i) => sum + findProduct(i.id).price * i.qty, 0);
-
-  cartCount.textContent = totalQty;
-  cartTotal.textContent = peso(total);
-  emptyMsg.hidden  = cart.length > 0;
-  clearBtn.disabled = cart.length === 0;
-}
-
-// 7. EVENTS
-productList.addEventListener('click', (event) => {
-  const btn = event.target.closest('.add-btn');
-  if (!btn) return;
-
-  addToCart(Number(btn.dataset.id));
-
-  // quick feedback on the button
-  btn.textContent = 'Added ✓';
-  btn.classList.add('added');
-  setTimeout(() => {
-    btn.textContent = 'Add to cart';
-    btn.classList.remove('added');
-  }, 800);
-});
-
-cartItems.addEventListener('click', (event) => {
-  const btn = event.target.closest('button');
-  if (!btn) return;
-
-  const id = Number(btn.dataset.id);
-  if (btn.dataset.action === 'plus')   changeQty(id, 1);
-  if (btn.dataset.action === 'minus')  changeQty(id, -1);
-  if (btn.dataset.action === 'remove') removeItem(id);
-});
-
-clearBtn.addEventListener('click', () => {
-  cart = [];
-  renderCart();
-});
-
-// 8. START
-renderProducts();
-renderCart();
-</script>
-
-<script type="text/plain" id="l4-html">
-<main class="checkout">
-
-  <form id="checkoutForm" class="panel" novalidate>
-    <h2>1. Contact details</h2>
-    <div class="field">
-      <label for="fullName">Full name</label>
-      <input id="fullName" autocomplete="name">
-      <small class="error"></small>
-    </div>
-    <div class="field">
-      <label for="email">Email</label>
-      <input id="email" type="email" autocomplete="email">
-      <small class="error"></small>
-    </div>
-    <div class="field">
-      <label for="phone">Mobile number</label>
-      <input id="phone" type="tel" placeholder="09XXXXXXXXX" autocomplete="tel">
-      <small class="error"></small>
-    </div>
-    <div class="field">
-      <label for="address">Delivery address</label>
-      <textarea id="address" rows="2" autocomplete="street-address"></textarea>
-      <small class="error"></small>
-    </div>
-
-    <h2>2. Delivery</h2>
-    <label class="option"><input type="radio" name="shipping" value="standard" data-label="Standard" checked> Standard (3–5 days) <span>₱50.00</span></label>
-    <label class="option"><input type="radio" name="shipping" value="express" data-label="Express"> Express (next day) <span>₱120.00</span></label>
-    <label class="option"><input type="radio" name="shipping" value="pickup" data-label="Campus pickup"> Campus pickup <span>Free</span></label>
-
-    <h2>3. Payment</h2>
-    <label class="option"><input type="radio" name="payment" value="Cash on Delivery" checked> Cash on Delivery</label>
-    <label class="option"><input type="radio" name="payment" value="GCash"> GCash</label>
-
-    <button type="submit" id="placeOrder" class="primary">Place order</button>
-  </form>
-
-  <aside id="summary" class="panel summary">
-    <h2>Order summary</h2>
-    <ul id="summaryItems" class="items"></ul>
-
-    <div class="promo">
-      <input id="promoInput" placeholder="Promo code">
-      <button type="button" id="applyPromo">Apply</button>
-    </div>
-    <p id="promoMsg" class="hint"></p>
-
-    <dl class="totals">
-      <div><dt>Subtotal</dt><dd id="subtotal"></dd></div>
-      <div><dt>Discount</dt><dd id="discount"></dd></div>
-      <div><dt>Shipping</dt><dd id="shipping"></dd></div>
-      <div class="grand"><dt>Total</dt><dd id="total"></dd></div>
-    </dl>
-  </aside>
-
-  <section id="receipt" class="panel receipt" hidden></section>
-</main>
-</script>
-
-<script type="text/plain" id="l4-css">
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
-* { box-sizing: border-box; }
-[hidden] { display: none !important; }
-
-body {
-  margin: 0;
-  padding: 20px;
-  font-family: "Poppins", system-ui, sans-serif;
-  background: #f8f6fd;
-  color: #1f1535;
-}
-
-.checkout {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 20px;
-  max-width: 900px;
-  margin: 0 auto;
-}
-@media (max-width: 680px) { .checkout { grid-template-columns: 1fr; } }
-
-.panel {
-  padding: 20px;
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 3px 12px rgba(46, 16, 101, 0.08);
-}
-.summary { align-self: start; }
-.receipt { grid-column: 1 / -1; max-width: 520px; width: 100%; margin: 0 auto; }
-
-h2 { margin: 18px 0 10px; font-size: 17px; }
-h2:first-child { margin-top: 0; }
-
-.field { margin-bottom: 12px; }
-label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-
-input, textarea {
-  width: 100%;
-  padding: 10px 12px;
-  font: inherit;
-  border: 2px solid #ddd6f3;
-  border-radius: 10px;
-}
-input:focus, textarea:focus { outline: none; border-color: #6d28d9; }
-.invalid { border-color: #d13b2a; background: #fff5f4; }
-.error { display: block; min-height: 1.2em; color: #d13b2a; font-size: 13px; }
-
-.option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  margin-bottom: 8px;
-  border: 2px solid #ece8f6;
-  border-radius: 10px;
-  font-weight: 500;
-  cursor: pointer;
-}
-.option input { width: auto; }
-.option span { margin-left: auto; font-weight: 700; }
-.option:has(input:checked) { border-color: #6d28d9; background: #f3f0fb; }
-
-button {
-  font: inherit;
-  font-weight: 600;
-  border: 0;
-  border-radius: 10px;
-  cursor: pointer;
-}
-.primary {
-  width: 100%;
-  margin-top: 14px;
-  padding: 13px;
-  background: #6d28d9;
-  color: #ffffff;
-  font-size: 16px;
-}
-.primary:hover { background: #5b21b6; }
-.primary:disabled { opacity: 0.6; cursor: wait; }
-
-.items, .receipt-items { list-style: none; margin: 0 0 12px; padding: 0; font-size: 14px; }
-.items li, .receipt-items li {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 6px 0;
-  border-bottom: 1px dashed #ece8f6;
-}
-
-.promo { display: flex; gap: 6px; }
-.promo button { padding: 0 14px; background: #1f1535; color: #ffffff; }
-.hint { min-height: 1.2em; margin: 6px 0; font-size: 13px; }
-.hint.ok { color: #1d8a4e; }
-.hint.bad { color: #d13b2a; }
-
-.totals { margin: 8px 0 0; }
-.totals div { display: flex; justify-content: space-between; padding: 4px 0; }
-.totals dt { color: #5b5370; }
-.totals dd { margin: 0; font-weight: 600; }
-.totals .grand { margin-top: 6px; padding-top: 10px; border-top: 2px solid #1f1535; font-size: 19px; }
-.totals .grand dt { color: #1f1535; font-weight: 700; }
-</script>
-
-<script type="text/plain" id="l4-js">
-// LEVEL 4: Checking out
-
-// 1. DATA: the cart from Level 3 (fixed here to keep things simple)
-const cart = [
-  { name: 'Spiral Notebook', price: 45,  qty: 3 },
-  { name: 'Tumbler 500ml',   price: 299, qty: 1 },
-  { name: 'Sticky Notes Pack', price: 85,  qty: 2 },
-];
-
-const SHIPPING = { standard: 50, express: 120, pickup: 0 };
-
-const PROMOS = {
-  STUDENT10: { type: 'percent', value: 10, label: '10% student discount' },
-  LESS50:    { type: 'fixed',   value: 50, label: '₱50 off your order' },
-};
-
-let appliedPromo = null;
-
-// 2. ELEMENTS
-const form          = document.querySelector('#checkoutForm');
-const summary       = document.querySelector('#summary');
-const receipt       = document.querySelector('#receipt');
-const summaryItems  = document.querySelector('#summaryItems');
-const promoInput    = document.querySelector('#promoInput');
-const promoMsg      = document.querySelector('#promoMsg');
-const placeOrderBtn = document.querySelector('#placeOrder');
-
-// 3. HELPERS
-const peso = (n) =>
-  '₱' + n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-// Never put user text into innerHTML without escaping it
-function escapeHTML(text) {
-  return text.replace(/[&<>"']/g, (ch) =>
-    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
-}
-
-const checked = (name) => document.querySelector(`input[name="${name}"]:checked`);
-
-// 4. COMPUTE THE TOTALS
-function getTotals() {
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-
-  let discount = 0;
-  if (appliedPromo) {
-    const promo = PROMOS[appliedPromo];
-    discount = promo.type === 'percent'
-      ? subtotal * promo.value / 100
-      : Math.min(promo.value, subtotal);
-  }
-
-  const shipping = SHIPPING[checked('shipping').value];
-  const total = subtotal - discount + shipping;
-  return { subtotal, discount, shipping, total };
-}
-
-function renderSummary() {
-  summaryItems.innerHTML = cart.map((item) => `
-    <li><span>${item.qty} × ${item.name}</span><span>${peso(item.price * item.qty)}</span></li>
-  `).join('');
-
-  const t = getTotals();
-  document.querySelector('#subtotal').textContent = peso(t.subtotal);
-  document.querySelector('#discount').textContent = t.discount ? '−' + peso(t.discount) : peso(0);
-  document.querySelector('#shipping').textContent = t.shipping ? peso(t.shipping) : 'Free';
-  document.querySelector('#total').textContent    = peso(t.total);
-  placeOrderBtn.textContent = `Place order · ${peso(t.total)}`;
-}
-
-// Re-compute when the delivery option changes
-form.addEventListener('change', (event) => {
-  if (event.target.name === 'shipping') renderSummary();
-});
-
-// 5. PROMO CODES
-function applyPromo() {
-  const code = promoInput.value.trim().toUpperCase();
-
-  if (PROMOS[code]) {
-    appliedPromo = code;
-    promoMsg.textContent = `Applied: ${PROMOS[code].label}`;
-    promoMsg.className = 'hint ok';
-  } else {
-    appliedPromo = null;
-    promoMsg.textContent = code ? 'That code is not valid.' : 'Type a code first.';
-    promoMsg.className = 'hint bad';
-  }
-  renderSummary();
-}
-
-document.querySelector('#applyPromo').addEventListener('click', applyPromo);
-promoInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') applyPromo();
-});
-
-// 6. VALIDATION: each rule returns true, or an error message
-const rules = {
-  fullName: (v) => v.length >= 2 || 'Please enter your full name.',
-  email:    (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Enter a valid email, like ana@school.edu.ph',
-  phone:    (v) => /^09\d{9}$/.test(v) || 'Use 11 digits starting with 09.',
-  address:  (v) => v.length >= 10 || 'Please enter your complete address.',
-};
-
-function validateField(input) {
-  const result = rules[input.id](input.value.trim());
-  const errorEl = input.parentElement.querySelector('.error');
-
-  if (result === true) {
-    input.classList.remove('invalid');
-    errorEl.textContent = '';
-    return true;
-  }
-  input.classList.add('invalid');
-  errorEl.textContent = result;
-  return false;
-}
-
-// Check each field when the user leaves it
-Object.keys(rules).forEach((id) => {
-  document.getElementById(id).addEventListener('blur', (e) => validateField(e.target));
-});
-
-// 7. SUBMIT
-form.addEventListener('submit', (event) => {
-  event.preventDefault(); // stop the page from reloading
-
-  const results = Object.keys(rules).map((id) => validateField(document.getElementById(id)));
-  if (!results.every(Boolean)) {
-    form.querySelector('.invalid').focus(); // jump to the first problem
-    return;
-  }
-
-  placeOrderBtn.disabled = true;
-  placeOrderBtn.textContent = 'Processing…';
-  setTimeout(showReceipt, 1000); // pretend we are talking to a server
-});
-
-// 8. RECEIPT
-function showReceipt() {
-  const t = getTotals();
-  const orderNo = 'ORD-' + Date.now().toString().slice(-6);
-  const name  = escapeHTML(document.getElementById('fullName').value.trim());
-  const email = escapeHTML(document.getElementById('email').value.trim());
-
-  receipt.innerHTML = `
-    <h2>Order confirmed</h2>
-    <p>Thank you, <strong>${name}</strong>! Your order number is <strong>${orderNo}</strong>.</p>
-    <ul class="receipt-items">
-      ${cart.map((i) => `<li><span>${i.qty} × ${i.name}</span><span>${peso(i.price * i.qty)}</span></li>`).join('')}
-    </ul>
-    <dl class="totals">
-      <div><dt>Discount</dt><dd>−${peso(t.discount)}</dd></div>
-      <div><dt>Shipping</dt><dd>${t.shipping ? peso(t.shipping) : 'Free'}</dd></div>
-      <div class="grand"><dt>Total paid</dt><dd>${peso(t.total)}</dd></div>
-    </dl>
-    <p class="hint">Delivery: ${checked('shipping').dataset.label} · Payment: ${checked('payment').value}<br>
-    A confirmation will be sent to ${email}.</p>
-    <button type="button" id="newOrder" class="primary">Start a new order</button>
-  `;
-
-  form.hidden = true;
-  summary.hidden = true;
-  receipt.hidden = false;
-  document.querySelector('#newOrder').addEventListener('click', resetCheckout);
-}
-
-function resetCheckout() {
-  form.reset();
-  appliedPromo = null;
-  promoInput.value = '';
-  promoMsg.textContent = '';
-  placeOrderBtn.disabled = false;
-  form.hidden = false;
-  summary.hidden = false;
-  receipt.hidden = true;
-  renderSummary();
-}
-
-// 9. START
-renderSummary();
-</script>
-
-<script type="text/plain" id="l5-html">
-<header class="topbar">
-  <h1>Campus Shop</h1>
-  <button id="openCart" class="cart-btn">Cart <span id="cartCount" class="badge">0</span></button>
-</header>
-
-<section class="toolbar">
-  <input id="search" type="search" placeholder="Search products…" aria-label="Search products">
-  <select id="sort" aria-label="Sort products">
-    <option value="featured">Featured</option>
-    <option value="low">Price: low to high</option>
-    <option value="high">Price: high to low</option>
-    <option value="name">Name: A to Z</option>
-  </select>
-  <div id="categories" class="chips"></div>
-</section>
-
-<p id="resultInfo" class="result-info"></p>
-<main id="productGrid" class="grid"></main>
-
-<!-- Slide-in cart -->
-<div id="overlay" class="overlay" hidden></div>
-<aside id="cartDrawer" class="drawer" aria-hidden="true" aria-label="Shopping cart">
-  <div class="drawer-head">
-    <h2>Your cart</h2>
-    <button id="closeCart" class="icon-btn" aria-label="Close cart">✕</button>
-  </div>
-  <ul id="cartItems" class="cart-items"></ul>
-  <div class="drawer-foot">
-    <div class="row"><span>Subtotal</span><strong id="subtotal">₱0.00</strong></div>
-    <button id="checkoutBtn" class="primary">Checkout</button>
-  </div>
-</aside>
-
-<!-- Checkout dialog -->
-<dialog id="checkoutDialog">
-  <form id="checkoutForm" novalidate>
-    <h2>Checkout</h2>
-    <p class="muted">Amount to pay: <strong id="dialogTotal"></strong></p>
-    <label>Full name <input id="custName" autocomplete="name"></label>
-    <label>Mobile number <input id="custPhone" type="tel" placeholder="09XXXXXXXXX"></label>
-    <label>Payment
-      <select id="custPay">
-        <option>Cash on Delivery</option>
-        <option>GCash</option>
-      </select>
-    </label>
-    <p id="formError" class="form-error"></p>
-    <div class="dialog-actions">
-      <button type="button" id="cancelCheckout" class="secondary">Cancel</button>
-      <button type="submit" class="primary">Place order</button>
-    </div>
-  </form>
-  <div id="orderDone" hidden>
-    <h2>Order placed!</h2>
-    <p id="orderText"></p>
-    <button type="button" id="doneBtn" class="primary">Continue shopping</button>
-  </div>
-</dialog>
-
-<div id="toast" class="toast" role="status"></div>
-</script>
-
-<script type="text/plain" id="l5-css">
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
-* { box-sizing: border-box; }
-[hidden] { display: none !important; }
-
-body {
-  margin: 0;
-  font-family: "Poppins", system-ui, sans-serif;
-  background: #f8f6fd;
-  color: #1f1535;
-}
-
-button, input, select { font: inherit; }
-button { cursor: pointer; border: 0; border-radius: 10px; font-weight: 600; }
-
-/* ---------- Top bar ---------- */
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  background: #2e1a52;
-  color: #ffffff;
-}
-.topbar h1 { margin: 0; font-size: 20px; }
-.cart-btn { padding: 8px 14px; background: #ffffff; color: #1f1535; }
-.badge {
-  display: inline-block;
-  min-width: 24px;
-  padding: 1px 7px;
-  margin-left: 4px;
-  border-radius: 999px;
-  background: #ff7a1a;
-  color: #1b0d00;
-}
-.badge.pop { animation: pop 0.3s; }
-@keyframes pop { 50% { transform: scale(1.4); } }
-
-/* ---------- Toolbar ---------- */
-.toolbar { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px 20px 0; }
-.toolbar input { flex: 1 1 220px; }
-.toolbar input, .toolbar select {
-  padding: 10px 12px;
-  border: 2px solid #ddd6f3;
-  border-radius: 10px;
-  background: #ffffff;
-}
-.chips { display: flex; flex-wrap: wrap; gap: 6px; width: 100%; }
-.chip { padding: 7px 14px; border-radius: 999px; background: #ede9fe; color: #1f1535; }
-.chip.active { background: #6d28d9; color: #ffffff; }
-
-.result-info { margin: 12px 20px 0; color: #6f6787; font-size: 14px; }
-
-/* ---------- Products ---------- */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 14px;
-  padding: 12px 20px 30px;
-}
-.product {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 12px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(46, 16, 101, 0.08);
-}
-.thumb {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 11;
-  object-fit: cover;
-  border-radius: 8px;
-  background: #f3f0fb;
-}
-.mini { width: 40px; height: 28px; object-fit: cover; border-radius: 5px; flex: none; }
-.item-name { display: flex; align-items: center; gap: 8px; }
-.cat { margin-top: 8px; font-size: 12px; color: #6f6787; }
-.product h3 { margin: 2px 0; font-size: 15px; }
-.price { margin: 0; color: #6d28d9; font-weight: 700; }
-.stock { margin: 2px 0 10px; font-size: 12px; color: #5b5370; }
-.stock.low { color: #c2410c; font-weight: 600; }
-.add-btn { margin-top: auto; padding: 9px; background: #6d28d9; color: #ffffff; }
-.add-btn:disabled { background: #d9d2ee; color: #5b5370; cursor: not-allowed; }
-.in-cart {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: #ffffff;
-  font-size: 12px;
-  font-weight: 700;
-}
-.empty { grid-column: 1 / -1; padding: 30px; text-align: center; color: #6f6787; }
-
-/* ---------- Cart drawer ---------- */
-.overlay { position: fixed; inset: 0; z-index: 10; background: rgba(46, 16, 101, 0.45); }
-.drawer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 11;
-  display: flex;
-  flex-direction: column;
-  width: min(360px, 90vw);
-  background: #ffffff;
-  transform: translateX(100%);
-  transition: transform 0.3s ease;
-}
-.drawer.open { transform: translateX(0); }
-.drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid #ece8f6; }
-.drawer-head h2 { margin: 0; font-size: 18px; }
-.icon-btn { width: 36px; height: 36px; background: #f1eefa; color: #1f1535; }
-
-.cart-items { flex: 1; overflow-y: auto; list-style: none; margin: 0; padding: 0 16px; }
-.cart-items li {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 6px;
-  padding: 12px 0;
-  border-bottom: 1px solid #ece8f6;
-  font-size: 14px;
-}
-.cart-items .empty-cart { display: block; padding: 30px 0; text-align: center; color: #6f6787; border: 0; }
-.qty { display: flex; align-items: center; gap: 6px; }
-.qty button { width: 30px; height: 30px; background: #ede9fe; color: #1f1535; }
-.remove { background: none; color: #d13b2a; padding: 0; font-size: 13px; justify-self: end; }
-
-.drawer-foot { padding: 16px; border-top: 1px solid #ece8f6; }
-.row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 17px; }
-.primary { width: 100%; padding: 12px; background: #6d28d9; color: #ffffff; }
-.primary:disabled { opacity: 0.5; cursor: not-allowed; }
-.secondary { padding: 12px; background: #ede9fe; color: #1f1535; }
-
-/* ---------- Dialog ---------- */
-dialog {
-  width: min(400px, 92vw);
-  padding: 22px;
-  border: 0;
-  border-radius: 16px;
-  box-shadow: 0 20px 50px rgba(46, 16, 101, 0.3);
-}
-dialog::backdrop { background: rgba(46, 16, 101, 0.5); }
-dialog h2 { margin: 0 0 6px; }
-dialog label { display: block; margin-top: 12px; font-size: 14px; font-weight: 600; }
-dialog input, dialog select {
-  display: block;
-  width: 100%;
-  margin-top: 4px;
-  padding: 10px 12px;
-  border: 2px solid #ddd6f3;
-  border-radius: 10px;
-}
-.muted { color: #5b5370; margin: 0; }
-.form-error { min-height: 1.2em; color: #d13b2a; font-size: 13px; }
-.dialog-actions { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; }
-
-/* ---------- Toast ---------- */
-.toast {
-  position: fixed;
-  left: 50%;
-  bottom: 20px;
-  z-index: 20;
-  padding: 10px 18px;
-  border-radius: 999px;
-  background: #1f1535;
-  color: #ffffff;
-  font-size: 14px;
-  opacity: 0;
-  transform: translate(-50%, 20px);
-  transition: opacity 0.25s, transform 0.25s;
-  pointer-events: none;
-}
-.toast.show { opacity: 1; transform: translate(-50%, 0); }
-</script>
-
-<script type="text/plain" id="l5-js">
-// LEVEL 5: Mini shop (search, filter, sort, stock, saved cart, checkout)
-
-// ========== 0. PRODUCT PHOTOS ==========
-// Free photos from Unsplash (unsplash.com), used under the Unsplash License.
-// ?w=400&h=275&fit=crop asks Unsplash for a small, cropped copy.
-// Have your own photos? Save them in an "images" folder and write
-// image: 'images/notebook.jpg' in the products list instead.
-const photo = (id) => `https://images.unsplash.com/${id}?w=400&h=275&fit=crop&auto=format&q=70`;
-
-const pictures = {
-  notebook:   photo('photo-1562217199-6e6d4cd031f5'),
-  pens:       photo('photo-1567855354833-ac2c4f967b0c'),
-  calculator: photo('photo-1511377107391-116a9d5d20b5'),
-  usb:        photo('photo-1581068466660-e6585b8afa97'),
-  earphones:  photo('photo-1555679792-6783ef0bbf61'),
-  powerbank:  photo('photo-1587133454235-762b65c9f5c0'),
-  notes:      photo('photo-1683739147682-607fb8e24e3f'),
-  tumbler:    photo('photo-1544003484-3cd181d17917'),
-  hoodie:     photo('photo-1547954569-06aabe3b39b1'),
-};
-
-// ========== 1. DATA ==========
-const products = [
-  { id: 1, name: 'Spiral Notebook',       category: 'Supplies', price: 45,  stock: 20, image: pictures.notebook },
-  { id: 2, name: 'Ballpen Set (5)',       category: 'Supplies', price: 60,  stock: 15, image: pictures.pens },
-  { id: 3, name: 'Scientific Calculator', category: 'Supplies', price: 650, stock: 4,  image: pictures.calculator },
-  { id: 4, name: 'USB Flash Drive 32GB',  category: 'Gadgets',  price: 250, stock: 8,  image: pictures.usb },
-  { id: 5, name: 'Wired Earphones',       category: 'Gadgets',  price: 199, stock: 6,  image: pictures.earphones },
-  { id: 6, name: 'Power Bank 10000mAh',   category: 'Gadgets',  price: 899, stock: 3,  image: pictures.powerbank },
-  { id: 7, name: 'Sticky Notes Pack',     category: 'Supplies', price: 85,  stock: 25, image: pictures.notes },
-  { id: 8, name: 'Tumbler 500ml',         category: 'Merch',    price: 299, stock: 5,  image: pictures.tumbler },
-  { id: 9, name: 'Campus Hoodie',         category: 'Merch',    price: 750, stock: 0,  image: pictures.hoodie },
-];
-
-// ========== 2. STATE (everything that can change) ==========
-const STORAGE_KEY = 'campusShopCart';
-
-const state = {
-  search: '',
-  category: 'All',
-  sort: 'featured',
-  cart: loadCart(), // [{ id, qty }]
-};
-
-// ========== 3. ELEMENTS ==========
-const $ = (selector) => document.querySelector(selector);
-const grid        = $('#productGrid');
-const categories  = $('#categories');
-const resultInfo  = $('#resultInfo');
-const cartCount   = $('#cartCount');
-const cartItems   = $('#cartItems');
-const subtotalEl  = $('#subtotal');
-const drawer      = $('#cartDrawer');
-const overlay     = $('#overlay');
-const checkoutBtn = $('#checkoutBtn');
-const dialog      = $('#checkoutDialog');
-const form        = $('#checkoutForm');
-const orderDone   = $('#orderDone');
-const toast       = $('#toast');
-
-// ========== 4. HELPERS ==========
-const peso = (n) =>
-  '₱' + n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-const findProduct = (id) => products.find((p) => p.id === id);
-const cartItem    = (id) => state.cart.find((i) => i.id === id);
-const qtyInCart   = (id) => (cartItem(id) ? cartItem(id).qty : 0);
-
-function escapeHTML(text) {
-  return text.replace(/[&<>"']/g, (ch) =>
-    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
-}
-
-function getSubtotal() {
-  return state.cart.reduce((sum, i) => sum + findProduct(i.id).price * i.qty, 0);
-}
-
-// localStorage only stores text, so we use JSON
-function loadCart() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return Array.isArray(saved) ? saved : [];
-  } catch (error) {
-    return [];
-  }
-}
-
-function saveCart() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state.cart));
-  } catch (error) {
-    // storage may be blocked (private mode); the shop still works
-  }
-}
-
-// Wait until the user stops typing before searching
-function debounce(fn, delay) {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), delay);
-  };
-}
-
-let toastTimer;
-function showToast(message) {
-  toast.textContent = message;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
-}
-
-// ========== 5. RENDER ==========
-function getVisibleProducts() {
-  const term = state.search.toLowerCase();
-
-  let list = products.filter((p) =>
-    (state.category === 'All' || p.category === state.category) &&
-    p.name.toLowerCase().includes(term)
-  );
-
-  // [...list] makes a copy so we never re-order the original array
-  if (state.sort === 'low')  list = [...list].sort((a, b) => a.price - b.price);
-  if (state.sort === 'high') list = [...list].sort((a, b) => b.price - a.price);
-  if (state.sort === 'name') list = [...list].sort((a, b) => a.name.localeCompare(b.name));
-  return list;
-}
-
-function renderCategories() {
-  const names = ['All', ...new Set(products.map((p) => p.category))];
-  categories.innerHTML = names.map((name) => `
-    <button class="chip ${name === state.category ? 'active' : ''}" data-category="${name}">${name}</button>
-  `).join('');
-}
-
-function renderProducts() {
-  const list = getVisibleProducts();
-  resultInfo.textContent = `Showing ${list.length} of ${products.length} products`;
-
-  if (list.length === 0) {
-    grid.innerHTML = `<p class="empty">No products match "${escapeHTML(state.search)}".</p>`;
-    return;
-  }
-
-  grid.innerHTML = list.map((p) => {
-    const inCart = qtyInCart(p.id);
-    const left = p.stock - inCart;
-
-    let label = 'Add to cart';
-    if (p.stock === 0) label = 'Out of stock';
-    else if (left === 0) label = 'All in your cart';
-
-    return `
-      <article class="product">
-        <img class="thumb" src="${p.image}" alt="${p.name}">
-        ${inCart ? `<span class="in-cart">${inCart} in cart</span>` : ''}
-        <span class="cat">${p.category}</span>
-        <h3>${p.name}</h3>
-        <p class="price">${peso(p.price)}</p>
-        <p class="stock ${p.stock <= 3 ? 'low' : ''}">
-          ${p.stock === 0 ? 'Sold out' : `${p.stock} in stock`}
-        </p>
-        <button class="add-btn" data-id="${p.id}" ${left <= 0 ? 'disabled' : ''}>${label}</button>
-      </article>`;
-  }).join('');
-}
-
-function renderCart() {
-  const totalQty = state.cart.reduce((sum, i) => sum + i.qty, 0);
-  cartCount.textContent = totalQty;
-
-  if (state.cart.length === 0) {
-    cartItems.innerHTML = '<li class="empty-cart">Your cart is empty.</li>';
-  } else {
-    cartItems.innerHTML = state.cart.map((item) => {
-      const p = findProduct(item.id);
-      return `
-        <li>
-          <strong class="item-name"><img class="mini" src="${p.image}" alt="">${p.name}</strong>
-          <span>${peso(p.price * item.qty)}</span>
-          <div class="qty">
-            <button data-action="minus" data-id="${p.id}" aria-label="Remove one">−</button>
-            <span>${item.qty}</span>
-            <button data-action="plus" data-id="${p.id}" aria-label="Add one">+</button>
-          </div>
-          <button class="remove" data-action="remove" data-id="${p.id}">Remove</button>
-        </li>`;
-    }).join('');
-  }
-
-  subtotalEl.textContent = peso(getSubtotal());
-  checkoutBtn.disabled = state.cart.length === 0;
-}
-
-function render() {
-  renderCategories();
-  renderProducts();
-  renderCart();
-}
-
-// ========== 6. ACTIONS ==========
-function addToCart(id) {
-  const p = findProduct(id);
-  const item = cartItem(id);
-
-  if (qtyInCart(id) >= p.stock) {
-    showToast(`Sorry, only ${p.stock} left for ${p.name}.`);
-    return;
-  }
-
-  if (item) item.qty++;
-  else state.cart.push({ id, qty: 1 });
-
-  saveCart();
-  render();
-  showToast(`${p.name} added to cart`);
-
-  cartCount.classList.remove('pop');
-  void cartCount.offsetWidth;
-  cartCount.classList.add('pop');
-}
-
-function changeQty(id, amount) {
-  const item = cartItem(id);
-  const p = findProduct(id);
-
-  if (amount > 0 && item.qty >= p.stock) {
-    showToast('No more stock available.');
-    return;
-  }
-
-  item.qty += amount;
-  if (item.qty <= 0) {
-    removeItem(id);
-    return;
-  }
-  saveCart();
-  render();
-}
-
-function removeItem(id) {
-  state.cart = state.cart.filter((i) => i.id !== id);
-  saveCart();
-  render();
-}
-
-function openCart() {
-  drawer.classList.add('open');
-  drawer.setAttribute('aria-hidden', 'false');
-  overlay.hidden = false;
-  $('#closeCart').focus();
-}
-
-function closeCart() {
-  drawer.classList.remove('open');
-  drawer.setAttribute('aria-hidden', 'true');
-  overlay.hidden = true;
-}
-
-// ========== 7. EVENTS ==========
-$('#search').addEventListener('input', debounce((e) => {
-  state.search = e.target.value.trim();
-  renderProducts();
-}, 250));
-
-$('#sort').addEventListener('change', (e) => {
-  state.sort = e.target.value;
-  renderProducts();
-});
-
-categories.addEventListener('click', (e) => {
-  const chip = e.target.closest('.chip');
-  if (!chip) return;
-  state.category = chip.dataset.category;
-  renderCategories();
-  renderProducts();
-});
-
-grid.addEventListener('click', (e) => {
-  const btn = e.target.closest('.add-btn');
-  if (btn) addToCart(Number(btn.dataset.id));
-});
-
-cartItems.addEventListener('click', (e) => {
-  const btn = e.target.closest('button');
-  if (!btn) return;
-  const id = Number(btn.dataset.id);
-  if (btn.dataset.action === 'plus')   changeQty(id, 1);
-  if (btn.dataset.action === 'minus')  changeQty(id, -1);
-  if (btn.dataset.action === 'remove') removeItem(id);
-});
-
-$('#openCart').addEventListener('click', openCart);
-$('#closeCart').addEventListener('click', closeCart);
-overlay.addEventListener('click', closeCart);
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && drawer.classList.contains('open')) closeCart();
-});
-
-// ---- Checkout ----
-checkoutBtn.addEventListener('click', () => {
-  closeCart();
-  $('#dialogTotal').textContent = peso(getSubtotal());
-  $('#formError').textContent = '';
-  form.hidden = false;
-  orderDone.hidden = true;
-  dialog.showModal();
-});
-
-$('#cancelCheckout').addEventListener('click', () => dialog.close());
-
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const name  = $('#custName').value.trim();
-  const phone = $('#custPhone').value.trim();
-  const pay   = $('#custPay').value;
-
-  if (name.length < 2)          return ($('#formError').textContent = 'Please enter your name.');
-  if (!/^09\d{9}$/.test(phone)) return ($('#formError').textContent = 'Mobile number must be 11 digits starting with 09.');
-
-  const orderNo = 'ORD-' + Date.now().toString().slice(-6);
-  // textContent is safe for user input: no escaping needed
-  $('#orderText').textContent =
-    `Thank you, ${name}! Order ${orderNo} (${peso(getSubtotal())}) will be paid via ${pay}.`;
-
-  state.cart = [];
-  saveCart();
-  render();
-
-  form.reset();
-  form.hidden = true;
-  orderDone.hidden = false;
-});
-
-$('#doneBtn').addEventListener('click', () => {
-  dialog.close();
-  showToast('Order placed successfully');
-});
-
-// ========== 8. START ==========
-render();
-</script>
-
-<script type="text/plain" id="demo-fallback">
-// Preview only: this page cannot load outside images, so each Unsplash photo
-// is swapped for a matching drawing here. Students' copies load the real photos.
-(function () {
-const svg = (bg, shapes) =>
-  'data:image/svg+xml,' + encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 110"><rect width="160" height="110" fill="${bg}"/>${shapes}</svg>`
-  );
-
-  const pictures = {
-  '1562217199-6e6d4cd031f5': svg('#ede9fe', `
-    <rect x="52" y="16" width="58" height="80" rx="6" fill="#7c3aed"/>
-    <rect x="66" y="32" width="32" height="12" rx="2" fill="#fff"/>
-    <rect x="66" y="52" width="32" height="3" rx="1.5" fill="#c4b5fd"/>
-    <rect x="66" y="60" width="24" height="3" rx="1.5" fill="#c4b5fd"/>
-    ${[24, 36, 48, 60, 72, 84].map((y) => `<circle cx="52" cy="${y}" r="4" fill="#fff" stroke="#4c1d95" stroke-width="2"/>`).join('')}`),
-
-  '1567855354833-ac2c4f967b0c': svg('#ffedd5', ['#2563eb', '#dc2626', '#111827', '#16a34a', '#7c3aed'].map((c, i) => `
-    <rect x="${50 + i * 13}" y="18" width="9" height="62" rx="3" fill="${c}"/>
-    <rect x="${50 + i * 13}" y="18" width="9" height="12" rx="3" fill="#fff" opacity=".35"/>
-    <path d="M${50 + i * 13} 80 h9 l-4.5 14 z" fill="#e5e7eb"/>`).join('')),
-
-  '1544003484-3cd181d17917': svg('#dcfce7', `
-    <rect x="61" y="14" width="38" height="10" rx="4" fill="#1f2937"/>
-    <path d="M58 26 H102 L96 94 Q80 100 64 94 Z" fill="#22a06b"/>
-    <rect x="60" y="48" width="40" height="12" fill="#fff" opacity=".85"/>
-    <path d="M66 30 L70 90" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".35"/>`),
-
-  '1581068466660-e6585b8afa97': svg('#e0e7ff', `
-    <rect x="34" y="40" width="70" height="32" rx="9" fill="#6366f1"/>
-    <circle cx="46" cy="56" r="5" fill="#e0e7ff"/>
-    <rect x="104" y="45" width="24" height="22" rx="2" fill="#cbd5e1"/>
-    <rect x="112" y="50" width="6" height="5" fill="#64748b"/>
-    <rect x="112" y="58" width="6" height="5" fill="#64748b"/>
-    <text x="76" y="61" font-family="Arial" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">32GB</text>`),
-
-  '1683739147682-607fb8e24e3f': svg('#fef9c3', `
-    <rect x="40" y="30" width="46" height="46" rx="3" fill="#f472b6" transform="rotate(-8 63 53)"/>
-    <rect x="62" y="26" width="46" height="46" rx="3" fill="#facc15" transform="rotate(6 85 49)"/>
-    <rect x="76" y="44" width="46" height="46" rx="3" fill="#60a5fa" transform="rotate(-3 99 67)"/>
-    <rect x="84" y="56" width="28" height="3" rx="1.5" fill="#1e3a8a" opacity=".4"/>
-    <rect x="84" y="64" width="20" height="3" rx="1.5" fill="#1e3a8a" opacity=".4"/>`),
-
-  '1555679792-6783ef0bbf61': svg('#e2e8f0', `
-    <path d="M56 36 Q58 70 80 78 Q102 70 104 36" fill="none" stroke="#334155" stroke-width="3"/>
-    <path d="M80 78 V96" stroke="#334155" stroke-width="3"/>
-    <rect x="76" y="94" width="8" height="10" rx="2" fill="#94a3b8"/>
-    <circle cx="56" cy="30" r="11" fill="#334155"/>
-    <circle cx="104" cy="30" r="11" fill="#334155"/>
-    <circle cx="53" cy="27" r="3" fill="#fff" opacity=".5"/>
-    <circle cx="101" cy="27" r="3" fill="#fff" opacity=".5"/>`),
-  '1511377107391-116a9d5d20b5': svg('#f3e8ff', `
-    <rect x="54" y="10" width="52" height="90" rx="7" fill="#1e1b4b"/>
-    <rect x="61" y="18" width="38" height="16" rx="2" fill="#a7f3d0"/>
-    ${[0, 1, 2, 3].map((r) => [0, 1, 2].map((c) =>
-      `<rect x="${62 + c * 13}" y="${42 + r * 13}" width="10" height="9" rx="2" fill="${c === 2 && r === 3 ? '#f97316' : '#c7d2fe'}"/>`
-    ).join('')).join('')}`),
-
-  '1587133454235-762b65c9f5c0': svg('#ccfbf1', `
-    <rect x="44" y="24" width="72" height="62" rx="12" fill="#0f766e"/>
-    <rect x="52" y="32" width="56" height="46" rx="8" fill="#14b8a6" opacity=".35"/>
-    ${[0, 1, 2, 3].map((i) => `<circle cx="${68 + i * 8}" cy="74" r="2.5" fill="${i < 3 ? '#a7f3d0' : '#134e4a'}"/>`).join('')}
-    <rect x="70" y="86" width="20" height="5" rx="2" fill="#134e4a"/>
-    <path d="M82 40 L72 56 H80 L76 68 L88 50 H80 Z" fill="#fff"/>`),
-
-  '1547954569-06aabe3b39b1': svg('#fef3c7', `
-    <path d="M60 28 Q80 10 100 28 L120 42 L112 64 L104 60 V98 H56 V60 L48 64 L40 42 Z" fill="#7c3aed"/>
-    <path d="M66 28 Q80 44 94 28 Q80 18 66 28 Z" fill="#4c1d95"/>
-    <path d="M76 38 V54 M84 38 V54" stroke="#fde68a" stroke-width="2"/>
-    <path d="M64 76 H96 V90 H64 Z" fill="#6d28d9"/>`),
-};
-
-  document.addEventListener('error', function (e) {
-    var img = e.target;
-    if (!img || img.tagName !== 'IMG' || img.dataset.fallback) return;
-    var key = Object.keys(pictures).find(function (k) { return img.src.indexOf(k) !== -1; });
-    img.dataset.fallback = '1';
-    if (key) img.src = pictures[key];
-  }, true);
-})();
-</script>
-
-<!-- =================== PAGE SCRIPT =================== -->
-<script>
-{
-  const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const src = (id) => document.getElementById(id).textContent.replace(/^\s*\n/, '').replace(/\s+$/, '');
-  const indent = (text, pad) => text.split('\n').map((l) => (l ? pad + l : l)).join('\n');
-
-  const headTop = (title) =>
-    '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n' +
-    '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
-    '  <title>' + title + '</title>\n';
-
-  const linkedFile = (body, title) =>
-    headTop(title) + '  <link rel="stylesheet" href="style.css">\n</head>\n<body>\n' +
-    indent(body, '  ') + '\n\n  <script src="script.js"><\/script>\n</body>\n</html>';
-
-  const singleFile = (body, css, js, title) =>
-    headTop(title) + '  <style>\n' + indent(css, '    ') + '\n  </style>\n</head>\n<body>\n' +
-    indent(body, '  ') + '\n\n  <script>\n' + indent(js, '    ') + '\n  <\/script>\n</body>\n</html>';
-
-  const fallback = document.getElementById('demo-fallback').textContent;
-  const demoDoc = (body, css, js) =>
-    '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">' +
-    '<meta name="viewport" content="width=device-width, initial-scale=1"><script>' + fallback + '<\/script><style>' + css +
-    '</style></head><body>' + body + '<script>' + js + '<\/script></body></html>';
-
-  const highlight = (code) => code.split('\n').map((line) => {
-    const t = line.trim();
-    const e = esc(line) || ' ';
-    const isComment = t.startsWith('//') || t.startsWith('/*') || t.startsWith('<!--');
-    return '<span class="ln">' + (isComment ? '<span class="c">' + e + '</span>' : e) + '</span>';
-  }).join('');
-
-  async function copy(text, btn, pre) {
-    let ok = false;
-    try {
-      await navigator.clipboard.writeText(text);
-      ok = true;
-    } catch (err) {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { ok = document.execCommand('copy'); } catch (e2) { ok = false; }
-      ta.remove();
-    }
-    if (!ok && pre) {
-      const range = document.createRange();
-      range.selectNodeContents(pre);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-    }
-    const old = btn.dataset.label || btn.textContent;
-    btn.dataset.label = old;
-    btn.textContent = ok ? 'Copied' : 'Selected: press Ctrl+C';
-    setTimeout(() => { btn.textContent = old; }, 1600);
-  }
-
-  for (const sec of document.querySelectorAll('.level')) {
-    const k = sec.dataset.key;
-    const title = sec.dataset.title;
-    const body = src(k + '-html');
-    const css = src(k + '-css');
-    const js = src(k + '-js');
-    const files = { 'page.html': linkedFile(body, title), 'style.css': css, 'script.js': js };
-    const names = Object.keys(files);
-
-    const box = sec.querySelector('.codebox');
-    box.innerHTML =
-      '<div class="tabs" role="tablist" aria-label="' + title + ' files">' +
-      names.map((n, i) => '<button class="tab" role="tab" id="' + k + '-tab-' + i + '" aria-selected="' + (i === 0) + '" data-file="' + n + '">' + n + '</button>').join('') +
-      '</div><pre tabindex="0" aria-live="polite"><code></code></pre>' +
-      '<div class="acts"><button class="btn" data-copy="tab">Copy this file</button>' +
-      '<button class="btn ghost" data-copy="all">Copy as one HTML file</button><small class="lines"></small></div>';
-
-    const code = box.querySelector('code');
-    const pre = box.querySelector('pre');
-    const lines = box.querySelector('.lines');
-    let current = names[0];
-
-    const show = (name) => {
-      current = name;
-      code.innerHTML = highlight(files[name]);
-      pre.scrollTop = 0;
-      lines.textContent = files[name].split('\n').length + ' lines';
-      box.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.file === name)));
-    };
-    show(current);
-
-    box.querySelector('.tabs').addEventListener('click', (e) => {
-      const t = e.target.closest('.tab');
-      if (t) show(t.dataset.file);
-    });
-    box.querySelector('.tabs').addEventListener('keydown', (e) => {
-      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-      const i = names.indexOf(current) + (e.key === 'ArrowRight' ? 1 : -1);
-      const next = names[(i + names.length) % names.length];
-      show(next);
-      box.querySelector('[data-file="' + next + '"]').focus();
-    });
-    box.querySelector('[data-copy="tab"]').addEventListener('click', (e) => copy(files[current], e.currentTarget, pre));
-    box.querySelector('[data-copy="all"]').addEventListener('click', (e) => copy(singleFile(body, css, js, title), e.currentTarget, null));
-
-    const frame = sec.querySelector('iframe');
-    let frameObserver = null;
-    frame.addEventListener('load', () => {
-      if (frameObserver) { frameObserver.disconnect(); frameObserver = null; }
-      if (frame.dataset.h) { frame.style.height = frame.dataset.h + 'px'; return; }
-      try {
-        const d = frame.contentDocument;
-        const fit = () => { frame.style.height = Math.min(Math.max(d.body.scrollHeight, 220), 1600) + 'px'; };
-        fit();
-        frameObserver = new ResizeObserver(fit);
-        frameObserver.observe(d.body);
-      } catch (err) {
-        frame.style.height = '560px';
+      :root {
+        color-scheme: light dark;
+        --bg: light-dark(#f5f8f7, #0d1715);
+        --surface: light-dark(#ffffff, #13201d);
+        --ink: light-dark(#0f1f1b, #e4efec);
+        --muted: light-dark(#4b5f5a, #9db3ad);
+        --line: light-dark(#dde7e4, #24352f);
+        --teal: light-dark(#0f7b6c, #3cc4ae);
+        --tealSoft: light-dark(#e3efec, #1a2e2a);
+        --code: light-dark(#f3f6f5, #0f1a18);
+        --btn: #0f7b6c;
+        --btnHover: #0b5f54;
+        --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
       }
-    });
-    const load = () => { frame.srcdoc = demoDoc(body, css, js); };
-    load();
-    sec.querySelector('[data-reset]').addEventListener('click', load);
-  }
+      :root[data-theme="light"] {
+        color-scheme: light;
+      }
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+        min-width: 0;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          17px/1.6 Figtree,
+          system-ui,
+          sans-serif;
+        overflow-x: clip;
+      }
+      .wrap {
+        max-width: 1160px;
+        margin: 0 auto;
+        padding: 0 max(4vw, 16px);
+      }
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        text-wrap: balance;
+      }
+      a {
+        color: inherit;
+      }
+      .scroll {
+        overflow-x: auto;
+        scrollbar-width: thin;
+      }
+      code {
+        overflow-wrap: anywhere;
+      }
+      html {
+        scroll-padding-top: 76px;
+        scroll-behavior: smooth;
+      }
 
-  const navLinks = [...document.querySelectorAll('.secnav a')];
-  const navObserver = new IntersectionObserver((entries) => {
-    for (const en of entries) {
-      if (!en.isIntersecting) continue;
-      navLinks.forEach((a) => a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id));
-    }
-  }, { rootMargin: '-30% 0px -60% 0px' });
-  document.querySelectorAll('.level').forEach((s) => navObserver.observe(s));
-}
-</script>
-</body>
+      /* top nav */
+      .top {
+        background: var(--surface);
+        border-bottom: 1px solid var(--line);
+      }
+      .top .wrap {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        min-height: 58px;
+        white-space: nowrap;
+      }
+      .brand {
+        font: 600 14px var(--mono);
+        letter-spacing: 0.14em;
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .top nav {
+        display: flex;
+        gap: 22px;
+        flex: none;
+      }
+      .top nav a,
+      .brand,
+      .secnav a {
+        flex: none;
+      }
+      .top nav a {
+        padding: 16px 0 14px;
+        text-decoration: none;
+        color: var(--muted);
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+      }
+      .top nav a:hover {
+        color: var(--ink);
+      }
+      .top nav a[aria-current] {
+        color: var(--ink);
+        border-color: var(--ink);
+      }
+
+      /* hero */
+      .hero {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(40px, 6vw, 72px) 0 clamp(32px, 4vw, 52px);
+        border-bottom: 1px solid var(--line);
+      }
+      .waves {
+        position: absolute;
+        top: 10px;
+        right: 0;
+        width: min(46vw, 660px);
+        height: 240px;
+        color: var(--teal);
+        opacity: 0.35;
+        pointer-events: none;
+      }
+      .eyebrow {
+        font: 600 14px var(--mono);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 0 0 10px;
+      }
+      h1 {
+        font-size: clamp(42px, 8vw, 84px);
+        line-height: 1.02;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      h1 span {
+        color: var(--teal);
+      }
+      .lede {
+        max-width: 46ch;
+        font-size: clamp(17px, 2vw, 21px);
+        margin: 20px 0 26px;
+      }
+      .steps {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 34px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 17px;
+        color: var(--muted);
+      }
+      .steps li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .steps b {
+        color: var(--ink);
+        font-weight: 700;
+      }
+      .steps .n {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        flex: none;
+        border-radius: 50%;
+        background: var(--btn);
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      /* playground strip + section row */
+      .strip {
+        padding: 22px 0 6px;
+      }
+      .strip .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px 20px;
+        color: var(--muted);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 44px;
+        padding: 9px 18px;
+        border: 0;
+        border-radius: 6px;
+        background: var(--btn);
+        color: #fff;
+        font:
+          700 16px Figtree,
+          sans-serif;
+        text-decoration: none;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .btn:hover {
+        background: var(--btnHover);
+      }
+      .btn.ghost {
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        font-weight: 600;
+      }
+      .btn.ghost:hover {
+        border-color: var(--teal);
+        background: var(--surface);
+      }
+      .btn:focus-visible,
+      .tab:focus-visible,
+      .secnav a:focus-visible,
+      .top a:focus-visible {
+        outline: 3px solid var(--teal);
+        outline-offset: 2px;
+      }
+      .secnav {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: var(--bg);
+        border-bottom: 1px solid var(--line);
+      }
+      .secnav .row {
+        display: flex;
+        gap: 6px;
+        padding: 8px 0;
+      }
+      .secnav a {
+        flex: none;
+        padding: 8px 14px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: var(--muted);
+        font-weight: 500;
+        white-space: nowrap;
+      }
+      .secnav a b {
+        font: 700 15px var(--mono);
+        color: var(--teal);
+        margin-right: 6px;
+      }
+      .secnav a:hover {
+        color: var(--ink);
+      }
+      .secnav a.on {
+        background: var(--tealSoft);
+        color: var(--ink);
+      }
+
+      /* level sections */
+      .level {
+        padding: clamp(40px, 6vw, 72px) 0 clamp(20px, 3vw, 32px);
+      }
+      .sec-head {
+        display: flex;
+        align-items: flex-start;
+        gap: clamp(14px, 2.4vw, 28px);
+      }
+      .num {
+        flex: none;
+        display: grid;
+        place-items: center;
+        min-width: 46px;
+        height: 38px;
+        margin-top: 6px;
+        padding: 0 8px;
+        border: 1.5px solid var(--teal);
+        border-radius: 4px;
+        color: var(--teal);
+        font: 600 18px var(--mono);
+      }
+      .sec-head h2 {
+        color: var(--teal);
+        font-size: clamp(30px, 4.6vw, 48px);
+        line-height: 1.08;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+      }
+      .diff {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 6px;
+        color: var(--muted);
+        font: 600 14px var(--mono);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .meter {
+        display: inline-flex;
+        gap: 3px;
+      }
+      .meter i {
+        width: 16px;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--line);
+      }
+      .meter i.on {
+        background: var(--teal);
+      }
+      .sec-body {
+        padding-left: calc(46px + clamp(14px, 2.4vw, 28px));
+      }
+      .intro {
+        max-width: 62ch;
+        margin: 14px 0 14px;
+        font-size: 18px;
+      }
+      .intro code,
+      .try code {
+        font: 15px var(--mono);
+        background: var(--tealSoft);
+        padding: 1px 6px;
+        border-radius: 4px;
+      }
+      .learn {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 0 0 24px;
+        padding: 0;
+        list-style: none;
+      }
+      .learn li {
+        padding: 4px 10px;
+        border-radius: 6px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        font: 13.5px var(--mono);
+      }
+
+      /* lab card */
+      .lab {
+        padding: clamp(12px, 2vw, 22px);
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+      }
+      .lab-top {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .lab-label {
+        font: 15px var(--mono);
+        color: var(--muted);
+      }
+      .lab-label b {
+        color: var(--ink);
+        font-weight: 700;
+      }
+      .lab-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+        gap: 22px;
+        align-items: start;
+      }
+      .browser {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+      }
+      .bar {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 9px 14px;
+        background: var(--tealSoft);
+        font: 13.5px var(--mono);
+        color: var(--muted);
+      }
+      .dots {
+        display: flex;
+        gap: 6px;
+      }
+      .dots i {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: #b9ccc6;
+      }
+      .dots i:first-child {
+        background: #d9480f;
+      }
+      .url {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      iframe {
+        display: block;
+        width: 100%;
+        height: 420px;
+        border: 0;
+        background: #f1f7f5;
+      }
+      .tabs {
+        display: flex;
+        gap: 6px;
+        padding-bottom: 12px;
+        margin-bottom: 14px;
+        border-bottom: 1px solid var(--line);
+        overflow-x: auto;
+      }
+      .tab {
+        flex: none;
+        min-height: 44px;
+        padding: 8px 18px;
+        border: 0;
+        border-radius: 7px;
+        background: transparent;
+        color: var(--muted);
+        font:
+          500 16px Figtree,
+          sans-serif;
+        cursor: pointer;
+      }
+      .tab:hover {
+        color: var(--ink);
+      }
+      .tab[aria-selected="true"] {
+        background: var(--btn);
+        color: #fff;
+      }
+      pre {
+        margin: 0;
+        max-height: 520px;
+        overflow: auto;
+        padding: 12px 0;
+        background: var(--code);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        font: 14px/1.75 var(--mono);
+        color: var(--ink);
+        counter-reset: ln;
+        tab-size: 2;
+      }
+      pre .ln {
+        display: block;
+        padding: 0 16px 0 0;
+        white-space: pre;
+      }
+      pre .ln::before {
+        counter-increment: ln;
+        content: counter(ln);
+        display: inline-block;
+        width: 3.2em;
+        padding-right: 1.1em;
+        text-align: right;
+        color: var(--muted);
+        opacity: 0.7;
+        user-select: none;
+      }
+      pre .c {
+        color: var(--teal);
+        font-style: italic;
+        opacity: 0.9;
+      }
+      .acts {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .acts small {
+        color: var(--muted);
+        font: 13px var(--mono);
+        margin-left: auto;
+      }
+      .try {
+        margin-top: 22px;
+        padding: 18px 22px;
+        border-left: 3px solid var(--teal);
+        background: var(--surface);
+        border-radius: 0 10px 10px 0;
+      }
+      .try h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .try ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+      .try li {
+        margin: 5px 0;
+      }
+      footer {
+        margin-top: 40px;
+        padding: 26px 0 40px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      @media (max-width: 980px) {
+        .lab-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .waves {
+          opacity: 0.2;
+        }
+      }
+      @media (max-width: 700px) {
+        body {
+          font-size: 16px;
+        }
+        .waves {
+          display: none;
+        }
+        .top .wrap {
+          gap: 18px;
+          overflow-x: auto;
+        }
+        .top nav {
+          gap: 16px;
+        }
+        .steps {
+          flex-direction: column;
+          gap: 10px;
+        }
+        .strip .wrap {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .strip .btn {
+          width: 100%;
+        }
+        .sec-body {
+          padding-left: 0;
+        }
+        .num {
+          min-width: 40px;
+          height: 34px;
+          font-size: 16px;
+          margin-top: 2px;
+        }
+        .intro {
+          font-size: 16.5px;
+        }
+        .lab {
+          border-radius: 12px;
+        }
+        .lab-top .btn {
+          flex: 1;
+        }
+        .acts .btn {
+          flex: 1 1 100%;
+        }
+        .acts small {
+          margin-left: 0;
+        }
+        pre {
+          font-size: 12.5px;
+          max-height: 420px;
+        }
+        pre .ln::before {
+          width: 2.6em;
+          padding-right: 0.8em;
+        }
+        .tab {
+          padding: 8px 14px;
+          font-size: 15px;
+        }
+        .try {
+          padding: 16px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap scroll">
+        <a class="brand" href="https://it55exp.netlify.app/">IT55 LESSONS</a>
+        <nav aria-label="Lessons">
+          <a href="https://it55exp.netlify.app/">CSS Style</a>
+          <a href="https://it55exp.netlify.app/javascript">JavaScript</a>
+          <a href="#top" aria-current="page">Snippets</a>
+          <a href="https://it55exp.netlify.app/playground">Playground</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero" id="top">
+      <svg
+        class="waves"
+        viewBox="0 0 660 240"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <defs>
+          <path
+            id="wv"
+            d="M0 30 C 110 0, 210 0, 330 34 S 560 70, 660 10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.2"
+          />
+        </defs>
+        <use href="#wv" y="0" />
+        <use href="#wv" y="22" />
+        <use href="#wv" y="44" />
+        <use href="#wv" y="66" />
+        <use href="#wv" y="88" />
+        <use href="#wv" y="110" />
+        <use href="#wv" y="132" />
+        <use href="#wv" y="154" />
+        <use href="#wv" y="176" />
+      </svg>
+      <div class="wrap">
+        <p class="eyebrow">IT55 · JavaScript in your system</p>
+        <h1>JavaScript <span>Snippets</span></h1>
+        <p class="lede">
+          Five working examples, from a single button click to a mini shop with
+          a cart that remembers. Try each demo, then copy its HTML, CSS and
+          JavaScript into your own project.
+        </p>
+        <ol class="steps">
+          <li>
+            <span class="n">1</span><span><b>Try</b> the live demo</span>
+          </li>
+          <li>
+            <span class="n">2</span
+            ><span><b>Copy</b> page.html, style.css, script.js</span>
+          </li>
+          <li>
+            <span class="n">3</span><span><b>Change</b> it and refresh</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="strip">
+      <div class="wrap">
+        <a class="btn" href="https://it55exp.netlify.app/playground"
+          >Open the Playground ▶</a
+        >
+        <span
+          >Paste any snippet into the Playground, or into three files in a
+          folder and open page.html.</span
+        >
+      </div>
+    </div>
+
+    <nav class="secnav" aria-label="Levels">
+      <div class="wrap scroll">
+        <div class="row">
+          <a href="#level-1"><b>01</b>Button clicks</a>
+          <a href="#level-2"><b>02</b>Likes &amp; reactions</a>
+          <a href="#level-3"><b>03</b>Add to cart</a>
+          <a href="#level-4"><b>04</b>Checkout</a>
+          <a href="#level-5"><b>05</b>Mini shop</a>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <!-- ============ LEVEL 1 ============ -->
+      <section
+        class="level"
+        id="level-1"
+        data-key="l1"
+        data-title="Level 1 - Button Clicks"
+      >
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="num">01</span>
+            <div>
+              <h2>Click a button and do something</h2>
+              <span class="diff"
+                >Easy
+                <span class="meter"
+                  ><i class="on"></i><i></i><i></i><i></i><i></i></span
+              ></span>
+            </div>
+          </div>
+          <div class="sec-body">
+            <p class="intro">
+              The basic pattern behind every interactive page: find an element,
+              listen for an event, then change something on the screen.
+            </p>
+            <ul class="learn">
+              <li>querySelector()</li>
+              <li>addEventListener('click')</li>
+              <li>textContent</li>
+              <li>classList.toggle()</li>
+              <li>input.value</li>
+            </ul>
+          </div>
+          <div class="lab">
+            <div class="lab-top">
+              <span class="lab-label"><b>level</b> 1 of 5</span
+              ><button class="btn ghost" data-reset>↻ Reset demo</button>
+            </div>
+            <div class="lab-grid">
+              <div class="browser">
+                <div class="bar">
+                  <span class="dots"><i></i><i></i><i></i></span
+                  ><span class="url">button-clicks.html</span>
+                </div>
+                <iframe title="Level 1 live demo"></iframe>
+              </div>
+              <div class="codebox"></div>
+            </div>
+          </div>
+          <div class="try">
+            <h3>Try it</h3>
+            <ul>
+              <li>
+                Add a <code>−1</code> button. How do you stop the count from
+                going below 0?
+              </li>
+              <li>Make the number turn orange once the count reaches 5.</li>
+              <li>
+                Pressing Enter also greets you. Find the line that makes that
+                happen.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ LEVEL 2 ============ -->
+      <section
+        class="level"
+        id="level-2"
+        data-key="l2"
+        data-title="Level 2 - Post Reactions"
+      >
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="num">02</span>
+            <div>
+              <h2>React to posts with likes and emoji</h2>
+              <span class="diff"
+                >Easy to medium
+                <span class="meter"
+                  ><i class="on"></i><i class="on"></i><i></i><i></i
+                  ><i></i></span
+              ></span>
+            </div>
+          </div>
+          <div class="sec-body">
+            <p class="intro">
+              One click listener on the whole feed handles every post. Each
+              person gets one reaction per post: click it again to remove it, or
+              pick another to switch.
+            </p>
+            <ul class="learn">
+              <li>event delegation</li>
+              <li>event.target.closest()</li>
+              <li>data-* attributes</li>
+              <li>toggle state</li>
+              <li>aria-pressed</li>
+            </ul>
+          </div>
+          <div class="lab">
+            <div class="lab-top">
+              <span class="lab-label"><b>level</b> 2 of 5</span
+              ><button class="btn ghost" data-reset>↻ Reset demo</button>
+            </div>
+            <div class="lab-grid">
+              <div class="browser">
+                <div class="bar">
+                  <span class="dots"><i></i><i></i><i></i></span
+                  ><span class="url">reactions.html</span>
+                </div>
+                <iframe title="Level 2 live demo"></iframe>
+              </div>
+              <div class="codebox"></div>
+            </div>
+          </div>
+          <div class="try">
+            <h3>Try it</h3>
+            <ul>
+              <li>
+                Copy a fourth post into the HTML. Do you need to change the
+                JavaScript? Why not?
+              </li>
+              <li>Add a ❤️ reaction button to every post.</li>
+              <li>Show the total number of reactions under each post.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ LEVEL 3 ============ -->
+      <section
+        class="level"
+        id="level-3"
+        data-key="l3"
+        data-title="Level 3 - Add to Cart"
+      >
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="num">03</span>
+            <div>
+              <h2>Add to cart</h2>
+              <span class="diff"
+                >Medium
+                <span class="meter"
+                  ><i class="on"></i><i class="on"></i><i class="on"></i><i></i
+                  ><i></i></span
+              ></span>
+            </div>
+          </div>
+          <div class="sec-body">
+            <p class="intro">
+              Products live in an array, not in the HTML. JavaScript draws them,
+              and one <code>renderCart()</code> function redraws the cart every
+              time something changes. Product photos come free from Unsplash and
+              load in students' own browsers; this preview shows drawn
+              stand-ins.
+            </p>
+            <ul class="learn">
+              <li>arrays of objects</li>
+              <li>map().join('')</li>
+              <li>find()</li>
+              <li>filter()</li>
+              <li>reduce()</li>
+              <li>render function</li>
+            </ul>
+          </div>
+          <div class="lab">
+            <div class="lab-top">
+              <span class="lab-label"><b>level</b> 3 of 5</span
+              ><button class="btn ghost" data-reset>↻ Reset demo</button>
+            </div>
+            <div class="lab-grid">
+              <div class="browser">
+                <div class="bar">
+                  <span class="dots"><i></i><i></i><i></i></span
+                  ><span class="url">add-to-cart.html</span>
+                </div>
+                <iframe title="Level 3 live demo"></iframe>
+              </div>
+              <div class="codebox"></div>
+            </div>
+          </div>
+          <div class="try">
+            <h3>Try it</h3>
+            <ul>
+              <li>
+                Add a new product by editing only the
+                <code>products</code> array.
+              </li>
+              <li>Limit each item to a maximum of 5 in the cart.</li>
+              <li>
+                Show "You get free shipping!" when the total reaches ₱500.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ LEVEL 4 ============ -->
+      <section
+        class="level"
+        id="level-4"
+        data-key="l4"
+        data-title="Level 4 - Checkout"
+      >
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="num">04</span>
+            <div>
+              <h2>Checking out</h2>
+              <span class="diff"
+                >Medium to hard
+                <span class="meter"
+                  ><i class="on"></i><i class="on"></i><i class="on"></i
+                  ><i class="on"></i><i></i></span
+              ></span>
+            </div>
+          </div>
+          <div class="sec-body">
+            <p class="intro">
+              A checkout form that checks every field, recalculates the total
+              when the delivery option changes, accepts promo codes (try
+              <code>STUDENT10</code> or <code>LESS50</code>), and prints a
+              receipt.
+            </p>
+            <ul class="learn">
+              <li>submit + preventDefault()</li>
+              <li>regex validation</li>
+              <li>radio buttons</li>
+              <li>computed totals</li>
+              <li>escaping user input</li>
+            </ul>
+          </div>
+          <div class="lab">
+            <div class="lab-top">
+              <span class="lab-label"><b>level</b> 4 of 5</span
+              ><button class="btn ghost" data-reset>↻ Reset demo</button>
+            </div>
+            <div class="lab-grid">
+              <div class="browser">
+                <div class="bar">
+                  <span class="dots"><i></i><i></i><i></i></span
+                  ><span class="url">checkout.html</span>
+                </div>
+                <iframe title="Level 4 live demo"></iframe>
+              </div>
+              <div class="codebox"></div>
+            </div>
+          </div>
+          <div class="try">
+            <h3>Try it</h3>
+            <ul>
+              <li>
+                Add a <code>FREESHIP</code> promo code that makes shipping free.
+              </li>
+              <li>Disable Express delivery when the subtotal is under ₱200.</li>
+              <li>
+                Why does the receipt use <code>escapeHTML()</code> on the name?
+                Type <code>&lt;b&gt;Ana&lt;/b&gt;</code> and see.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ LEVEL 5 ============ -->
+      <section
+        class="level"
+        id="level-5"
+        data-key="l5"
+        data-title="Level 5 - Mini Shop"
+      >
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="num">05</span>
+            <div>
+              <h2>Mini shop that remembers the cart</h2>
+              <span class="diff"
+                >Hard
+                <span class="meter"
+                  ><i class="on"></i><i class="on"></i><i class="on"></i
+                  ><i class="on"></i><i class="on"></i></span
+              ></span>
+            </div>
+          </div>
+          <div class="sec-body">
+            <p class="intro">
+              Everything together: search, category filters, sorting, stock
+              limits, a slide-in cart, a checkout dialog and toast messages. The
+              cart is saved in <code>localStorage</code>, so it survives a page
+              refresh. Photos load from Unsplash when the code runs on its own;
+              this preview shows drawn stand-ins.
+            </p>
+            <ul class="learn">
+              <li>one state object</li>
+              <li>filter + sort</li>
+              <li>localStorage</li>
+              <li>JSON.stringify / parse</li>
+              <li>&lt;dialog&gt;</li>
+              <li>debounce</li>
+            </ul>
+          </div>
+          <div class="lab">
+            <div class="lab-top">
+              <span class="lab-label"
+                ><b>level</b> 5 of 5 · refresh keeps your cart</span
+              ><button class="btn ghost" data-reset>↻ Refresh demo</button>
+            </div>
+            <div class="lab-grid">
+              <div class="browser">
+                <div class="bar">
+                  <span class="dots"><i></i><i></i><i></i></span
+                  ><span class="url">mini-shop.html</span>
+                </div>
+                <iframe title="Level 5 live demo" data-h="640"></iframe>
+              </div>
+              <div class="codebox"></div>
+            </div>
+          </div>
+          <div class="try">
+            <h3>Try it</h3>
+            <ul>
+              <li>
+                Refresh the demo: the cart is still there. Find the two
+                functions responsible.
+              </li>
+              <li>
+                Save each finished order to an "Order history" list in
+                localStorage.
+              </li>
+              <li>
+                Add a wishlist button that works like the cart but has no
+                quantities.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        Companion snippets to the IT55 JavaScript lessons. Products, names and
+        prices are sample data; no order is actually placed.
+      </div>
+    </footer>
+
+    <!-- =================== SNIPPET SOURCES =================== -->
+
+    <script type="text/plain" id="l1-html">
+      <main class="card">
+        <h1 id="greeting">Hello, student!</h1>
+        <p>You clicked <strong id="count">0</strong> times.</p>
+
+        <div class="buttons">
+          <button id="clickBtn">Click me</button>
+          <button id="resetBtn" class="secondary">Reset</button>
+          <button id="themeBtn" class="secondary">Dark mode</button>
+        </div>
+
+        <label for="nameInput">What is your name?</label>
+        <div class="row">
+          <input id="nameInput" type="text" placeholder="Type your name">
+          <button id="greetBtn">Greet me</button>
+        </div>
+        <p id="message" class="message"></p>
+      </main>
+    </script>
+
+    <script type="text/plain" id="l1-css">
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        padding: 32px 16px;
+        font-family: system-ui, "Segoe UI", Arial, sans-serif;
+        background: #f1f7f5;
+        color: #10223a;
+        transition: background 0.3s, color 0.3s;
+      }
+
+      /* Dark mode: JavaScript adds the "dark" class to <body> */
+      body.dark { background: #0d1715; color: #e6eef7; }
+
+      .card {
+        max-width: 440px;
+        margin: 0 auto;
+        padding: 28px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(16, 34, 58, 0.12);
+      }
+      body.dark .card { background: #13201d; }
+
+      h1 { margin: 0 0 8px; font-size: 26px; }
+
+      .buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
+      .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+
+      button {
+        padding: 10px 16px;
+        font: inherit;
+        font-weight: 600;
+        border: 0;
+        border-radius: 10px;
+        background: #0f7b6c;
+        color: #ffffff;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: transform 0.1s, background 0.2s;
+      }
+      button:hover { background: #0b5f54; }
+      button:active { transform: scale(0.95); }
+      button.secondary { background: #dcece7; color: #10223a; }
+      body.dark button.secondary { background: #1f3a35; color: #e6eef7; }
+
+      label { font-weight: 600; font-size: 14px; }
+
+      input {
+        flex: 1 1 180px;
+        min-width: 0;
+        padding: 10px 12px;
+        font: inherit;
+        border: 2px solid #cfe0db;
+        border-radius: 10px;
+      }
+      input:focus { outline: none; border-color: #0f7b6c; }
+
+      .message { min-height: 1.5em; font-weight: 600; color: #1d8a4e; }
+      .message.error { color: #d13b2a; }
+
+      /* Small bounce when the number changes */
+      #count { display: inline-block; }
+      .bump { animation: bump 0.25s ease; }
+      @keyframes bump { 50% { transform: scale(1.4); } }
+    </script>
+
+    <script type="text/plain" id="l1-js">
+      // LEVEL 1: Click a button and do something
+
+      // 1. Select the elements we will use
+      const countEl   = document.querySelector('#count');
+      const clickBtn  = document.querySelector('#clickBtn');
+      const resetBtn  = document.querySelector('#resetBtn');
+      const themeBtn  = document.querySelector('#themeBtn');
+      const nameInput = document.querySelector('#nameInput');
+      const greetBtn  = document.querySelector('#greetBtn');
+      const greeting  = document.querySelector('#greeting');
+      const message   = document.querySelector('#message');
+
+      // 2. A variable that remembers how many clicks
+      let count = 0;
+
+      // 3. Show the number on the screen, with a small bounce
+      function showCount() {
+        countEl.textContent = count;
+        countEl.classList.remove('bump');
+        void countEl.offsetWidth; // trick to restart the animation
+        countEl.classList.add('bump');
+      }
+
+      // 4. Listen for clicks
+      clickBtn.addEventListener('click', () => {
+        count++;
+        showCount();
+        if (count === 10) {
+          showMessage('Ten clicks! You are on fire.');
+        }
+      });
+
+      resetBtn.addEventListener('click', () => {
+        count = 0;
+        showCount();
+        showMessage('Counter reset.');
+      });
+
+      themeBtn.addEventListener('click', () => {
+        // toggle() adds the class if missing, removes it if present
+        const isDark = document.body.classList.toggle('dark');
+        themeBtn.textContent = isDark ? 'Light mode' : 'Dark mode';
+      });
+
+      // 5. Read what the user typed
+      function greet() {
+        const name = nameInput.value.trim();
+
+        if (name === '') {
+          showMessage('Please type your name first.', true);
+          nameInput.focus();
+          return; // stop here
+        }
+
+        greeting.textContent = `Hello, ${name}!`;
+        showMessage(`Nice to meet you, ${name}.`);
+        nameInput.value = '';
+      }
+
+      greetBtn.addEventListener('click', greet);
+
+      nameInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') greet();
+      });
+
+      // 6. One helper for messages (green = OK, red = error)
+      function showMessage(text, isError = false) {
+        message.textContent = text;
+        message.classList.toggle('error', isError);
+      }
+    </script>
+
+    <script type="text/plain" id="l2-html">
+      <section class="feed">
+
+        <article class="post">
+          <header class="post-head">
+            <div class="avatar" style="background:#4fb3e8">AR</div>
+            <div><strong>Ana Reyes</strong><small>2 hours ago</small></div>
+          </header>
+          <p>Finished my first JavaScript project today! It only took 47 console.log() calls.</p>
+          <div class="actions">
+            <button class="like-btn" aria-pressed="false">♡ Like</button>
+            <span><span class="like-count">12</span> likes</span>
+          </div>
+          <div class="reactions">
+            <button class="react" data-emoji="👍">👍 <span class="num">3</span></button>
+            <button class="react" data-emoji="😂">😂 <span class="num">8</span></button>
+            <button class="react" data-emoji="😮">😮 <span class="num">1</span></button>
+            <button class="react" data-emoji="😢">😢 <span class="num">0</span></button>
+          </div>
+          <p class="summary"></p>
+        </article>
+
+        <article class="post">
+          <header class="post-head">
+            <div class="avatar" style="background:#ff7a1a">JD</div>
+            <div><strong>Jose Dela Cruz</strong><small>5 hours ago</small></div>
+          </header>
+          <p>Reminder: our group presentation is on Friday. Please send your slides before Thursday night.</p>
+          <div class="actions">
+            <button class="like-btn" aria-pressed="false">♡ Like</button>
+            <span><span class="like-count">4</span> likes</span>
+          </div>
+          <div class="reactions">
+            <button class="react" data-emoji="👍">👍 <span class="num">6</span></button>
+            <button class="react" data-emoji="😂">😂 <span class="num">0</span></button>
+            <button class="react" data-emoji="😮">😮 <span class="num">2</span></button>
+            <button class="react" data-emoji="😢">😢 <span class="num">1</span></button>
+          </div>
+          <p class="summary"></p>
+        </article>
+
+        <article class="post">
+          <header class="post-head">
+            <div class="avatar" style="background:#2bb673">MS</div>
+            <div><strong>Maria Santos</strong><small>Yesterday</small></div>
+          </header>
+          <p>The canteen now sells iced coffee. Productivity levels are about to rise.</p>
+          <div class="actions">
+            <button class="like-btn" aria-pressed="false">♡ Like</button>
+            <span><span class="like-count">31</span> likes</span>
+          </div>
+          <div class="reactions">
+            <button class="react" data-emoji="👍">👍 <span class="num">10</span></button>
+            <button class="react" data-emoji="😂">😂 <span class="num">5</span></button>
+            <button class="react" data-emoji="😮">😮 <span class="num">7</span></button>
+            <button class="react" data-emoji="😢">😢 <span class="num">0</span></button>
+          </div>
+          <p class="summary"></p>
+        </article>
+
+      </section>
+    </script>
+
+    <script type="text/plain" id="l2-css">
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        padding: 24px 16px;
+        font-family: system-ui, "Segoe UI", Arial, sans-serif;
+        background: #eef2f6;
+        color: #10223a;
+      }
+
+      .feed { max-width: 520px; margin: 0 auto; display: grid; gap: 16px; }
+
+      .post {
+        padding: 18px;
+        background: #ffffff;
+        border-radius: 14px;
+        box-shadow: 0 4px 14px rgba(16, 34, 58, 0.08);
+      }
+
+      .post-head { display: flex; align-items: center; gap: 10px; }
+      .post-head small { display: block; color: #6b7c90; font-size: 13px; }
+
+      .avatar {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-top: 10px;
+        border-top: 1px solid #e3e9f0;
+        color: #4a5d75;
+        font-size: 14px;
+      }
+
+      button {
+        font: inherit;
+        cursor: pointer;
+        border-radius: 999px;
+        transition: transform 0.1s, background 0.2s, border-color 0.2s;
+      }
+      button:active { transform: scale(0.92); }
+
+      .like-btn {
+        padding: 8px 16px;
+        border: 2px solid #d5dee8;
+        background: #ffffff;
+        font-weight: 600;
+        color: #10223a;
+      }
+      .like-btn.liked { border-color: #e6264f; background: #fde8ed; color: #c4143a; }
+
+      .reactions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+
+      .react {
+        padding: 6px 12px;
+        border: 2px solid transparent;
+        background: #f1f4f8;
+        font-size: 15px;
+      }
+      .react:hover { background: #e4eaf1; }
+      .react.active { border-color: #0f7b6c; background: #e3f3ef; font-weight: 700; }
+
+      .summary { min-height: 1.2em; margin: 10px 0 0; font-size: 13px; color: #0f7b6c; }
+    </script>
+
+    <script type="text/plain" id="l2-js">
+      // LEVEL 2: Reacting with likes and emoji
+
+      // ONE listener on the whole feed handles every post.
+      // This is called "event delegation".
+      const feed = document.querySelector('.feed');
+
+      feed.addEventListener('click', (event) => {
+        // closest() finds the button even if you clicked the emoji or number inside it
+        const likeBtn = event.target.closest('.like-btn');
+        if (likeBtn) {
+          toggleLike(likeBtn);
+          return;
+        }
+
+        const reactBtn = event.target.closest('.react');
+        if (reactBtn) {
+          react(reactBtn);
+        }
+      });
+
+      // ---- Likes: click once to like, click again to unlike ----
+      function toggleLike(button) {
+        const post = button.closest('.post');
+        const countEl = post.querySelector('.like-count');
+
+        const isLiked = button.classList.toggle('liked');
+        const count = Number(countEl.textContent);
+
+        countEl.textContent = isLiked ? count + 1 : count - 1;
+        button.textContent = isLiked ? '♥ Liked' : '♡ Like';
+        button.setAttribute('aria-pressed', isLiked);
+      }
+
+      // ---- Reactions: only ONE reaction per post ----
+      function react(button) {
+        const post = button.closest('.post');
+        const current = post.querySelector('.react.active'); // my old reaction (or null)
+
+        // 1. Remove my old reaction, if I had one
+        if (current) {
+          changeCount(current, -1);
+          current.classList.remove('active');
+        }
+
+        // 2. If I clicked a different emoji, add the new one
+        //    (if I clicked the same one, it stays removed)
+        if (current !== button) {
+          changeCount(button, +1);
+          button.classList.add('active');
+        }
+
+        updateSummary(post);
+      }
+
+      function changeCount(button, amount) {
+        const num = button.querySelector('.num');
+        num.textContent = Number(num.textContent) + amount;
+      }
+
+      function updateSummary(post) {
+        const active = post.querySelector('.react.active');
+        const summary = post.querySelector('.summary');
+        // dataset.emoji reads the data-emoji="..." attribute
+        summary.textContent = active ? `You reacted ${active.dataset.emoji}` : '';
+      }
+    </script>
+
+    <script type="text/plain" id="l3-html">
+      <header class="topbar">
+        <h1>Campus Shop</h1>
+        <div class="cart-badge">Cart <span id="cartCount" class="badge">0</span></div>
+      </header>
+
+      <main class="layout">
+        <section>
+          <h2>Products</h2>
+          <div id="productList" class="grid"></div>
+        </section>
+
+        <aside class="cart">
+          <h2>Your cart</h2>
+          <p id="emptyMsg" class="empty">Your cart is empty.</p>
+          <ul id="cartItems" class="cart-items"></ul>
+          <div class="total">
+            <span>Total</span>
+            <strong id="cartTotal">₱0.00</strong>
+          </div>
+          <button id="clearCart" class="secondary">Clear cart</button>
+        </aside>
+      </main>
+    </script>
+
+    <script type="text/plain" id="l3-css">
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: "Poppins", system-ui, sans-serif;
+        background: #f8f6fd;
+        color: #1f1535;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 20px;
+        background: #2e1a52;
+        color: #ffffff;
+      }
+      .topbar h1 { margin: 0; font-size: 20px; }
+
+      .cart-badge { font-weight: 600; }
+      .badge {
+        display: inline-block;
+        min-width: 26px;
+        padding: 2px 8px;
+        margin-left: 4px;
+        border-radius: 999px;
+        background: #ff7a1a;
+        color: #1b0d00;
+        text-align: center;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 20px;
+        padding: 20px;
+      }
+      @media (max-width: 640px) {
+        .layout { grid-template-columns: 1fr; padding: 14px; }
+      }
+
+      h2 { margin: 0 0 12px; font-size: 18px; }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 12px;
+      }
+
+      .product {
+        padding: 12px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(46, 16, 101, 0.08);
+      }
+      .thumb {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 11;
+        object-fit: cover;
+        border-radius: 8px;
+        background: #f3f0fb;
+      }
+      .mini { width: 40px; height: 28px; object-fit: cover; border-radius: 5px; }
+      .cart-items .name { display: flex; align-items: center; gap: 8px; }
+      .product h3 { margin: 10px 0 2px; font-size: 15px; }
+      .price { margin: 0 0 10px; color: #6d28d9; font-weight: 700; }
+
+      button {
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        border: 0;
+        border-radius: 8px;
+      }
+      .add-btn { width: 100%; padding: 9px; background: #6d28d9; color: #ffffff; }
+      .add-btn:hover { background: #5b21b6; }
+      .add-btn.added { background: #1d8a4e; }
+
+      .cart {
+        align-self: start;
+        padding: 16px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(46, 16, 101, 0.08);
+      }
+      .empty { color: #6f6787; }
+
+      .cart-items { list-style: none; margin: 0; padding: 0; }
+      .cart-items li {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 0;
+        border-bottom: 1px solid #ece8f6;
+        font-size: 14px;
+      }
+      .cart-items .name { grid-column: 1 / -1; font-weight: 600; }
+      .qty { display: flex; align-items: center; gap: 6px; }
+      .qty button { width: 30px; height: 30px; background: #ede9fe; color: #1f1535; }
+      .line-total { font-weight: 700; }
+      .remove { padding: 4px 8px; background: transparent; color: #d13b2a; }
+
+      .total {
+        display: flex;
+        justify-content: space-between;
+        margin: 14px 0;
+        font-size: 18px;
+      }
+      .secondary { width: 100%; padding: 9px; background: #ede9fe; color: #1f1535; }
+      .secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+    </script>
+
+    <script type="text/plain" id="l3-js">
+      // LEVEL 3: Adding to cart
+
+      // PRODUCT PHOTOS
+      // For this demo, we just used unsplash but ofcourse you can use your own images.
+      // The "photo" function below builds a URL for each photo, and the "pictures" object stores them in a way that makes it easy to assign to each product. You can replace the Unsplash URLs with your own image paths if you like.
+      // You can save yours in an "images" folder and write
+      // image: 'images/notebook.jpg' in the products list instead.
+      const photo = (id) => `https://images.unsplash.com/${id}?w=400&h=275&fit=crop&auto=format&q=70`;
+
+      const pictures = {
+        notebook:  photo('photo-1562217199-6e6d4cd031f5'),
+        pens:      photo('photo-1567855354833-ac2c4f967b0c'),
+        tumbler:   photo('photo-1544003484-3cd181d17917'),
+        usb:       photo('photo-1581068466660-e6585b8afa97'),
+        notes:     photo('photo-1683739147682-607fb8e24e3f'),
+        earphones: photo('photo-1555679792-6783ef0bbf61'),
+      };
+
+      // 1. DATA: products live in an array of objects
+      const products = [
+        { id: 1, name: 'Spiral Notebook',      price: 45,  image: pictures.notebook },
+        { id: 2, name: 'Ballpen Set (5)',      price: 60,  image: pictures.pens },
+        { id: 3, name: 'Tumbler 500ml',        price: 299, image: pictures.tumbler },
+        { id: 4, name: 'USB Flash Drive 32GB', price: 250, image: pictures.usb },
+        { id: 5, name: 'Sticky Notes Pack',    price: 85,  image: pictures.notes },
+        { id: 6, name: 'Wired Earphones',      price: 199, image: pictures.earphones },
+      ];
+
+      // The cart only stores the product id and quantity
+      let cart = []; // e.g. [{ id: 3, qty: 2 }]
+
+      // 2. ELEMENTS
+      const productList = document.querySelector('#productList');
+      const cartItems   = document.querySelector('#cartItems');
+      const cartCount   = document.querySelector('#cartCount');
+      const cartTotal   = document.querySelector('#cartTotal');
+      const emptyMsg    = document.querySelector('#emptyMsg');
+      const clearBtn    = document.querySelector('#clearCart');
+
+      // 3. HELPERS
+      const peso = (amount) =>
+        '₱' + amount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      const findProduct = (id) => products.find((p) => p.id === id);
+
+      // 4. SHOW THE PRODUCTS (map turns each object into HTML)
+      function renderProducts() {
+        productList.innerHTML = products.map((p) => `
+          <div class="product">
+            <img class="thumb" src="${p.image}" alt="${p.name}">
+            <h3>${p.name}</h3>
+            <p class="price">${peso(p.price)}</p>
+            <button class="add-btn" data-id="${p.id}">Add to cart</button>
+          </div>
+        `).join('');
+      }
+
+      // 5. CART ACTIONS
+      function addToCart(id) {
+        const item = cart.find((i) => i.id === id);
+        if (item) {
+          item.qty++;                 // already in cart: add one more
+        } else {
+          cart.push({ id, qty: 1 });  // new item
+        }
+        renderCart();
+      }
+
+      function changeQty(id, amount) {
+        const item = cart.find((i) => i.id === id);
+        item.qty += amount;
+        if (item.qty <= 0) removeItem(id);
+        else renderCart();
+      }
+
+      function removeItem(id) {
+        cart = cart.filter((i) => i.id !== id);
+        renderCart();
+      }
+
+      // 6. DRAW THE CART (called after EVERY change)
+      function renderCart() {
+        cartItems.innerHTML = cart.map((item) => {
+          const p = findProduct(item.id);
+          return `
+            <li>
+              <span class="name"><img class="mini" src="${p.image}" alt="">${p.name}</span>
+              <div class="qty">
+                <button data-action="minus" data-id="${p.id}" aria-label="Remove one">−</button>
+                <span>${item.qty}</span>
+                <button data-action="plus" data-id="${p.id}" aria-label="Add one">+</button>
+              </div>
+              <span class="line-total">${peso(p.price * item.qty)}</span>
+              <button class="remove" data-action="remove" data-id="${p.id}" aria-label="Remove ${p.name}">✕</button>
+            </li>`;
+        }).join('');
+
+        // reduce() adds everything up
+        const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+        const total    = cart.reduce((sum, i) => sum + findProduct(i.id).price * i.qty, 0);
+
+        cartCount.textContent = totalQty;
+        cartTotal.textContent = peso(total);
+        emptyMsg.hidden  = cart.length > 0;
+        clearBtn.disabled = cart.length === 0;
+      }
+
+      // 7. EVENTS
+      productList.addEventListener('click', (event) => {
+        const btn = event.target.closest('.add-btn');
+        if (!btn) return;
+
+        addToCart(Number(btn.dataset.id));
+
+        // quick feedback on the button
+        btn.textContent = 'Added ✓';
+        btn.classList.add('added');
+        setTimeout(() => {
+          btn.textContent = 'Add to cart';
+          btn.classList.remove('added');
+        }, 800);
+      });
+
+      cartItems.addEventListener('click', (event) => {
+        const btn = event.target.closest('button');
+        if (!btn) return;
+
+        const id = Number(btn.dataset.id);
+        if (btn.dataset.action === 'plus')   changeQty(id, 1);
+        if (btn.dataset.action === 'minus')  changeQty(id, -1);
+        if (btn.dataset.action === 'remove') removeItem(id);
+      });
+
+      clearBtn.addEventListener('click', () => {
+        cart = [];
+        renderCart();
+      });
+
+      // 8. START
+      renderProducts();
+      renderCart();
+    </script>
+
+    <script type="text/plain" id="l4-html">
+      <main class="checkout">
+
+        <form id="checkoutForm" class="panel" novalidate>
+          <h2>1. Contact details</h2>
+          <div class="field">
+            <label for="fullName">Full name</label>
+            <input id="fullName" autocomplete="name">
+            <small class="error"></small>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" autocomplete="email">
+            <small class="error"></small>
+          </div>
+          <div class="field">
+            <label for="phone">Mobile number</label>
+            <input id="phone" type="tel" placeholder="09XXXXXXXXX" autocomplete="tel">
+            <small class="error"></small>
+          </div>
+          <div class="field">
+            <label for="address">Delivery address</label>
+            <textarea id="address" rows="2" autocomplete="street-address"></textarea>
+            <small class="error"></small>
+          </div>
+
+          <h2>2. Delivery</h2>
+          <label class="option"><input type="radio" name="shipping" value="standard" data-label="Standard" checked> Standard (3–5 days) <span>₱50.00</span></label>
+          <label class="option"><input type="radio" name="shipping" value="express" data-label="Express"> Express (next day) <span>₱120.00</span></label>
+          <label class="option"><input type="radio" name="shipping" value="pickup" data-label="Campus pickup"> Campus pickup <span>Free</span></label>
+
+          <h2>3. Payment</h2>
+          <label class="option"><input type="radio" name="payment" value="Cash on Delivery" checked> Cash on Delivery</label>
+          <label class="option"><input type="radio" name="payment" value="GCash"> GCash</label>
+
+          <button type="submit" id="placeOrder" class="primary">Place order</button>
+        </form>
+
+        <aside id="summary" class="panel summary">
+          <h2>Order summary</h2>
+          <ul id="summaryItems" class="items"></ul>
+
+          <div class="promo">
+            <input id="promoInput" placeholder="Promo code">
+            <button type="button" id="applyPromo">Apply</button>
+          </div>
+          <p id="promoMsg" class="hint"></p>
+
+          <dl class="totals">
+            <div><dt>Subtotal</dt><dd id="subtotal"></dd></div>
+            <div><dt>Discount</dt><dd id="discount"></dd></div>
+            <div><dt>Shipping</dt><dd id="shipping"></dd></div>
+            <div class="grand"><dt>Total</dt><dd id="total"></dd></div>
+          </dl>
+        </aside>
+
+        <section id="receipt" class="panel receipt" hidden></section>
+      </main>
+    </script>
+
+    <script type="text/plain" id="l4-css">
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+      * { box-sizing: border-box; }
+      [hidden] { display: none !important; }
+
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: "Poppins", system-ui, sans-serif;
+        background: #f8f6fd;
+        color: #1f1535;
+      }
+
+      .checkout {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      @media (max-width: 680px) { .checkout { grid-template-columns: 1fr; } }
+
+      .panel {
+        padding: 20px;
+        background: #ffffff;
+        border-radius: 14px;
+        box-shadow: 0 3px 12px rgba(46, 16, 101, 0.08);
+      }
+      .summary { align-self: start; }
+      .receipt { grid-column: 1 / -1; max-width: 520px; width: 100%; margin: 0 auto; }
+
+      h2 { margin: 18px 0 10px; font-size: 17px; }
+      h2:first-child { margin-top: 0; }
+
+      .field { margin-bottom: 12px; }
+      label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+
+      input, textarea {
+        width: 100%;
+        padding: 10px 12px;
+        font: inherit;
+        border: 2px solid #ddd6f3;
+        border-radius: 10px;
+      }
+      input:focus, textarea:focus { outline: none; border-color: #6d28d9; }
+      .invalid { border-color: #d13b2a; background: #fff5f4; }
+      .error { display: block; min-height: 1.2em; color: #d13b2a; font-size: 13px; }
+
+      .option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        border: 2px solid #ece8f6;
+        border-radius: 10px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      .option input { width: auto; }
+      .option span { margin-left: auto; font-weight: 700; }
+      .option:has(input:checked) { border-color: #6d28d9; background: #f3f0fb; }
+
+      button {
+        font: inherit;
+        font-weight: 600;
+        border: 0;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      .primary {
+        width: 100%;
+        margin-top: 14px;
+        padding: 13px;
+        background: #6d28d9;
+        color: #ffffff;
+        font-size: 16px;
+      }
+      .primary:hover { background: #5b21b6; }
+      .primary:disabled { opacity: 0.6; cursor: wait; }
+
+      .items, .receipt-items { list-style: none; margin: 0 0 12px; padding: 0; font-size: 14px; }
+      .items li, .receipt-items li {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 6px 0;
+        border-bottom: 1px dashed #ece8f6;
+      }
+
+      .promo { display: flex; gap: 6px; }
+      .promo button { padding: 0 14px; background: #1f1535; color: #ffffff; }
+      .hint { min-height: 1.2em; margin: 6px 0; font-size: 13px; }
+      .hint.ok { color: #1d8a4e; }
+      .hint.bad { color: #d13b2a; }
+
+      .totals { margin: 8px 0 0; }
+      .totals div { display: flex; justify-content: space-between; padding: 4px 0; }
+      .totals dt { color: #5b5370; }
+      .totals dd { margin: 0; font-weight: 600; }
+      .totals .grand { margin-top: 6px; padding-top: 10px; border-top: 2px solid #1f1535; font-size: 19px; }
+      .totals .grand dt { color: #1f1535; font-weight: 700; }
+    </script>
+
+    <script type="text/plain" id="l4-js">
+      // LEVEL 4: Checking out
+
+      // 1. DATA: the cart from Level 3 (fixed here to keep things simple)
+      const cart = [
+        { name: 'Spiral Notebook', price: 45,  qty: 3 },
+        { name: 'Tumbler 500ml',   price: 299, qty: 1 },
+        { name: 'Sticky Notes Pack', price: 85,  qty: 2 },
+      ];
+
+      const SHIPPING = { standard: 50, express: 120, pickup: 0 };
+
+      const PROMOS = {
+        STUDENT10: { type: 'percent', value: 10, label: '10% student discount' },
+        LESS50:    { type: 'fixed',   value: 50, label: '₱50 off your order' },
+      };
+
+      let appliedPromo = null;
+
+      // 2. ELEMENTS
+      const form          = document.querySelector('#checkoutForm');
+      const summary       = document.querySelector('#summary');
+      const receipt       = document.querySelector('#receipt');
+      const summaryItems  = document.querySelector('#summaryItems');
+      const promoInput    = document.querySelector('#promoInput');
+      const promoMsg      = document.querySelector('#promoMsg');
+      const placeOrderBtn = document.querySelector('#placeOrder');
+
+      // 3. HELPERS
+      const peso = (n) =>
+        '₱' + n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      // Never put user text into innerHTML without escaping it
+      function escapeHTML(text) {
+        return text.replace(/[&<>"']/g, (ch) =>
+          ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+      }
+
+      const checked = (name) => document.querySelector(`input[name="${name}"]:checked`);
+
+      // 4. COMPUTE THE TOTALS
+      function getTotals() {
+        const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+        let discount = 0;
+        if (appliedPromo) {
+          const promo = PROMOS[appliedPromo];
+          discount = promo.type === 'percent'
+            ? subtotal * promo.value / 100
+            : Math.min(promo.value, subtotal);
+        }
+
+        const shipping = SHIPPING[checked('shipping').value];
+        const total = subtotal - discount + shipping;
+        return { subtotal, discount, shipping, total };
+      }
+
+      function renderSummary() {
+        summaryItems.innerHTML = cart.map((item) => `
+          <li><span>${item.qty} × ${item.name}</span><span>${peso(item.price * item.qty)}</span></li>
+        `).join('');
+
+        const t = getTotals();
+        document.querySelector('#subtotal').textContent = peso(t.subtotal);
+        document.querySelector('#discount').textContent = t.discount ? '−' + peso(t.discount) : peso(0);
+        document.querySelector('#shipping').textContent = t.shipping ? peso(t.shipping) : 'Free';
+        document.querySelector('#total').textContent    = peso(t.total);
+        placeOrderBtn.textContent = `Place order · ${peso(t.total)}`;
+      }
+
+      // Re-compute when the delivery option changes
+      form.addEventListener('change', (event) => {
+        if (event.target.name === 'shipping') renderSummary();
+      });
+
+      // 5. PROMO CODES
+      function applyPromo() {
+        const code = promoInput.value.trim().toUpperCase();
+
+        if (PROMOS[code]) {
+          appliedPromo = code;
+          promoMsg.textContent = `Applied: ${PROMOS[code].label}`;
+          promoMsg.className = 'hint ok';
+        } else {
+          appliedPromo = null;
+          promoMsg.textContent = code ? 'That code is not valid.' : 'Type a code first.';
+          promoMsg.className = 'hint bad';
+        }
+        renderSummary();
+      }
+
+      document.querySelector('#applyPromo').addEventListener('click', applyPromo);
+      promoInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') applyPromo();
+      });
+
+      // 6. VALIDATION: each rule returns true, or an error message
+      const rules = {
+        fullName: (v) => v.length >= 2 || 'Please enter your full name.',
+        email:    (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Enter a valid email, like ana@school.edu.ph',
+        phone:    (v) => /^09\d{9}$/.test(v) || 'Use 11 digits starting with 09.',
+        address:  (v) => v.length >= 10 || 'Please enter your complete address.',
+      };
+
+      function validateField(input) {
+        const result = rules[input.id](input.value.trim());
+        const errorEl = input.parentElement.querySelector('.error');
+
+        if (result === true) {
+          input.classList.remove('invalid');
+          errorEl.textContent = '';
+          return true;
+        }
+        input.classList.add('invalid');
+        errorEl.textContent = result;
+        return false;
+      }
+
+      // Check each field when the user leaves it
+      Object.keys(rules).forEach((id) => {
+        document.getElementById(id).addEventListener('blur', (e) => validateField(e.target));
+      });
+
+      // 7. SUBMIT
+      form.addEventListener('submit', (event) => {
+        event.preventDefault(); // stop the page from reloading
+
+        const results = Object.keys(rules).map((id) => validateField(document.getElementById(id)));
+        if (!results.every(Boolean)) {
+          form.querySelector('.invalid').focus(); // jump to the first problem
+          return;
+        }
+
+        placeOrderBtn.disabled = true;
+        placeOrderBtn.textContent = 'Processing…';
+        setTimeout(showReceipt, 1000); // pretend we are talking to a server
+      });
+
+      // 8. RECEIPT
+      function showReceipt() {
+        const t = getTotals();
+        const orderNo = 'ORD-' + Date.now().toString().slice(-6);
+        const name  = escapeHTML(document.getElementById('fullName').value.trim());
+        const email = escapeHTML(document.getElementById('email').value.trim());
+
+        receipt.innerHTML = `
+          <h2>Order confirmed</h2>
+          <p>Thank you, <strong>${name}</strong>! Your order number is <strong>${orderNo}</strong>.</p>
+          <ul class="receipt-items">
+            ${cart.map((i) => `<li><span>${i.qty} × ${i.name}</span><span>${peso(i.price * i.qty)}</span></li>`).join('')}
+          </ul>
+          <dl class="totals">
+            <div><dt>Discount</dt><dd>−${peso(t.discount)}</dd></div>
+            <div><dt>Shipping</dt><dd>${t.shipping ? peso(t.shipping) : 'Free'}</dd></div>
+            <div class="grand"><dt>Total paid</dt><dd>${peso(t.total)}</dd></div>
+          </dl>
+          <p class="hint">Delivery: ${checked('shipping').dataset.label} · Payment: ${checked('payment').value}<br>
+          A confirmation will be sent to ${email}.</p>
+          <button type="button" id="newOrder" class="primary">Start a new order</button>
+        `;
+
+        form.hidden = true;
+        summary.hidden = true;
+        receipt.hidden = false;
+        document.querySelector('#newOrder').addEventListener('click', resetCheckout);
+      }
+
+      function resetCheckout() {
+        form.reset();
+        appliedPromo = null;
+        promoInput.value = '';
+        promoMsg.textContent = '';
+        placeOrderBtn.disabled = false;
+        form.hidden = false;
+        summary.hidden = false;
+        receipt.hidden = true;
+        renderSummary();
+      }
+
+      // 9. START
+      renderSummary();
+    </script>
+
+    <script type="text/plain" id="l5-html">
+      <header class="topbar">
+        <h1>Campus Shop</h1>
+        <button id="openCart" class="cart-btn">Cart <span id="cartCount" class="badge">0</span></button>
+      </header>
+
+      <section class="toolbar">
+        <input id="search" type="search" placeholder="Search products…" aria-label="Search products">
+        <select id="sort" aria-label="Sort products">
+          <option value="featured">Featured</option>
+          <option value="low">Price: low to high</option>
+          <option value="high">Price: high to low</option>
+          <option value="name">Name: A to Z</option>
+        </select>
+        <div id="categories" class="chips"></div>
+      </section>
+
+      <p id="resultInfo" class="result-info"></p>
+      <main id="productGrid" class="grid"></main>
+
+      <!-- Slide-in cart -->
+      <div id="overlay" class="overlay" hidden></div>
+      <aside id="cartDrawer" class="drawer" aria-hidden="true" aria-label="Shopping cart">
+        <div class="drawer-head">
+          <h2>Your cart</h2>
+          <button id="closeCart" class="icon-btn" aria-label="Close cart">✕</button>
+        </div>
+        <ul id="cartItems" class="cart-items"></ul>
+        <div class="drawer-foot">
+          <div class="row"><span>Subtotal</span><strong id="subtotal">₱0.00</strong></div>
+          <button id="checkoutBtn" class="primary">Checkout</button>
+        </div>
+      </aside>
+
+      <!-- Checkout dialog -->
+      <dialog id="checkoutDialog">
+        <form id="checkoutForm" novalidate>
+          <h2>Checkout</h2>
+          <p class="muted">Amount to pay: <strong id="dialogTotal"></strong></p>
+          <label>Full name <input id="custName" autocomplete="name"></label>
+          <label>Mobile number <input id="custPhone" type="tel" placeholder="09XXXXXXXXX"></label>
+          <label>Payment
+            <select id="custPay">
+              <option>Cash on Delivery</option>
+              <option>GCash</option>
+            </select>
+          </label>
+          <p id="formError" class="form-error"></p>
+          <div class="dialog-actions">
+            <button type="button" id="cancelCheckout" class="secondary">Cancel</button>
+            <button type="submit" class="primary">Place order</button>
+          </div>
+        </form>
+        <div id="orderDone" hidden>
+          <h2>Order placed!</h2>
+          <p id="orderText"></p>
+          <button type="button" id="doneBtn" class="primary">Continue shopping</button>
+        </div>
+      </dialog>
+
+      <div id="toast" class="toast" role="status"></div>
+    </script>
+
+    <script type="text/plain" id="l5-css">
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+      * { box-sizing: border-box; }
+      [hidden] { display: none !important; }
+
+      body {
+        margin: 0;
+        font-family: "Poppins", system-ui, sans-serif;
+        background: #f8f6fd;
+        color: #1f1535;
+      }
+
+      button, input, select { font: inherit; }
+      button { cursor: pointer; border: 0; border-radius: 10px; font-weight: 600; }
+
+      /* ---------- Top bar ---------- */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        background: #2e1a52;
+        color: #ffffff;
+      }
+      .topbar h1 { margin: 0; font-size: 20px; }
+      .cart-btn { padding: 8px 14px; background: #ffffff; color: #1f1535; }
+      .badge {
+        display: inline-block;
+        min-width: 24px;
+        padding: 1px 7px;
+        margin-left: 4px;
+        border-radius: 999px;
+        background: #ff7a1a;
+        color: #1b0d00;
+      }
+      .badge.pop { animation: pop 0.3s; }
+      @keyframes pop { 50% { transform: scale(1.4); } }
+
+      /* ---------- Toolbar ---------- */
+      .toolbar { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px 20px 0; }
+      .toolbar input { flex: 1 1 220px; }
+      .toolbar input, .toolbar select {
+        padding: 10px 12px;
+        border: 2px solid #ddd6f3;
+        border-radius: 10px;
+        background: #ffffff;
+      }
+      .chips { display: flex; flex-wrap: wrap; gap: 6px; width: 100%; }
+      .chip { padding: 7px 14px; border-radius: 999px; background: #ede9fe; color: #1f1535; }
+      .chip.active { background: #6d28d9; color: #ffffff; }
+
+      .result-info { margin: 12px 20px 0; color: #6f6787; font-size: 14px; }
+
+      /* ---------- Products ---------- */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 14px;
+        padding: 12px 20px 30px;
+      }
+      .product {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 12px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(46, 16, 101, 0.08);
+      }
+      .thumb {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 11;
+        object-fit: cover;
+        border-radius: 8px;
+        background: #f3f0fb;
+      }
+      .mini { width: 40px; height: 28px; object-fit: cover; border-radius: 5px; flex: none; }
+      .item-name { display: flex; align-items: center; gap: 8px; }
+      .cat { margin-top: 8px; font-size: 12px; color: #6f6787; }
+      .product h3 { margin: 2px 0; font-size: 15px; }
+      .price { margin: 0; color: #6d28d9; font-weight: 700; }
+      .stock { margin: 2px 0 10px; font-size: 12px; color: #5b5370; }
+      .stock.low { color: #c2410c; font-weight: 600; }
+      .add-btn { margin-top: auto; padding: 9px; background: #6d28d9; color: #ffffff; }
+      .add-btn:disabled { background: #d9d2ee; color: #5b5370; cursor: not-allowed; }
+      .in-cart {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .empty { grid-column: 1 / -1; padding: 30px; text-align: center; color: #6f6787; }
+
+      /* ---------- Cart drawer ---------- */
+      .overlay { position: fixed; inset: 0; z-index: 10; background: rgba(46, 16, 101, 0.45); }
+      .drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 11;
+        display: flex;
+        flex-direction: column;
+        width: min(360px, 90vw);
+        background: #ffffff;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      }
+      .drawer.open { transform: translateX(0); }
+      .drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid #ece8f6; }
+      .drawer-head h2 { margin: 0; font-size: 18px; }
+      .icon-btn { width: 36px; height: 36px; background: #f1eefa; color: #1f1535; }
+
+      .cart-items { flex: 1; overflow-y: auto; list-style: none; margin: 0; padding: 0 16px; }
+      .cart-items li {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 6px;
+        padding: 12px 0;
+        border-bottom: 1px solid #ece8f6;
+        font-size: 14px;
+      }
+      .cart-items .empty-cart { display: block; padding: 30px 0; text-align: center; color: #6f6787; border: 0; }
+      .qty { display: flex; align-items: center; gap: 6px; }
+      .qty button { width: 30px; height: 30px; background: #ede9fe; color: #1f1535; }
+      .remove { background: none; color: #d13b2a; padding: 0; font-size: 13px; justify-self: end; }
+
+      .drawer-foot { padding: 16px; border-top: 1px solid #ece8f6; }
+      .row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 17px; }
+      .primary { width: 100%; padding: 12px; background: #6d28d9; color: #ffffff; }
+      .primary:disabled { opacity: 0.5; cursor: not-allowed; }
+      .secondary { padding: 12px; background: #ede9fe; color: #1f1535; }
+
+      /* ---------- Dialog ---------- */
+      dialog {
+        width: min(400px, 92vw);
+        padding: 22px;
+        border: 0;
+        border-radius: 16px;
+        box-shadow: 0 20px 50px rgba(46, 16, 101, 0.3);
+      }
+      dialog::backdrop { background: rgba(46, 16, 101, 0.5); }
+      dialog h2 { margin: 0 0 6px; }
+      dialog label { display: block; margin-top: 12px; font-size: 14px; font-weight: 600; }
+      dialog input, dialog select {
+        display: block;
+        width: 100%;
+        margin-top: 4px;
+        padding: 10px 12px;
+        border: 2px solid #ddd6f3;
+        border-radius: 10px;
+      }
+      .muted { color: #5b5370; margin: 0; }
+      .form-error { min-height: 1.2em; color: #d13b2a; font-size: 13px; }
+      .dialog-actions { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; }
+
+      /* ---------- Toast ---------- */
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 20px;
+        z-index: 20;
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: #1f1535;
+        color: #ffffff;
+        font-size: 14px;
+        opacity: 0;
+        transform: translate(-50%, 20px);
+        transition: opacity 0.25s, transform 0.25s;
+        pointer-events: none;
+      }
+      .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    </script>
+
+    <script type="text/plain" id="l5-js">
+      // LEVEL 5: Mini shop (search, filter, sort, stock, saved cart, checkout)
+
+      // ========== 0. PRODUCT PHOTOS ==========
+      // Free photos from Unsplash (unsplash.com), used under the Unsplash License.
+      // ?w=400&h=275&fit=crop asks Unsplash for a small, cropped copy.
+      // Have your own photos? Save them in an "images" folder and write
+      // image: 'images/notebook.jpg' in the products list instead.
+      const photo = (id) => `https://images.unsplash.com/${id}?w=400&h=275&fit=crop&auto=format&q=70`;
+
+      const pictures = {
+        notebook:   photo('photo-1562217199-6e6d4cd031f5'),
+        pens:       photo('photo-1567855354833-ac2c4f967b0c'),
+        calculator: photo('photo-1511377107391-116a9d5d20b5'),
+        usb:        photo('photo-1581068466660-e6585b8afa97'),
+        earphones:  photo('photo-1555679792-6783ef0bbf61'),
+        powerbank:  photo('photo-1587133454235-762b65c9f5c0'),
+        notes:      photo('photo-1683739147682-607fb8e24e3f'),
+        tumbler:    photo('photo-1544003484-3cd181d17917'),
+        hoodie:     photo('photo-1547954569-06aabe3b39b1'),
+      };
+
+      // ========== 1. DATA ==========
+      const products = [
+        { id: 1, name: 'Spiral Notebook',       category: 'Supplies', price: 45,  stock: 20, image: pictures.notebook },
+        { id: 2, name: 'Ballpen Set (5)',       category: 'Supplies', price: 60,  stock: 15, image: pictures.pens },
+        { id: 3, name: 'Scientific Calculator', category: 'Supplies', price: 650, stock: 4,  image: pictures.calculator },
+        { id: 4, name: 'USB Flash Drive 32GB',  category: 'Gadgets',  price: 250, stock: 8,  image: pictures.usb },
+        { id: 5, name: 'Wired Earphones',       category: 'Gadgets',  price: 199, stock: 6,  image: pictures.earphones },
+        { id: 6, name: 'Power Bank 10000mAh',   category: 'Gadgets',  price: 899, stock: 3,  image: pictures.powerbank },
+        { id: 7, name: 'Sticky Notes Pack',     category: 'Supplies', price: 85,  stock: 25, image: pictures.notes },
+        { id: 8, name: 'Tumbler 500ml',         category: 'Merch',    price: 299, stock: 5,  image: pictures.tumbler },
+        { id: 9, name: 'Campus Hoodie',         category: 'Merch',    price: 750, stock: 0,  image: pictures.hoodie },
+      ];
+
+      // ========== 2. STATE (everything that can change) ==========
+      const STORAGE_KEY = 'campusShopCart';
+
+      const state = {
+        search: '',
+        category: 'All',
+        sort: 'featured',
+        cart: loadCart(), // [{ id, qty }]
+      };
+
+      // ========== 3. ELEMENTS ==========
+      const $ = (selector) => document.querySelector(selector);
+      const grid        = $('#productGrid');
+      const categories  = $('#categories');
+      const resultInfo  = $('#resultInfo');
+      const cartCount   = $('#cartCount');
+      const cartItems   = $('#cartItems');
+      const subtotalEl  = $('#subtotal');
+      const drawer      = $('#cartDrawer');
+      const overlay     = $('#overlay');
+      const checkoutBtn = $('#checkoutBtn');
+      const dialog      = $('#checkoutDialog');
+      const form        = $('#checkoutForm');
+      const orderDone   = $('#orderDone');
+      const toast       = $('#toast');
+
+      // ========== 4. HELPERS ==========
+      const peso = (n) =>
+        '₱' + n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      const findProduct = (id) => products.find((p) => p.id === id);
+      const cartItem    = (id) => state.cart.find((i) => i.id === id);
+      const qtyInCart   = (id) => (cartItem(id) ? cartItem(id).qty : 0);
+
+      function escapeHTML(text) {
+        return text.replace(/[&<>"']/g, (ch) =>
+          ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+      }
+
+      function getSubtotal() {
+        return state.cart.reduce((sum, i) => sum + findProduct(i.id).price * i.qty, 0);
+      }
+
+      // localStorage only stores text, so we use JSON
+      function loadCart() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          return Array.isArray(saved) ? saved : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function saveCart() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state.cart));
+        } catch (error) {
+          // storage may be blocked (private mode); the shop still works
+        }
+      }
+
+      // Wait until the user stops typing before searching
+      function debounce(fn, delay) {
+        let timer;
+        return (...args) => {
+          clearTimeout(timer);
+          timer = setTimeout(() => fn(...args), delay);
+        };
+      }
+
+      let toastTimer;
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+      }
+
+      // ========== 5. RENDER ==========
+      function getVisibleProducts() {
+        const term = state.search.toLowerCase();
+
+        let list = products.filter((p) =>
+          (state.category === 'All' || p.category === state.category) &&
+          p.name.toLowerCase().includes(term)
+        );
+
+        // [...list] makes a copy so we never re-order the original array
+        if (state.sort === 'low')  list = [...list].sort((a, b) => a.price - b.price);
+        if (state.sort === 'high') list = [...list].sort((a, b) => b.price - a.price);
+        if (state.sort === 'name') list = [...list].sort((a, b) => a.name.localeCompare(b.name));
+        return list;
+      }
+
+      function renderCategories() {
+        const names = ['All', ...new Set(products.map((p) => p.category))];
+        categories.innerHTML = names.map((name) => `
+          <button class="chip ${name === state.category ? 'active' : ''}" data-category="${name}">${name}</button>
+        `).join('');
+      }
+
+      function renderProducts() {
+        const list = getVisibleProducts();
+        resultInfo.textContent = `Showing ${list.length} of ${products.length} products`;
+
+        if (list.length === 0) {
+          grid.innerHTML = `<p class="empty">No products match "${escapeHTML(state.search)}".</p>`;
+          return;
+        }
+
+        grid.innerHTML = list.map((p) => {
+          const inCart = qtyInCart(p.id);
+          const left = p.stock - inCart;
+
+          let label = 'Add to cart';
+          if (p.stock === 0) label = 'Out of stock';
+          else if (left === 0) label = 'All in your cart';
+
+          return `
+            <article class="product">
+              <img class="thumb" src="${p.image}" alt="${p.name}">
+              ${inCart ? `<span class="in-cart">${inCart} in cart</span>` : ''}
+              <span class="cat">${p.category}</span>
+              <h3>${p.name}</h3>
+              <p class="price">${peso(p.price)}</p>
+              <p class="stock ${p.stock <= 3 ? 'low' : ''}">
+                ${p.stock === 0 ? 'Sold out' : `${p.stock} in stock`}
+              </p>
+              <button class="add-btn" data-id="${p.id}" ${left <= 0 ? 'disabled' : ''}>${label}</button>
+            </article>`;
+        }).join('');
+      }
+
+      function renderCart() {
+        const totalQty = state.cart.reduce((sum, i) => sum + i.qty, 0);
+        cartCount.textContent = totalQty;
+
+        if (state.cart.length === 0) {
+          cartItems.innerHTML = '<li class="empty-cart">Your cart is empty.</li>';
+        } else {
+          cartItems.innerHTML = state.cart.map((item) => {
+            const p = findProduct(item.id);
+            return `
+              <li>
+                <strong class="item-name"><img class="mini" src="${p.image}" alt="">${p.name}</strong>
+                <span>${peso(p.price * item.qty)}</span>
+                <div class="qty">
+                  <button data-action="minus" data-id="${p.id}" aria-label="Remove one">−</button>
+                  <span>${item.qty}</span>
+                  <button data-action="plus" data-id="${p.id}" aria-label="Add one">+</button>
+                </div>
+                <button class="remove" data-action="remove" data-id="${p.id}">Remove</button>
+              </li>`;
+          }).join('');
+        }
+
+        subtotalEl.textContent = peso(getSubtotal());
+        checkoutBtn.disabled = state.cart.length === 0;
+      }
+
+      function render() {
+        renderCategories();
+        renderProducts();
+        renderCart();
+      }
+
+      // ========== 6. ACTIONS ==========
+      function addToCart(id) {
+        const p = findProduct(id);
+        const item = cartItem(id);
+
+        if (qtyInCart(id) >= p.stock) {
+          showToast(`Sorry, only ${p.stock} left for ${p.name}.`);
+          return;
+        }
+
+        if (item) item.qty++;
+        else state.cart.push({ id, qty: 1 });
+
+        saveCart();
+        render();
+        showToast(`${p.name} added to cart`);
+
+        cartCount.classList.remove('pop');
+        void cartCount.offsetWidth;
+        cartCount.classList.add('pop');
+      }
+
+      function changeQty(id, amount) {
+        const item = cartItem(id);
+        const p = findProduct(id);
+
+        if (amount > 0 && item.qty >= p.stock) {
+          showToast('No more stock available.');
+          return;
+        }
+
+        item.qty += amount;
+        if (item.qty <= 0) {
+          removeItem(id);
+          return;
+        }
+        saveCart();
+        render();
+      }
+
+      function removeItem(id) {
+        state.cart = state.cart.filter((i) => i.id !== id);
+        saveCart();
+        render();
+      }
+
+      function openCart() {
+        drawer.classList.add('open');
+        drawer.setAttribute('aria-hidden', 'false');
+        overlay.hidden = false;
+        $('#closeCart').focus();
+      }
+
+      function closeCart() {
+        drawer.classList.remove('open');
+        drawer.setAttribute('aria-hidden', 'true');
+        overlay.hidden = true;
+      }
+
+      // ========== 7. EVENTS ==========
+      $('#search').addEventListener('input', debounce((e) => {
+        state.search = e.target.value.trim();
+        renderProducts();
+      }, 250));
+
+      $('#sort').addEventListener('change', (e) => {
+        state.sort = e.target.value;
+        renderProducts();
+      });
+
+      categories.addEventListener('click', (e) => {
+        const chip = e.target.closest('.chip');
+        if (!chip) return;
+        state.category = chip.dataset.category;
+        renderCategories();
+        renderProducts();
+      });
+
+      grid.addEventListener('click', (e) => {
+        const btn = e.target.closest('.add-btn');
+        if (btn) addToCart(Number(btn.dataset.id));
+      });
+
+      cartItems.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        const id = Number(btn.dataset.id);
+        if (btn.dataset.action === 'plus')   changeQty(id, 1);
+        if (btn.dataset.action === 'minus')  changeQty(id, -1);
+        if (btn.dataset.action === 'remove') removeItem(id);
+      });
+
+      $('#openCart').addEventListener('click', openCart);
+      $('#closeCart').addEventListener('click', closeCart);
+      overlay.addEventListener('click', closeCart);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawer.classList.contains('open')) closeCart();
+      });
+
+      // ---- Checkout ----
+      checkoutBtn.addEventListener('click', () => {
+        closeCart();
+        $('#dialogTotal').textContent = peso(getSubtotal());
+        $('#formError').textContent = '';
+        form.hidden = false;
+        orderDone.hidden = true;
+        dialog.showModal();
+      });
+
+      $('#cancelCheckout').addEventListener('click', () => dialog.close());
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name  = $('#custName').value.trim();
+        const phone = $('#custPhone').value.trim();
+        const pay   = $('#custPay').value;
+
+        if (name.length < 2)          return ($('#formError').textContent = 'Please enter your name.');
+        if (!/^09\d{9}$/.test(phone)) return ($('#formError').textContent = 'Mobile number must be 11 digits starting with 09.');
+
+        const orderNo = 'ORD-' + Date.now().toString().slice(-6);
+        // textContent is safe for user input: no escaping needed
+        $('#orderText').textContent =
+          `Thank you, ${name}! Order ${orderNo} (${peso(getSubtotal())}) will be paid via ${pay}.`;
+
+        state.cart = [];
+        saveCart();
+        render();
+
+        form.reset();
+        form.hidden = true;
+        orderDone.hidden = false;
+      });
+
+      $('#doneBtn').addEventListener('click', () => {
+        dialog.close();
+        showToast('Order placed successfully');
+      });
+
+      // ========== 8. START ==========
+      render();
+    </script>
+
+    <script type="text/plain" id="demo-fallback">
+      // Preview only: this page cannot load outside images, so each Unsplash photo
+      // is swapped for a matching drawing here. Students' copies load the real photos.
+      (function () {
+      const svg = (bg, shapes) =>
+        'data:image/svg+xml,' + encodeURIComponent(
+          `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 110"><rect width="160" height="110" fill="${bg}"/>${shapes}</svg>`
+        );
+
+        const pictures = {
+        '1562217199-6e6d4cd031f5': svg('#ede9fe', `
+          <rect x="52" y="16" width="58" height="80" rx="6" fill="#7c3aed"/>
+          <rect x="66" y="32" width="32" height="12" rx="2" fill="#fff"/>
+          <rect x="66" y="52" width="32" height="3" rx="1.5" fill="#c4b5fd"/>
+          <rect x="66" y="60" width="24" height="3" rx="1.5" fill="#c4b5fd"/>
+          ${[24, 36, 48, 60, 72, 84].map((y) => `<circle cx="52" cy="${y}" r="4" fill="#fff" stroke="#4c1d95" stroke-width="2"/>`).join('')}`),
+
+        '1567855354833-ac2c4f967b0c': svg('#ffedd5', ['#2563eb', '#dc2626', '#111827', '#16a34a', '#7c3aed'].map((c, i) => `
+          <rect x="${50 + i * 13}" y="18" width="9" height="62" rx="3" fill="${c}"/>
+          <rect x="${50 + i * 13}" y="18" width="9" height="12" rx="3" fill="#fff" opacity=".35"/>
+          <path d="M${50 + i * 13} 80 h9 l-4.5 14 z" fill="#e5e7eb"/>`).join('')),
+
+        '1544003484-3cd181d17917': svg('#dcfce7', `
+          <rect x="61" y="14" width="38" height="10" rx="4" fill="#1f2937"/>
+          <path d="M58 26 H102 L96 94 Q80 100 64 94 Z" fill="#22a06b"/>
+          <rect x="60" y="48" width="40" height="12" fill="#fff" opacity=".85"/>
+          <path d="M66 30 L70 90" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".35"/>`),
+
+        '1581068466660-e6585b8afa97': svg('#e0e7ff', `
+          <rect x="34" y="40" width="70" height="32" rx="9" fill="#6366f1"/>
+          <circle cx="46" cy="56" r="5" fill="#e0e7ff"/>
+          <rect x="104" y="45" width="24" height="22" rx="2" fill="#cbd5e1"/>
+          <rect x="112" y="50" width="6" height="5" fill="#64748b"/>
+          <rect x="112" y="58" width="6" height="5" fill="#64748b"/>
+          <text x="76" y="61" font-family="Arial" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">32GB</text>`),
+
+        '1683739147682-607fb8e24e3f': svg('#fef9c3', `
+          <rect x="40" y="30" width="46" height="46" rx="3" fill="#f472b6" transform="rotate(-8 63 53)"/>
+          <rect x="62" y="26" width="46" height="46" rx="3" fill="#facc15" transform="rotate(6 85 49)"/>
+          <rect x="76" y="44" width="46" height="46" rx="3" fill="#60a5fa" transform="rotate(-3 99 67)"/>
+          <rect x="84" y="56" width="28" height="3" rx="1.5" fill="#1e3a8a" opacity=".4"/>
+          <rect x="84" y="64" width="20" height="3" rx="1.5" fill="#1e3a8a" opacity=".4"/>`),
+
+        '1555679792-6783ef0bbf61': svg('#e2e8f0', `
+          <path d="M56 36 Q58 70 80 78 Q102 70 104 36" fill="none" stroke="#334155" stroke-width="3"/>
+          <path d="M80 78 V96" stroke="#334155" stroke-width="3"/>
+          <rect x="76" y="94" width="8" height="10" rx="2" fill="#94a3b8"/>
+          <circle cx="56" cy="30" r="11" fill="#334155"/>
+          <circle cx="104" cy="30" r="11" fill="#334155"/>
+          <circle cx="53" cy="27" r="3" fill="#fff" opacity=".5"/>
+          <circle cx="101" cy="27" r="3" fill="#fff" opacity=".5"/>`),
+        '1511377107391-116a9d5d20b5': svg('#f3e8ff', `
+          <rect x="54" y="10" width="52" height="90" rx="7" fill="#1e1b4b"/>
+          <rect x="61" y="18" width="38" height="16" rx="2" fill="#a7f3d0"/>
+          ${[0, 1, 2, 3].map((r) => [0, 1, 2].map((c) =>
+            `<rect x="${62 + c * 13}" y="${42 + r * 13}" width="10" height="9" rx="2" fill="${c === 2 && r === 3 ? '#f97316' : '#c7d2fe'}"/>`
+          ).join('')).join('')}`),
+
+        '1587133454235-762b65c9f5c0': svg('#ccfbf1', `
+          <rect x="44" y="24" width="72" height="62" rx="12" fill="#0f766e"/>
+          <rect x="52" y="32" width="56" height="46" rx="8" fill="#14b8a6" opacity=".35"/>
+          ${[0, 1, 2, 3].map((i) => `<circle cx="${68 + i * 8}" cy="74" r="2.5" fill="${i < 3 ? '#a7f3d0' : '#134e4a'}"/>`).join('')}
+          <rect x="70" y="86" width="20" height="5" rx="2" fill="#134e4a"/>
+          <path d="M82 40 L72 56 H80 L76 68 L88 50 H80 Z" fill="#fff"/>`),
+
+        '1547954569-06aabe3b39b1': svg('#fef3c7', `
+          <path d="M60 28 Q80 10 100 28 L120 42 L112 64 L104 60 V98 H56 V60 L48 64 L40 42 Z" fill="#7c3aed"/>
+          <path d="M66 28 Q80 44 94 28 Q80 18 66 28 Z" fill="#4c1d95"/>
+          <path d="M76 38 V54 M84 38 V54" stroke="#fde68a" stroke-width="2"/>
+          <path d="M64 76 H96 V90 H64 Z" fill="#6d28d9"/>`),
+      };
+
+        document.addEventListener('error', function (e) {
+          var img = e.target;
+          if (!img || img.tagName !== 'IMG' || img.dataset.fallback) return;
+          var key = Object.keys(pictures).find(function (k) { return img.src.indexOf(k) !== -1; });
+          img.dataset.fallback = '1';
+          if (key) img.src = pictures[key];
+        }, true);
+      })();
+    </script>
+
+    <!-- =================== PAGE SCRIPT =================== -->
+    <script>
+      {
+        const esc = (s) =>
+          s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const src = (id) =>
+          document
+            .getElementById(id)
+            .textContent.replace(/^\s*\n/, "")
+            .replace(/\s+$/, "");
+        const indent = (text, pad) =>
+          text
+            .split("\n")
+            .map((l) => (l ? pad + l : l))
+            .join("\n");
+
+        const headTop = (title) =>
+          '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n' +
+          '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+          "  <title>" +
+          title +
+          "</title>\n";
+
+        const linkedFile = (body, title) =>
+          headTop(title) +
+          '  <link rel="stylesheet" href="style.css">\n</head>\n<body>\n' +
+          indent(body, "  ") +
+          '\n\n  <script src="script.js"><\/script>\n</body>\n</html>';
+
+        const singleFile = (body, css, js, title) =>
+          headTop(title) +
+          "  <style>\n" +
+          indent(css, "    ") +
+          "\n  </style>\n</head>\n<body>\n" +
+          indent(body, "  ") +
+          "\n\n  <script>\n" +
+          indent(js, "    ") +
+          "\n  <\/script>\n</body>\n</html>";
+
+        const fallback = document.getElementById("demo-fallback").textContent;
+        const demoDoc = (body, css, js) =>
+          '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">' +
+          '<meta name="viewport" content="width=device-width, initial-scale=1"><script>' +
+          fallback +
+          "<\/script><style>" +
+          css +
+          "</style></head><body>" +
+          body +
+          "<script>" +
+          js +
+          "<\/script></body></html>";
+
+        const highlight = (code) =>
+          code
+            .split("\n")
+            .map((line) => {
+              const t = line.trim();
+              const e = esc(line) || " ";
+              const isComment =
+                t.startsWith("//") ||
+                t.startsWith("/*") ||
+                t.startsWith("<!--");
+              return (
+                '<span class="ln">' +
+                (isComment ? '<span class="c">' + e + "</span>" : e) +
+                "</span>"
+              );
+            })
+            .join("");
+
+        async function copy(text, btn, pre) {
+          let ok = false;
+          try {
+            await navigator.clipboard.writeText(text);
+            ok = true;
+          } catch (err) {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.opacity = "0";
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+              ok = document.execCommand("copy");
+            } catch (e2) {
+              ok = false;
+            }
+            ta.remove();
+          }
+          if (!ok && pre) {
+            const range = document.createRange();
+            range.selectNodeContents(pre);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+          }
+          const old = btn.dataset.label || btn.textContent;
+          btn.dataset.label = old;
+          btn.textContent = ok ? "Copied" : "Selected: press Ctrl+C";
+          setTimeout(() => {
+            btn.textContent = old;
+          }, 1600);
+        }
+
+        for (const sec of document.querySelectorAll(".level")) {
+          const k = sec.dataset.key;
+          const title = sec.dataset.title;
+          const body = src(k + "-html");
+          const css = src(k + "-css");
+          const js = src(k + "-js");
+          const files = {
+            "page.html": linkedFile(body, title),
+            "style.css": css,
+            "script.js": js,
+          };
+          const names = Object.keys(files);
+
+          const box = sec.querySelector(".codebox");
+          box.innerHTML =
+            '<div class="tabs" role="tablist" aria-label="' +
+            title +
+            ' files">' +
+            names
+              .map(
+                (n, i) =>
+                  '<button class="tab" role="tab" id="' +
+                  k +
+                  "-tab-" +
+                  i +
+                  '" aria-selected="' +
+                  (i === 0) +
+                  '" data-file="' +
+                  n +
+                  '">' +
+                  n +
+                  "</button>",
+              )
+              .join("") +
+            '</div><pre tabindex="0" aria-live="polite"><code></code></pre>' +
+            '<div class="acts"><button class="btn" data-copy="tab">Copy this file</button>' +
+            '<button class="btn ghost" data-copy="all">Copy as one HTML file</button><small class="lines"></small></div>';
+
+          const code = box.querySelector("code");
+          const pre = box.querySelector("pre");
+          const lines = box.querySelector(".lines");
+          let current = names[0];
+
+          const show = (name) => {
+            current = name;
+            code.innerHTML = highlight(files[name]);
+            pre.scrollTop = 0;
+            lines.textContent = files[name].split("\n").length + " lines";
+            box
+              .querySelectorAll(".tab")
+              .forEach((t) =>
+                t.setAttribute(
+                  "aria-selected",
+                  String(t.dataset.file === name),
+                ),
+              );
+          };
+          show(current);
+
+          box.querySelector(".tabs").addEventListener("click", (e) => {
+            const t = e.target.closest(".tab");
+            if (t) show(t.dataset.file);
+          });
+          box.querySelector(".tabs").addEventListener("keydown", (e) => {
+            if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+            const i =
+              names.indexOf(current) + (e.key === "ArrowRight" ? 1 : -1);
+            const next = names[(i + names.length) % names.length];
+            show(next);
+            box.querySelector('[data-file="' + next + '"]').focus();
+          });
+          box
+            .querySelector('[data-copy="tab"]')
+            .addEventListener("click", (e) =>
+              copy(files[current], e.currentTarget, pre),
+            );
+          box
+            .querySelector('[data-copy="all"]')
+            .addEventListener("click", (e) =>
+              copy(singleFile(body, css, js, title), e.currentTarget, null),
+            );
+
+          const frame = sec.querySelector("iframe");
+          let frameObserver = null;
+          frame.addEventListener("load", () => {
+            if (frameObserver) {
+              frameObserver.disconnect();
+              frameObserver = null;
+            }
+            if (frame.dataset.h) {
+              frame.style.height = frame.dataset.h + "px";
+              return;
+            }
+            try {
+              const d = frame.contentDocument;
+              const fit = () => {
+                frame.style.height =
+                  Math.min(Math.max(d.body.scrollHeight, 220), 1600) + "px";
+              };
+              fit();
+              frameObserver = new ResizeObserver(fit);
+              frameObserver.observe(d.body);
+            } catch (err) {
+              frame.style.height = "560px";
+            }
+          });
+          const load = () => {
+            frame.srcdoc = demoDoc(body, css, js);
+          };
+          load();
+          sec.querySelector("[data-reset]").addEventListener("click", load);
+        }
+
+        const navLinks = [...document.querySelectorAll(".secnav a")];
+        const navObserver = new IntersectionObserver(
+          (entries) => {
+            for (const en of entries) {
+              if (!en.isIntersecting) continue;
+              navLinks.forEach((a) =>
+                a.classList.toggle(
+                  "on",
+                  a.getAttribute("href") === "#" + en.target.id,
+                ),
+              );
+            }
+          },
+          { rootMargin: "-30% 0px -60% 0px" },
+        );
+        document
+          .querySelectorAll(".level")
+          .forEach((s) => navObserver.observe(s));
+      }
+    </script>
+  </body>
 </html>
