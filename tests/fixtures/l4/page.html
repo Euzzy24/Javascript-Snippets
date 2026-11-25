@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 4 - Checkout</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="checkout">
+
+    <form id="checkoutForm" class="panel" novalidate>
+      <h2>1. Contact details</h2>
+      <div class="field">
+        <label for="fullName">Full name</label>
+        <input id="fullName" autocomplete="name">
+        <small class="error"></small>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="email">
+        <small class="error"></small>
+      </div>
+      <div class="field">
+        <label for="phone">Mobile number</label>
+        <input id="phone" type="tel" placeholder="09XXXXXXXXX" autocomplete="tel">
+        <small class="error"></small>
+      </div>
+      <div class="field">
+        <label for="address">Delivery address</label>
+        <textarea id="address" rows="2" autocomplete="street-address"></textarea>
+        <small class="error"></small>
+      </div>
+
+      <h2>2. Delivery</h2>
+      <label class="option"><input type="radio" name="shipping" value="standard" data-label="Standard" checked> Standard (3–5 days) <span>₱50.00</span></label>
+      <label class="option"><input type="radio" name="shipping" value="express" data-label="Express"> Express (next day) <span>₱120.00</span></label>
+      <label class="option"><input type="radio" name="shipping" value="pickup" data-label="Campus pickup"> Campus pickup <span>Free</span></label>
+
+      <h2>3. Payment</h2>
+      <label class="option"><input type="radio" name="payment" value="Cash on Delivery" checked> Cash on Delivery</label>
+      <label class="option"><input type="radio" name="payment" value="GCash"> GCash</label>
+
+      <button type="submit" id="placeOrder" class="primary">Place order</button>
+    </form>
+
+    <aside id="summary" class="panel summary">
+      <h2>Order summary</h2>
+      <ul id="summaryItems" class="items"></ul>
+
+      <div class="promo">
+        <input id="promoInput" placeholder="Promo code">
+        <button type="button" id="applyPromo">Apply</button>
+      </div>
+      <p id="promoMsg" class="hint"></p>
+
+      <dl class="totals">
+        <div><dt>Subtotal</dt><dd id="subtotal"></dd></div>
+        <div><dt>Discount</dt><dd id="discount"></dd></div>
+        <div><dt>Shipping</dt><dd id="shipping"></dd></div>
+        <div class="grand"><dt>Total</dt><dd id="total"></dd></div>
+      </dl>
+    </aside>
+
+    <section id="receipt" class="panel receipt" hidden></section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

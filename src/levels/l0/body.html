@@ -1,0 +1,58 @@
+<main class="card">
+  <h1>Click anything</h1>
+  <p class="hint">Every item below runs a little JavaScript when you click it. Watch the list at the bottom.</p>
+
+  <!-- 1. A heading -->
+  <h2 id="title" class="clickable">Hello!</h2>
+
+  <!-- 2. A paragraph -->
+  <p id="note" class="clickable">I am a plain paragraph. Click me to highlight me.</p>
+
+  <!-- 3. A button -->
+  <button id="countBtn">Clicked 0 times</button>
+
+  <!-- 4. A link -->
+  <p><a id="link" href="#nowhere">This link wants to leave the page</a></p>
+
+  <!-- 5. List items -->
+  <ul class="todo">
+    <li class="clickable">Read the HTML</li>
+    <li class="clickable">Read the JavaScript</li>
+    <li class="clickable">Change one thing</li>
+  </ul>
+
+  <!-- 6. A checkbox -->
+  <p class="check">
+    <input type="checkbox" id="lights">
+    <label for="lights" id="lightsLabel">Lights are off</label>
+  </p>
+
+  <!-- 7. A picture (an emoji, so it works offline) -->
+  <figure id="picture" class="clickable">
+    <span class="emoji">🐢</span>
+    <figcaption>Click the turtle</figcaption>
+  </figure>
+
+  <!-- 8. Table rows -->
+  <table>
+    <thead>
+      <tr><th>Student</th><th>Score</th></tr>
+    </thead>
+    <tbody>
+      <tr class="clickable"><td>Ana</td><td>92</td></tr>
+      <tr class="clickable"><td>Ben</td><td>85</td></tr>
+      <tr class="clickable"><td>Carla</td><td>78</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 9. Details / summary -->
+  <details id="secret">
+    <summary id="secretSummary">Show the secret</summary>
+    <p>JavaScript can listen to clicks on any element on the page.</p>
+  </details>
+
+  <h2 class="log-title">What JavaScript just did</h2>
+  <ol id="log" role="log">
+    <li class="empty">Nothing yet. Click something above.</li>
+  </ol>
+</main>

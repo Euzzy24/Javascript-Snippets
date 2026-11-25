@@ -1,0 +1,117 @@
+/* VOICE: companion page to the IT55 Lessons site: calm, friendly, hands-on
+   IDEA: same lesson notebook as "JavaScript Basics": numbered sections, live preview beside its code
+   PICTURE: each level's working demo in a browser frame, with page.html / style.css / script.js tabs beside it
+   COLOUR and TYPE: mint-white ground, deep teal #0f7b6c, near-black green ink; Figtree 800 + Figtree, JetBrains Mono labels
+   LAYOUT: top nav, wave-lined hero, sticky numbered section row, then one numbered section per level */
+:root{color-scheme:light dark;
+  --bg:light-dark(#f5f8f7,#0d1715);--surface:light-dark(#ffffff,#13201d);--ink:light-dark(#0f1f1b,#e4efec);
+  --muted:light-dark(#4b5f5a,#9db3ad);--line:light-dark(#dde7e4,#24352f);--teal:light-dark(#0f7b6c,#3cc4ae);
+  --tealSoft:light-dark(#e3efec,#1a2e2a);--code:light-dark(#f3f6f5,#0f1a18);--btn:#0f7b6c;--btnHover:#0b5f54;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Figtree,system-ui,sans-serif;overflow-x:clip}
+.wrap{max-width:1160px;margin:0 auto;padding:0 max(4vw,16px)}
+h1,h2,h3{margin:0;text-wrap:balance}
+a{color:inherit}
+.scroll{overflow-x:auto;scrollbar-width:thin}
+code{overflow-wrap:anywhere}
+html{scroll-padding-top:76px;scroll-behavior:smooth}
+
+/* top nav */
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:28px;min-height:58px;white-space:nowrap}
+.brand{font:600 14px var(--mono);letter-spacing:.14em;color:var(--muted);text-decoration:none}
+.top nav{display:flex;gap:22px;flex:none}
+.top nav a,.brand,.secnav a{flex:none}
+.top nav a{padding:16px 0 14px;text-decoration:none;color:var(--muted);font-weight:500;border-bottom:2px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a[aria-current]{color:var(--ink);border-color:var(--ink)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding:clamp(40px,6vw,72px) 0 clamp(32px,4vw,52px);border-bottom:1px solid var(--line)}
+.waves{position:absolute;top:10px;right:0;width:min(46vw,660px);height:240px;color:var(--teal);opacity:.35;pointer-events:none}
+.eyebrow{font:600 14px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+h1{font-size:clamp(42px,8vw,84px);line-height:1.02;font-weight:800;letter-spacing:-.02em}
+h1 span{color:var(--teal)}
+.lede{max-width:46ch;font-size:clamp(17px,2vw,21px);margin:20px 0 26px}
+.steps{display:flex;flex-wrap:wrap;gap:12px 34px;margin:0;padding:0;list-style:none;font-size:17px;color:var(--muted)}
+.steps li{display:flex;align-items:center;gap:12px}
+.steps b{color:var(--ink);font-weight:700}
+.steps .n{display:grid;place-items:center;width:30px;height:30px;flex:none;border-radius:50%;background:var(--btn);color:#fff;font-size:14px;font-weight:700}
+
+/* playground strip + section row */
+.strip{padding:22px 0 6px}
+.strip .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:9px 18px;border:0;border-radius:6px;background:var(--btn);color:#fff;font:700 16px Figtree,sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--btnHover)}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line);font-weight:600}
+.btn.ghost:hover{border-color:var(--teal);background:var(--surface)}
+.btn:focus-visible,.tab:focus-visible,.secnav a:focus-visible,.top a:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.secnav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.secnav .row{display:flex;gap:6px;padding:8px 0}
+.secnav a{flex:none;padding:8px 14px;border-radius:8px;text-decoration:none;color:var(--muted);font-weight:500;white-space:nowrap}
+.secnav a b{font:700 15px var(--mono);color:var(--teal);margin-right:6px}
+.secnav a:hover{color:var(--ink)}
+.secnav a.on{background:var(--tealSoft);color:var(--ink)}
+
+/* level sections */
+.level{padding:clamp(40px,6vw,72px) 0 clamp(20px,3vw,32px)}
+.sec-head{display:flex;align-items:flex-start;gap:clamp(14px,2.4vw,28px)}
+.num{flex:none;display:grid;place-items:center;min-width:46px;height:38px;margin-top:6px;padding:0 8px;border:1.5px solid var(--teal);border-radius:4px;color:var(--teal);font:600 18px var(--mono)}
+.sec-head h2{color:var(--teal);font-size:clamp(30px,4.6vw,48px);line-height:1.08;font-weight:800;letter-spacing:-.01em}
+.diff{display:inline-flex;align-items:center;gap:10px;margin-top:6px;color:var(--muted);font:600 14px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.meter{display:inline-flex;gap:3px}.meter i{width:16px;height:6px;border-radius:3px;background:var(--line)}.meter i.on{background:var(--teal)}
+.sec-body{padding-left:calc(46px + clamp(14px,2.4vw,28px))}
+.intro{max-width:62ch;margin:14px 0 14px;font-size:18px}
+.intro code,.try code{font:15px var(--mono);background:var(--tealSoft);padding:1px 6px;border-radius:4px}
+.learn{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 24px;padding:0;list-style:none}
+.learn li{padding:4px 10px;border-radius:6px;background:var(--surface);border:1px solid var(--line);font:13.5px var(--mono)}
+
+/* lab card */
+.lab{padding:clamp(12px,2vw,22px);background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.lab-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+.lab-label{font:15px var(--mono);color:var(--muted)}.lab-label b{color:var(--ink);font-weight:700}
+.lab-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;align-items:start}
+.browser{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.bar{display:flex;align-items:center;gap:14px;padding:9px 14px;background:var(--tealSoft);font:13.5px var(--mono);color:var(--muted)}
+.dots{display:flex;gap:6px}.dots i{width:11px;height:11px;border-radius:50%;background:#b9ccc6}.dots i:first-child{background:#d9480f}
+.url{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+iframe{display:block;width:100%;height:420px;border:0;background:#f1f7f5}
+.tabs{display:flex;gap:6px;padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{flex:none;min-height:44px;padding:8px 18px;border:0;border-radius:7px;background:transparent;color:var(--muted);font:500 16px Figtree,sans-serif;cursor:pointer}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected=true]{background:var(--btn);color:#fff}
+pre{margin:0;max-height:520px;overflow:auto;padding:12px 0;background:var(--code);border:1px solid var(--line);border-radius:10px;font:14px/1.75 var(--mono);color:var(--ink);counter-reset:ln;tab-size:2}
+pre .ln{display:block;padding:0 16px 0 0;white-space:pre}
+pre .ln::before{counter-increment:ln;content:counter(ln);display:inline-block;width:3.2em;padding-right:1.1em;text-align:right;color:var(--muted);opacity:.7;user-select:none}
+pre .c{color:var(--teal);font-style:italic;opacity:.9}
+.acts{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
+.acts small{color:var(--muted);font:13px var(--mono);margin-left:auto}
+.try{margin-top:22px;padding:18px 22px;border-left:3px solid var(--teal);background:var(--surface);border-radius:0 10px 10px 0}
+.try h3{font-size:20px;font-weight:700;margin-bottom:4px}
+.try ul{margin:0;padding-left:20px}.try li{margin:5px 0}
+footer{margin-top:40px;padding:26px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:15px}
+
+@media(max-width:980px){.lab-grid{grid-template-columns:minmax(0,1fr)}.waves{opacity:.2}}
+@media(max-width:700px){
+  body{font-size:16px}
+  .waves{display:none}
+  .top .wrap{gap:18px;overflow-x:auto}
+  .top nav{gap:16px}
+  .steps{flex-direction:column;gap:10px}
+  .strip .wrap{flex-direction:column;align-items:stretch}
+  .strip .btn{width:100%}
+  .sec-body{padding-left:0}
+  .num{min-width:40px;height:34px;font-size:16px;margin-top:2px}
+  .intro{font-size:16.5px}
+  .lab{border-radius:12px}
+  .lab-top .btn{flex:1}
+  .acts .btn{flex:1 1 100%}
+  .acts small{margin-left:0}
+  pre{font-size:12.5px;max-height:420px}
+  pre .ln::before{width:2.6em;padding-right:.8em}
+  .tab{padding:8px 14px;font-size:15px}
+  .try{padding:16px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

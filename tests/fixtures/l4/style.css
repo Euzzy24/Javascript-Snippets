@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: "Poppins", system-ui, sans-serif;
+  background: #f8f6fd;
+  color: #1f1535;
+}
+
+.checkout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+@media (max-width: 680px) { .checkout { grid-template-columns: 1fr; } }
+
+.panel {
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgba(46, 16, 101, 0.08);
+}
+.summary { align-self: start; }
+.receipt { grid-column: 1 / -1; max-width: 520px; width: 100%; margin: 0 auto; }
+
+h2 { margin: 18px 0 10px; font-size: 17px; }
+h2:first-child { margin-top: 0; }
+
+.field { margin-bottom: 12px; }
+label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+
+input, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  border: 2px solid #ddd6f3;
+  border-radius: 10px;
+}
+input:focus, textarea:focus { outline: none; border-color: #6d28d9; }
+.invalid { border-color: #d13b2a; background: #fff5f4; }
+.error { display: block; min-height: 1.2em; color: #d13b2a; font-size: 13px; }
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border: 2px solid #ece8f6;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.option input { width: auto; }
+.option span { margin-left: auto; font-weight: 700; }
+.option:has(input:checked) { border-color: #6d28d9; background: #f3f0fb; }
+
+button {
+  font: inherit;
+  font-weight: 600;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.primary {
+  width: 100%;
+  margin-top: 14px;
+  padding: 13px;
+  background: #6d28d9;
+  color: #ffffff;
+  font-size: 16px;
+}
+.primary:hover { background: #5b21b6; }
+.primary:disabled { opacity: 0.6; cursor: wait; }
+
+.items, .receipt-items { list-style: none; margin: 0 0 12px; padding: 0; font-size: 14px; }
+.items li, .receipt-items li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px dashed #ece8f6;
+}
+
+.promo { display: flex; gap: 6px; }
+.promo button { padding: 0 14px; background: #1f1535; color: #ffffff; }
+.hint { min-height: 1.2em; margin: 6px 0; font-size: 13px; }
+.hint.ok { color: #1d8a4e; }
+.hint.bad { color: #d13b2a; }
+
+.totals { margin: 8px 0 0; }
+.totals div { display: flex; justify-content: space-between; padding: 4px 0; }
+.totals dt { color: #5b5370; }
+.totals dd { margin: 0; font-weight: 600; }
+.totals .grand { margin-top: 6px; padding-top: 10px; border-top: 2px solid #1f1535; font-size: 19px; }
+.totals .grand dt { color: #1f1535; font-weight: 700; }

@@ -1,0 +1,85 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 32px 16px;
+  font-family: system-ui, "Segoe UI", Arial, sans-serif;
+  background: #f1f7f5;
+  color: #10223a;
+}
+
+.card {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 28px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(16, 34, 58, 0.12);
+}
+
+h1 { margin: 0 0 4px; font-size: 26px; }
+h2 { margin: 16px 0 8px; font-size: 20px; }
+.hint { margin: 0 0 8px; color: #4b5f5a; }
+
+/* Plain elements that JavaScript listens to: show they can be clicked */
+.clickable {
+  cursor: pointer;
+  border-radius: 8px;
+  outline: 1px dashed transparent;
+  transition: background 0.2s, outline-color 0.2s, transform 0.2s;
+}
+.clickable:hover { background: #e3efec; outline-color: #0f7b6c; }
+
+button {
+  min-height: 40px;
+  padding: 10px 16px;
+  font: inherit;
+  font-weight: 600;
+  border: 0;
+  border-radius: 10px;
+  background: #0f7b6c;
+  color: #ffffff;
+  cursor: pointer;
+}
+button:hover { background: #0b5f54; }
+button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visible {
+  outline: 3px solid #0f7b6c;
+  outline-offset: 2px;
+}
+
+a { color: #0f7b6c; font-weight: 600; }
+
+.todo { padding-left: 20px; }
+.todo li { padding: 8px; }
+
+.check { display: flex; align-items: center; gap: 8px; min-height: 40px; }
+.check input { width: 20px; height: 20px; }
+label { font-weight: 600; cursor: pointer; }
+
+figure { margin: 8px 0; padding: 8px; text-align: center; }
+.emoji { display: inline-block; font-size: 48px; line-height: 1.2; transition: font-size 0.3s; }
+figcaption { font-size: 14px; color: #4b5f5a; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #dde7e4; }
+
+details { margin: 12px 0; padding: 10px 12px; border: 1px solid #dde7e4; border-radius: 10px; }
+summary { min-height: 24px; font-weight: 600; cursor: pointer; }
+
+/* Classes that JavaScript adds and removes */
+.highlight { background: #fff3b0; }
+.done { text-decoration: line-through; color: #6b7c78; }
+.selected { background: #cdeee6; font-weight: 700; }
+.big .emoji { font-size: 86px; }
+
+/* The log at the bottom */
+.log-title { font-size: 16px; }
+#log {
+  min-height: 10.5em;
+  margin: 0;
+  padding: 10px 10px 10px 32px;
+  background: #f3f6f5;
+  border-radius: 10px;
+  font: 14px/1.6 ui-monospace, Consolas, monospace;
+}
+#log .empty { list-style: none; margin-left: -20px; color: #6b7c78; }

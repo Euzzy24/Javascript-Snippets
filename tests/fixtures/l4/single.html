@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level 4 - Checkout</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: "Poppins", system-ui, sans-serif;
+      background: #f8f6fd;
+      color: #1f1535;
+    }
+
+    .checkout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    @media (max-width: 680px) { .checkout { grid-template-columns: 1fr; } }
+
+    .panel {
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 3px 12px rgba(46, 16, 101, 0.08);
+    }
+    .summary { align-self: start; }
+    .receipt { grid-column: 1 / -1; max-width: 520px; width: 100%; margin: 0 auto; }
+
+    h2 { margin: 18px 0 10px; font-size: 17px; }
+    h2:first-child { margin-top: 0; }
+
+    .field { margin-bottom: 12px; }
+    label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      font: inherit;
+      border: 2px solid #ddd6f3;
+      border-radius: 10px;
+    }
+    input:focus, textarea:focus { outline: none; border-color: #6d28d9; }
+    .invalid { border-color: #d13b2a; background: #fff5f4; }
+    .error { display: block; min-height: 1.2em; color: #d13b2a; font-size: 13px; }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      border: 2px solid #ece8f6;
+      border-radius: 10px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .option input { width: auto; }
+    .option span { margin-left: auto; font-weight: 700; }
+    .option:has(input:checked) { border-color: #6d28d9; background: #f3f0fb; }
+
+    button {
+      font: inherit;
+      font-weight: 600;
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .primary {
+      width: 100%;
+      margin-top: 14px;
+      padding: 13px;
+      background: #6d28d9;
+      color: #ffffff;
+      font-size: 16px;
+    }
+    .primary:hover { background: #5b21b6; }
+    .primary:disabled { opacity: 0.6; cursor: wait; }
+
+    .items, .receipt-items { list-style: none; margin: 0 0 12px; padding: 0; font-size: 14px; }
+    .items li, .receipt-items li {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 6px 0;
+      border-bottom: 1px dashed #ece8f6;
+    }
+
+    .promo { display: flex; gap: 6px; }
+    .promo button { padding: 0 14px; background: #1f1535; color: #ffffff; }
+    .hint { min-height: 1.2em; margin: 6px 0; font-size: 13px; }
+    .hint.ok { color: #1d8a4e; }
+    .hint.bad { color: #d13b2a; }
+
+    .totals { margin: 8px 0 0; }
+    .totals div { display: flex; justify-content: space-between; padding: 4px 0; }
+    .totals dt { color: #5b5370; }
+    .totals dd { margin: 0; font-weight: 600; }
+    .totals .grand { margin-top: 6px; padding-top: 10px; border-top: 2px solid #1f1535; font-size: 19px; }
+    .totals .grand dt { color: #1f1535; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <main class="checkout">
+
+    <form id="checkoutForm" class="panel" novalidate>
+      <h2>1. Contact details</h2>
+      <div class="field">
+        <label for="fullName">Full name</label>
+        <input id="fullName" autocomplete="name">
+        <small class="error"></small>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="email">
+        <small class="error"></small>
+      </div>
+      <div class="field">
+        <label for="phone">Mobile number</label>
+        <input id="phone" type="tel" placeholder="09XXXXXXXXX" autocomplete="tel">
+        <small class="error"></small>
+      </div>
+      <div class="field">
+        <label for="address">Delivery address</label>
+        <textarea id="address" rows="2" autocomplete="street-address"></textarea>
+        <small class="error"></small>
+      </div>
+
+      <h2>2. Delivery</h2>
+      <label class="option"><input type="radio" name="shipping" value="standard" data-label="Standard" checked> Standard (3–5 days) <span>₱50.00</span></label>
+      <label class="option"><input type="radio" name="shipping" value="express" data-label="Express"> Express (next day) <span>₱120.00</span></label>
+      <label class="option"><input type="radio" name="shipping" value="pickup" data-label="Campus pickup"> Campus pickup <span>Free</span></label>
+
+      <h2>3. Payment</h2>
+      <label class="option"><input type="radio" name="payment" value="Cash on Delivery" checked> Cash on Delivery</label>
+      <label class="option"><input type="radio" name="payment" value="GCash"> GCash</label>
+
+      <button type="submit" id="placeOrder" class="primary">Place order</button>
+    </form>
+
+    <aside id="summary" class="panel summary">
+      <h2>Order summary</h2>
+      <ul id="summaryItems" class="items"></ul>
+
+      <div class="promo">
+        <input id="promoInput" placeholder="Promo code">
+        <button type="button" id="applyPromo">Apply</button>
+      </div>
+      <p id="promoMsg" class="hint"></p>
+
+      <dl class="totals">
+        <div><dt>Subtotal</dt><dd id="subtotal"></dd></div>
+        <div><dt>Discount</dt><dd id="discount"></dd></div>
+        <div><dt>Shipping</dt><dd id="shipping"></dd></div>
+        <div class="grand"><dt>Total</dt><dd id="total"></dd></div>
+      </dl>
+    </aside>
+
+    <section id="receipt" class="panel receipt" hidden></section>
+  </main>
+
+  <script>
+    // LEVEL 4: Checking out
+
+    // 1. DATA: the cart from Level 3 (fixed here to keep things simple)
+    const cart = [
+      { name: 'Spiral Notebook', price: 45,  qty: 3 },
+      { name: 'Tumbler 500ml',   price: 299, qty: 1 },
+      { name: 'Sticky Notes Pack', price: 85,  qty: 2 },
+    ];
+
+    const SHIPPING = { standard: 50, express: 120, pickup: 0 };
+
+    const PROMOS = {
+      STUDENT10: { type: 'percent', value: 10, label: '10% student discount' },
+      LESS50:    { type: 'fixed',   value: 50, label: '₱50 off your order' },
+    };
+
+    let appliedPromo = null;
+
+    // 2. ELEMENTS
+    const form          = document.querySelector('#checkoutForm');
+    const summary       = document.querySelector('#summary');
+    const receipt       = document.querySelector('#receipt');
+    const summaryItems  = document.querySelector('#summaryItems');
+    const promoInput    = document.querySelector('#promoInput');
+    const promoMsg      = document.querySelector('#promoMsg');
+    const placeOrderBtn = document.querySelector('#placeOrder');
+
+    // 3. HELPERS
+    const peso = (n) =>
+      '₱' + n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    // Never put user text into innerHTML without escaping it
+    function escapeHTML(text) {
+      return text.replace(/[&<>"']/g, (ch) =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    }
+
+    const checked = (name) => document.querySelector(`input[name="${name}"]:checked`);
+
+    // 4. COMPUTE THE TOTALS
+    function getTotals() {
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+      let discount = 0;
+      if (appliedPromo) {
+        const promo = PROMOS[appliedPromo];
+        discount = promo.type === 'percent'
+          ? subtotal * promo.value / 100
+          : Math.min(promo.value, subtotal);
+      }
+
+      const shipping = SHIPPING[checked('shipping').value];
+      const total = subtotal - discount + shipping;
+      return { subtotal, discount, shipping, total };
+    }
+
+    function renderSummary() {
+      summaryItems.innerHTML = cart.map((item) => `
+        <li><span>${item.qty} × ${item.name}</span><span>${peso(item.price * item.qty)}</span></li>
+      `).join('');
+
+      const t = getTotals();
+      document.querySelector('#subtotal').textContent = peso(t.subtotal);
+      document.querySelector('#discount').textContent = t.discount ? '−' + peso(t.discount) : peso(0);
+      document.querySelector('#shipping').textContent = t.shipping ? peso(t.shipping) : 'Free';
+      document.querySelector('#total').textContent    = peso(t.total);
+      placeOrderBtn.textContent = `Place order · ${peso(t.total)}`;
+    }
+
+    // Re-compute when the delivery option changes
+    form.addEventListener('change', (event) => {
+      if (event.target.name === 'shipping') renderSummary();
+    });
+
+    // 5. PROMO CODES
+    function applyPromo() {
+      const code = promoInput.value.trim().toUpperCase();
+
+      if (PROMOS[code]) {
+        appliedPromo = code;
+        promoMsg.textContent = `Applied: ${PROMOS[code].label}`;
+        promoMsg.className = 'hint ok';
+      } else {
+        appliedPromo = null;
+        promoMsg.textContent = code ? 'That code is not valid.' : 'Type a code first.';
+        promoMsg.className = 'hint bad';
+      }
+      renderSummary();
+    }
+
+    document.querySelector('#applyPromo').addEventListener('click', applyPromo);
+    promoInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') applyPromo();
+    });
+
+    // 6. VALIDATION: each rule returns true, or an error message
+    const rules = {
+      fullName: (v) => v.length >= 2 || 'Please enter your full name.',
+      email:    (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Enter a valid email, like ana@school.edu.ph',
+      phone:    (v) => /^09\d{9}$/.test(v) || 'Use 11 digits starting with 09.',
+      address:  (v) => v.length >= 10 || 'Please enter your complete address.',
+    };
+
+    function validateField(input) {
+      const result = rules[input.id](input.value.trim());
+      const errorEl = input.parentElement.querySelector('.error');
+
+      if (result === true) {
+        input.classList.remove('invalid');
+        errorEl.textContent = '';
+        return true;
+      }
+      input.classList.add('invalid');
+      errorEl.textContent = result;
+      return false;
+    }
+
+    // Check each field when the user leaves it
+    Object.keys(rules).forEach((id) => {
+      document.getElementById(id).addEventListener('blur', (e) => validateField(e.target));
+    });
+
+    // 7. SUBMIT
+    form.addEventListener('submit', (event) => {
+      event.preventDefault(); // stop the page from reloading
+
+      const results = Object.keys(rules).map((id) => validateField(document.getElementById(id)));
+      if (!results.every(Boolean)) {
+        form.querySelector('.invalid').focus(); // jump to the first problem
+        return;
+      }
+
+      placeOrderBtn.disabled = true;
+      placeOrderBtn.textContent = 'Processing…';
+      setTimeout(showReceipt, 1000); // pretend we are talking to a server
+    });
+
+    // 8. RECEIPT
+    function showReceipt() {
+      const t = getTotals();
+      const orderNo = 'ORD-' + Date.now().toString().slice(-6);
+      const name  = escapeHTML(document.getElementById('fullName').value.trim());
+      const email = escapeHTML(document.getElementById('email').value.trim());
+
+      receipt.innerHTML = `
+        <h2>Order confirmed</h2>
+        <p>Thank you, <strong>${name}</strong>! Your order number is <strong>${orderNo}</strong>.</p>
+        <ul class="receipt-items">
+          ${cart.map((i) => `<li><span>${i.qty} × ${i.name}</span><span>${peso(i.price * i.qty)}</span></li>`).join('')}
+        </ul>
+        <dl class="totals">
+          <div><dt>Discount</dt><dd>−${peso(t.discount)}</dd></div>
+          <div><dt>Shipping</dt><dd>${t.shipping ? peso(t.shipping) : 'Free'}</dd></div>
+          <div class="grand"><dt>Total paid</dt><dd>${peso(t.total)}</dd></div>
+        </dl>
+        <p class="hint">Delivery: ${checked('shipping').dataset.label} · Payment: ${checked('payment').value}<br>
+        A confirmation will be sent to ${email}.</p>
+        <button type="button" id="newOrder" class="primary">Start a new order</button>
+      `;
+
+      form.hidden = true;
+      summary.hidden = true;
+      receipt.hidden = false;
+      document.querySelector('#newOrder').addEventListener('click', resetCheckout);
+    }
+
+    function resetCheckout() {
+      form.reset();
+      appliedPromo = null;
+      promoInput.value = '';
+      promoMsg.textContent = '';
+      placeOrderBtn.disabled = false;
+      form.hidden = false;
+      summary.hidden = false;
+      receipt.hidden = true;
+      renderSummary();
+    }
+
+    // 9. START
+    renderSummary();
+  </script>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script>
+// Preview only: this page cannot load outside images, so each Unsplash photo
+// is swapped for a matching drawing here. Students' copies load the real photos.
+(function () {
+const svg = (bg, shapes) =>
+  'data:image/svg+xml,' + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 110"><rect width="160" height="110" fill="${bg}"/>${shapes}</svg>`
+  );
+
+  const pictures = {
+  '1562217199-6e6d4cd031f5': svg('#ede9fe', `
+    <rect x="52" y="16" width="58" height="80" rx="6" fill="#7c3aed"/>
+    <rect x="66" y="32" width="32" height="12" rx="2" fill="#fff"/>
+    <rect x="66" y="52" width="32" height="3" rx="1.5" fill="#c4b5fd"/>
+    <rect x="66" y="60" width="24" height="3" rx="1.5" fill="#c4b5fd"/>
+    ${[24, 36, 48, 60, 72, 84].map((y) => `<circle cx="52" cy="${y}" r="4" fill="#fff" stroke="#4c1d95" stroke-width="2"/>`).join('')}`),
+
+  '1567855354833-ac2c4f967b0c': svg('#ffedd5', ['#2563eb', '#dc2626', '#111827', '#16a34a', '#7c3aed'].map((c, i) => `
+    <rect x="${50 + i * 13}" y="18" width="9" height="62" rx="3" fill="${c}"/>
+    <rect x="${50 + i * 13}" y="18" width="9" height="12" rx="3" fill="#fff" opacity=".35"/>
+    <path d="M${50 + i * 13} 80 h9 l-4.5 14 z" fill="#e5e7eb"/>`).join('')),
+
+  '1544003484-3cd181d17917': svg('#dcfce7', `
+    <rect x="61" y="14" width="38" height="10" rx="4" fill="#1f2937"/>
+    <path d="M58 26 H102 L96 94 Q80 100 64 94 Z" fill="#22a06b"/>
+    <rect x="60" y="48" width="40" height="12" fill="#fff" opacity=".85"/>
+    <path d="M66 30 L70 90" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".35"/>`),
+
+  '1581068466660-e6585b8afa97': svg('#e0e7ff', `
+    <rect x="34" y="40" width="70" height="32" rx="9" fill="#6366f1"/>
+    <circle cx="46" cy="56" r="5" fill="#e0e7ff"/>
+    <rect x="104" y="45" width="24" height="22" rx="2" fill="#cbd5e1"/>
+    <rect x="112" y="50" width="6" height="5" fill="#64748b"/>
+    <rect x="112" y="58" width="6" height="5" fill="#64748b"/>
+    <text x="76" y="61" font-family="Arial" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">32GB</text>`),
+
+  '1683739147682-607fb8e24e3f': svg('#fef9c3', `
+    <rect x="40" y="30" width="46" height="46" rx="3" fill="#f472b6" transform="rotate(-8 63 53)"/>
+    <rect x="62" y="26" width="46" height="46" rx="3" fill="#facc15" transform="rotate(6 85 49)"/>
+    <rect x="76" y="44" width="46" height="46" rx="3" fill="#60a5fa" transform="rotate(-3 99 67)"/>
+    <rect x="84" y="56" width="28" height="3" rx="1.5" fill="#1e3a8a" opacity=".4"/>
+    <rect x="84" y="64" width="20" height="3" rx="1.5" fill="#1e3a8a" opacity=".4"/>`),
+
+  '1555679792-6783ef0bbf61': svg('#e2e8f0', `
+    <path d="M56 36 Q58 70 80 78 Q102 70 104 36" fill="none" stroke="#334155" stroke-width="3"/>
+    <path d="M80 78 V96" stroke="#334155" stroke-width="3"/>
+    <rect x="76" y="94" width="8" height="10" rx="2" fill="#94a3b8"/>
+    <circle cx="56" cy="30" r="11" fill="#334155"/>
+    <circle cx="104" cy="30" r="11" fill="#334155"/>
+    <circle cx="53" cy="27" r="3" fill="#fff" opacity=".5"/>
+    <circle cx="101" cy="27" r="3" fill="#fff" opacity=".5"/>`),
+  '1511377107391-116a9d5d20b5': svg('#f3e8ff', `
+    <rect x="54" y="10" width="52" height="90" rx="7" fill="#1e1b4b"/>
+    <rect x="61" y="18" width="38" height="16" rx="2" fill="#a7f3d0"/>
+    ${[0, 1, 2, 3].map((r) => [0, 1, 2].map((c) =>
+      `<rect x="${62 + c * 13}" y="${42 + r * 13}" width="10" height="9" rx="2" fill="${c === 2 && r === 3 ? '#f97316' : '#c7d2fe'}"/>`
+    ).join('')).join('')}`),
+
+  '1587133454235-762b65c9f5c0': svg('#ccfbf1', `
+    <rect x="44" y="24" width="72" height="62" rx="12" fill="#0f766e"/>
+    <rect x="52" y="32" width="56" height="46" rx="8" fill="#14b8a6" opacity=".35"/>
+    ${[0, 1, 2, 3].map((i) => `<circle cx="${68 + i * 8}" cy="74" r="2.5" fill="${i < 3 ? '#a7f3d0' : '#134e4a'}"/>`).join('')}
+    <rect x="70" y="86" width="20" height="5" rx="2" fill="#134e4a"/>
+    <path d="M82 40 L72 56 H80 L76 68 L88 50 H80 Z" fill="#fff"/>`),
+
+  '1547954569-06aabe3b39b1': svg('#fef3c7', `
+    <path d="M60 28 Q80 10 100 28 L120 42 L112 64 L104 60 V98 H56 V60 L48 64 L40 42 Z" fill="#7c3aed"/>
+    <path d="M66 28 Q80 44 94 28 Q80 18 66 28 Z" fill="#4c1d95"/>
+    <path d="M76 38 V54 M84 38 V54" stroke="#fde68a" stroke-width="2"/>
+    <path d="M64 76 H96 V90 H64 Z" fill="#6d28d9"/>`),
+};
+
+  document.addEventListener('error', function (e) {
+    var img = e.target;
+    if (!img || img.tagName !== 'IMG' || img.dataset.fallback) return;
+    var key = Object.keys(pictures).find(function (k) { return img.src.indexOf(k) !== -1; });
+    img.dataset.fallback = '1';
+    if (key) img.src = pictures[key];
+  }, true);
+})();
+</script><style>* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 32px 16px;
+  font-family: system-ui, "Segoe UI", Arial, sans-serif;
+  background: #f1f7f5;
+  color: #10223a;
+}
+
+.card {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 28px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(16, 34, 58, 0.12);
+}
+
+h1 { margin: 0 0 4px; font-size: 26px; }
+h2 { margin: 16px 0 8px; font-size: 20px; }
+.hint { margin: 0 0 8px; color: #4b5f5a; }
+
+/* Plain elements that JavaScript listens to: show they can be clicked */
+.clickable {
+  cursor: pointer;
+  border-radius: 8px;
+  outline: 1px dashed transparent;
+  transition: background 0.2s, outline-color 0.2s, transform 0.2s;
+}
+.clickable:hover { background: #e3efec; outline-color: #0f7b6c; }
+
+button {
+  min-height: 40px;
+  padding: 10px 16px;
+  font: inherit;
+  font-weight: 600;
+  border: 0;
+  border-radius: 10px;
+  background: #0f7b6c;
+  color: #ffffff;
+  cursor: pointer;
+}
+button:hover { background: #0b5f54; }
+button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visible {
+  outline: 3px solid #0f7b6c;
+  outline-offset: 2px;
+}
+
+a { color: #0f7b6c; font-weight: 600; }
+
+.todo { padding-left: 20px; }
+.todo li { padding: 8px; }
+
+.check { display: flex; align-items: center; gap: 8px; min-height: 40px; }
+.check input { width: 20px; height: 20px; }
+label { font-weight: 600; cursor: pointer; }
+
+figure { margin: 8px 0; padding: 8px; text-align: center; }
+.emoji { display: inline-block; font-size: 48px; line-height: 1.2; transition: font-size 0.3s; }
+figcaption { font-size: 14px; color: #4b5f5a; }
+
+table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #dde7e4; }
+
+details { margin: 12px 0; padding: 10px 12px; border: 1px solid #dde7e4; border-radius: 10px; }
+summary { min-height: 24px; font-weight: 600; cursor: pointer; }
+
+/* Classes that JavaScript adds and removes */
+.highlight { background: #fff3b0; }
+.done { text-decoration: line-through; color: #6b7c78; }
+.selected { background: #cdeee6; font-weight: 700; }
+.big .emoji { font-size: 86px; }
+
+/* The log at the bottom */
+.log-title { font-size: 16px; }
+#log {
+  min-height: 10.5em;
+  margin: 0;
+  padding: 10px 10px 10px 32px;
+  background: #f3f6f5;
+  border-radius: 10px;
+  font: 14px/1.6 ui-monospace, Consolas, monospace;
+}
+#log .empty { list-style: none; margin-left: -20px; color: #6b7c78; }</style></head><body><main class="card">
+  <h1>Click anything</h1>
+  <p class="hint">Every item below runs a little JavaScript when you click it. Watch the list at the bottom.</p>
+
+  <!-- 1. A heading -->
+  <h2 id="title" class="clickable">Hello!</h2>
+
+  <!-- 2. A paragraph -->
+  <p id="note" class="clickable">I am a plain paragraph. Click me to highlight me.</p>
+
+  <!-- 3. A button -->
+  <button id="countBtn">Clicked 0 times</button>
+
+  <!-- 4. A link -->
+  <p><a id="link" href="#nowhere">This link wants to leave the page</a></p>
+
+  <!-- 5. List items -->
+  <ul class="todo">
+    <li class="clickable">Read the HTML</li>
+    <li class="clickable">Read the JavaScript</li>
+    <li class="clickable">Change one thing</li>
+  </ul>
+
+  <!-- 6. A checkbox -->
+  <p class="check">
+    <input type="checkbox" id="lights">
+    <label for="lights" id="lightsLabel">Lights are off</label>
+  </p>
+
+  <!-- 7. A picture (an emoji, so it works offline) -->
+  <figure id="picture" class="clickable">
+    <span class="emoji">🐢</span>
+    <figcaption>Click the turtle</figcaption>
+  </figure>
+
+  <!-- 8. Table rows -->
+  <table>
+    <thead>
+      <tr><th>Student</th><th>Score</th></tr>
+    </thead>
+    <tbody>
+      <tr class="clickable"><td>Ana</td><td>92</td></tr>
+      <tr class="clickable"><td>Ben</td><td>85</td></tr>
+      <tr class="clickable"><td>Carla</td><td>78</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 9. Details / summary -->
+  <details id="secret">
+    <summary id="secretSummary">Show the secret</summary>
+    <p>JavaScript can listen to clicks on any element on the page.</p>
+  </details>
+
+  <h2 class="log-title">What JavaScript just did</h2>
+  <ol id="log" role="log">
+    <li class="empty">Nothing yet. Click something above.</li>
+  </ol>
+</main><script>// LEVEL 0: Click anything
+// Every block below does the same 3 steps:
+//   1. FIND the element      (querySelector)
+//   2. LISTEN for a click    (addEventListener)
+//   3. CHANGE something      (text, class or style)
+//
+// Note: headings, paragraphs, list items, pictures and table rows only
+// react to a mouse or touch. Real buttons and links also work with the
+// keyboard (Tab, then Enter). See the "Try it" ideas to fix that.
+
+// ---------- The log: writes what JavaScript just did ----------
+const logList = document.querySelector('#log');
+
+function log(message) {
+  const empty = logList.querySelector('.empty');
+  if (empty) empty.remove();            // first click: drop "Nothing yet"
+
+  const item = document.createElement('li');
+  item.textContent = message;
+  logList.prepend(item);                // newest line on top
+
+  if (logList.children.length > 5) {    // keep only the last 5 lines
+    logList.lastElementChild.remove();
+  }
+}
+
+// 1. Heading: change its text
+const title = document.querySelector('#title');
+const greetings = ['Hello!', 'Kumusta!', 'Hi there!'];
+let greetingIndex = 0;
+
+title.addEventListener('click', () => {
+  greetingIndex = (greetingIndex + 1) % greetings.length;  // 0, 1, 2, 0, ...
+  title.textContent = greetings[greetingIndex];
+  log('<h2> heading: text is now "' + title.textContent + '"');
+});
+
+// 2. Paragraph: switch a class on and off
+const note = document.querySelector('#note');
+
+note.addEventListener('click', () => {
+  const isOn = note.classList.toggle('highlight');
+  log('<p> paragraph: highlight ' + (isOn ? 'on' : 'off'));
+});
+
+// 3. Button: count the clicks
+const countBtn = document.querySelector('#countBtn');
+let clicks = 0;
+
+countBtn.addEventListener('click', () => {
+  clicks = clicks + 1;
+  countBtn.textContent = 'Clicked ' + clicks + ' times';
+  log('<button>: clicked ' + clicks + ' times');
+});
+
+// 4. Link: stop it from leaving the page
+const link = document.querySelector('#link');
+
+link.addEventListener('click', (event) => {
+  event.preventDefault();               // the browser does NOT follow the link
+  log('<a> link: stayed on the page (preventDefault)');
+});
+
+// 5. List items: the same listener on each item
+const todos = document.querySelectorAll('.todo li');
+
+todos.forEach((li) => {
+  li.addEventListener('click', (event) => {
+    const item = event.currentTarget;   // the <li> that was clicked
+    const isDone = item.classList.toggle('done');
+    const text = item.textContent.replace('✓ ', '');
+    item.textContent = isDone ? '✓ ' + text : text;
+    log('<li> "' + text + '": ' + (isDone ? 'done' : 'not done'));
+  });
+});
+
+// 6. Checkbox: read .checked and update the label
+const lights = document.querySelector('#lights');
+const lightsLabel = document.querySelector('#lightsLabel');
+
+lights.addEventListener('click', () => {
+  lightsLabel.textContent = lights.checked ? 'Lights are on' : 'Lights are off';
+  log('<input type="checkbox">: checked is ' + lights.checked);
+});
+
+// 7. Picture: change its size with a class
+const picture = document.querySelector('#picture');
+
+picture.addEventListener('click', () => {
+  const isBig = picture.classList.toggle('big');
+  log('<figure> turtle: ' + (isBig ? 'big' : 'normal size'));
+});
+
+// 8. Table rows: highlight the clicked row, clear the others
+const rows = document.querySelectorAll('tbody tr');
+
+rows.forEach((row) => {
+  row.addEventListener('click', (event) => {
+    const clicked = event.currentTarget;
+    rows.forEach((r) => {
+      r.classList.remove('selected');
+      r.cells[0].textContent = r.cells[0].textContent.replace('▶ ', '');
+    });
+    clicked.classList.add('selected');
+    clicked.cells[0].textContent = '▶ ' + clicked.cells[0].textContent;
+    log('<tr> row: selected ' + clicked.cells[0].textContent.replace('▶ ', ''));
+  });
+});
+
+// 9. Details: HTML opens and closes it by itself.
+// Our click runs just BEFORE the browser opens or closes it,
+// so .open still holds the old state here. That's why we use !secret.open.
+const secret = document.querySelector('#secret');
+const secretSummary = document.querySelector('#secretSummary');
+
+secretSummary.addEventListener('click', () => {
+  const willOpen = !secret.open;
+  secretSummary.textContent = willOpen ? 'Hide the secret' : 'Show the secret';
+  log('<details>: ' + (willOpen ? 'opened' : 'closed') + ' (HTML did the opening)');
+});</script></body></html>

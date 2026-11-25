@@ -1,0 +1,60 @@
+<header class="topbar">
+  <h1>Campus Shop</h1>
+  <button id="openCart" class="cart-btn">Cart <span id="cartCount" class="badge">0</span></button>
+</header>
+
+<section class="toolbar">
+  <input id="search" type="search" placeholder="Search products…" aria-label="Search products">
+  <select id="sort" aria-label="Sort products">
+    <option value="featured">Featured</option>
+    <option value="low">Price: low to high</option>
+    <option value="high">Price: high to low</option>
+    <option value="name">Name: A to Z</option>
+  </select>
+  <div id="categories" class="chips"></div>
+</section>
+
+<p id="resultInfo" class="result-info"></p>
+<main id="productGrid" class="grid"></main>
+
+<!-- Slide-in cart -->
+<div id="overlay" class="overlay" hidden></div>
+<aside id="cartDrawer" class="drawer" aria-hidden="true" aria-label="Shopping cart">
+  <div class="drawer-head">
+    <h2>Your cart</h2>
+    <button id="closeCart" class="icon-btn" aria-label="Close cart">✕</button>
+  </div>
+  <ul id="cartItems" class="cart-items"></ul>
+  <div class="drawer-foot">
+    <div class="row"><span>Subtotal</span><strong id="subtotal">₱0.00</strong></div>
+    <button id="checkoutBtn" class="primary">Checkout</button>
+  </div>
+</aside>
+
+<!-- Checkout dialog -->
+<dialog id="checkoutDialog">
+  <form id="checkoutForm" novalidate>
+    <h2>Checkout</h2>
+    <p class="muted">Amount to pay: <strong id="dialogTotal"></strong></p>
+    <label>Full name <input id="custName" autocomplete="name"></label>
+    <label>Mobile number <input id="custPhone" type="tel" placeholder="09XXXXXXXXX"></label>
+    <label>Payment
+      <select id="custPay">
+        <option>Cash on Delivery</option>
+        <option>GCash</option>
+      </select>
+    </label>
+    <p id="formError" class="form-error"></p>
+    <div class="dialog-actions">
+      <button type="button" id="cancelCheckout" class="secondary">Cancel</button>
+      <button type="submit" class="primary">Place order</button>
+    </div>
+  </form>
+  <div id="orderDone" hidden>
+    <h2>Order placed!</h2>
+    <p id="orderText"></p>
+    <button type="button" id="doneBtn" class="primary">Continue shopping</button>
+  </div>
+</dialog>
+
+<div id="toast" class="toast" role="status"></div>
